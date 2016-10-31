@@ -19,10 +19,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::get('/nmap', function(Request $request) {
-    $ip = $request->input('ip');
+    $target = $request->input('ip');
     exec('nmap -v -A ' . $ip, $results);
     $results[0] = $results[1] = "";
-    return NmapUtility::analysisResults($results);
+    return NmapUtility::lightProbe($target);
     /*
     return array(
         'query' => $ip,
@@ -46,4 +46,9 @@ Route::get('/nmap', function(Request $request) {
 
         )
     );*/
+});
+
+Route::get('/lightProbe', function(Request $request) {
+    $target = $request->input('ip');
+    return NmapUtility::lightProbe($target);
 });
