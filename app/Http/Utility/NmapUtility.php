@@ -39,7 +39,12 @@ class NmapUtility
                 $temp_res = $results[$i - 1];
                 $ip = str_replace('Nmap scan report for ', "", $temp_res);
                 $temp_res = $results[$i + 1];
-                $mac = str_replace('AC Address: ', "", $temp_res);
+                if (strpos($temp_res, 'MAC') !== false) {
+                    $mac = str_replace('MAC Address: ', "", $temp_res);
+                }
+                else {
+                    $mac = "Unknown";
+                }
                 array_push($hosts, array(
                     'ip' => $ip,
                     'mac' => $mac
