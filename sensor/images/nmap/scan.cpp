@@ -1,14 +1,16 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <map>
+#include <vector>
 using namespace std;
-
 
 /**
  * Global Variables
  */
 string scan_targets;
+string scan_type;
 ofstream logger;
 
 void close_program() {
@@ -19,7 +21,7 @@ void close_program() {
 /**
  * Configurations
  */
-static string CONFIG_SCAN_TARGETS_FILE = "SCAN_TARGETS_FILE";
+static string CONFIG_SCAN_CONFIGS_FILE = "SCAN_CONFIGS_FILE";
 static string CONFIG_SCAN_RESULTS_FILE = "SCAN_RESULTS_FILE";
 
 map<string, string> configs;
@@ -44,17 +46,55 @@ void load_configs() {
 }
 
 void load_scan_targets() {
-	ifstream stf;
-	stf.open(configs[CONFIG_SCAN_TARGETS_FILE]);
+	ifstream stf; 
+	stf.open(configs[CONFIG_SCAN_CONFIGS_FILE].c_str());
 	stf >> scan_targets;
+	stf >> scan_type;
 	stf.close();
-	cout << scan_targets;
 }
 
-int main() {
+void initial_program() {
 	logger.open("scan.log");
 	load_configs();
 	load_scan_targets();
+}
+
+vector<string> analyze_light_probe_outputs() {
+	vector<string> ips;
+	ifstream nof("data/nmap.output");
+	string str, cip;
+	while (getline(nof, str)) {
+		if (str.find("Nmap scan report for ") != string::npos) {
+			string tmp = str.substr(21, str.length() - 1);
+			stringstream ss;
+			ss << tmp;
+			ss >> cip;
+		}
+		if (str.find("Host is up") != string::npos) {
+			ips.push_back(cip);	
+		}
+	}
+	nof.close();
+	return ips;
+}
+
+void main_work() {
+	if (scan_type == "light") {
+		string cmd = "nmap -v -sn " + scan_targets + " > data/nmap.output";
+		system(cmd.c_str());
+		vector<string> ips = analyze_light_probe_outputs();
+		ofstream srf(configs[CONFIG_SCAN_RESULTS_FILE].c_str());
+		srf << ips.size() << endl;
+		for (int i = 0; i < ips.size(); i++) srf << ips[i] << endl;
+		close_program(); 
+	}
+	if (scan_type == "deep") {
+		
+	}
+}
+
+int main() {
+	initial_program();
+	main_work();
 	close_program();
-	logger.close();
 }
