@@ -1,0 +1,71 @@
+﻿body {
+	margin: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+.navbar {
+	z-index: 2;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 64px;
+	background: #bbbbbb;
+	padding: 7px 10px;
+}
+
+.navbar .item {
+	margin: 10px 0px;
+	padding: 2px 0px;
+	text-align: center;
+	cursor: pointer;
+	border-bottom: 1px solid transparent; 
+	opacity: 0.4;
+}
+
+.navbar .item:hover {
+	border-bottom: 1px solid #000; 
+}
+
+.navbar .active {
+	opacity: 1;
+}
+
+.container {
+	z-index: 1;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	padding-left: 84px;
+}
+
+.container .content {	
+	height: 100%;
+	width: 100%;
+	display: none;
+	overflow: scroll;
+}
+.container .active {
+	display: block;
+}
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 15px sans-serif;
+  text-anchor: middle;
+}
+
+svg {
+	height: 100%;
+	width: 100%;
+}

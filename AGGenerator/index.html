@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="lab.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="item active topo" onclick="change('topo')">网络拓扑</div>
+			<div class="item config" onclick="change('config')">网络配置</div>
+			<div class="item researcher" onclick="change('researcher')">论文调研</div>
+		</div>
+		<div class="container">
+			<div class="content topo active">
+				<svg id="topo_graph"></svg>
+			</div>
+			<div class="content config">
+				<svg id="config_graph"></svg>
+			</div>
+			<div class="content researcher">
+				<svg id="researcher_graph"></svg>
+			</div>
+		</div>
+	<script src="js/d3.v4.min.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/lab.js"></script>
+	<script src="js/topoData.js"></script>
+	<script src="js/topo.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/researcherAnalysisData.js"></script>
+	<script src="js/researcher.js"></script>
+	</body>
+</html>
