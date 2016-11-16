@@ -1,5 +1,0 @@
-*.exe
-config.ini
-scan.log
-data/
-!data/input_example.txt
