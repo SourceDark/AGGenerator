@@ -18,8 +18,10 @@ string getNext(int &type) {
 
 vector<string> thisPaper;
 map<string,int> namelist;
-int score[50], edge[50][50], group[50];
-string namevalue[50];
+int score[1000], edge[1000][1000], group[1000];
+string namevalue[1000];
+vector<string> paperlist[1000];
+vector<string> papers[1000][1000];
 
 int main()
 {
@@ -27,29 +29,42 @@ int main()
     freopen("data.out", "w", stdout);
     int line = 0, type;
     int src = 6, id = 0;
-    string name;
+    bool article = false;
+    string name, art;
     do {
         name = getNext(type);
+        if (!article) {
+            art = name;
+            article = true;
+            continue;
+        }
         //cerr << name << ' ';
         if (name.size() > 0) {
-            cerr << namelist[name] << endl;
+            //cerr << namelist[name] << endl;
             if (namelist[name] < 1) {
                 namelist[name] = ++id;
                 namevalue[id] = name;
             }
             score[ namelist[name] ] += src;
-            for (int i = 0; i != (int) thisPaper.size(); ++i)
+            string no = "[0]";
+            no[1] += 7 - src;
+            paperlist[ namelist[name] ].push_back( no + art);
+            for (int i = 0; i != (int) thisPaper.size(); ++i) {
                 edge[namelist[name]][namelist[thisPaper[i]]] ++, edge[namelist[thisPaper[i]]][namelist[name]] ++;
+                papers[namelist[name]][namelist[thisPaper[i]]].push_back(art);
+                papers[namelist[thisPaper[i]]][namelist[name]].push_back(art);
+            }
         }
         if (type) {
             src = 6;
             thisPaper.clear();
             ++line;
+            article = false;
         }   else {
             src --;
             thisPaper.push_back(name);
         }
-    }   while (line < 26);
+    }   while (line < 193);
     cerr << "persons: " << id  << endl;
     printf("var data = {\n\"nodes\": [\n");
     for (int i = 1; i <= id; ++i) {
@@ -57,14 +72,22 @@ int main()
         if (score[i] > 15) group[i] = 4;
         if (score[i] > 25) group[i] = 5;
     }
-    for (int i = 1; i <= id; ++i)
-        printf("\t{\"id\": \"%s\", \"group\": %d, size: %d},\n", namevalue[i].c_str(), group[i], score[i]);
+    for (int i = 1; i <= id; ++i) {
+        printf("\t{\"id\": \"%s\", \"group\": %d, size: %d, \"papers\": [", namevalue[i].c_str(), group[i], score[i]);
+        for (int j = 0; j != (int) paperlist[i].size(); ++j)
+            printf("\"%s\",", paperlist[i][j].c_str());
+        printf("]},\n");
+    }
         //cout << namevalue[i] << ' ' << score[i] << endl;
-    printf("],\"links\": [\n");
+    printf("],\n\"links\": [\n");
     for (int i = 1; i <= id; ++i)
         for (int j = i + 1; j <= id; ++j)
-            if (edge[i][j])
-                printf("{\"source\": \"%s\", \"target\": \"%s\",\"group\": 0, \"value\": %d},\n", namevalue[i].c_str(), namevalue[j].c_str(), edge[i][j]);
+            if (edge[i][j]) {
+                printf("\t{\"source\": \"%s\", \"target\": \"%s\",\"group\": 0, \"value\": %d, \"papers\": [", namevalue[i].c_str(), namevalue[j].c_str(), edge[i][j]);
+                for (int k = 0; k != (int) papers[i][j].size(); ++k)
+                    printf("\"%s\",", papers[i][j][k].c_str());
+                printf("]},\n");
+            }
                 //cout << namevalue[i] << ' ' << namevalue[j] << ' ' << edge[i][j] << endl;
     printf("]};\n");
     return 0;

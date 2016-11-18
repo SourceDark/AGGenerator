@@ -18,7 +18,7 @@ text {
 }
 
 </style>
-<svg width="2000" height="2000"></svg>
+<svg width="8000" height="8000"></svg>
 <script src="data.js"></script>
 <script src="d3.v4.min.js"></script>
 <script>
@@ -66,7 +66,7 @@ var simulation = d3.forceSimulation()
 		
   node.append("title")
       .text(function(d) {
-		return 'author score: ' + d.size + '\n' + d.papers.join('\n'); 
+		return d.id + '\n' + 'author score: ' + d.size + '\n' + d.papers.join('\n'); 
 	  });
 	  
   link.append("title")
