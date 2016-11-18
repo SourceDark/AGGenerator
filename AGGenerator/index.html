@@ -2,32 +2,54 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link href="lab.css" rel="stylesheet" type="text/css"/>
+		<link href="css/main.css" rel="stylesheet" type="text/css"/>
+		
+		<! ==== Lib ==== ->
+		<script src="lib/angular.min.js" type="text/javascript"></script>
+		<script src="lib/ui-router.js" type="text/javascript"></script>
+		<script src="lib/d3.min.js" type="text/javascript"></script>
+		
+		<! ==== JavaScript ==== ->
+		<script src="js/main-ctrl.js" type="text/javascript"></script>
+		<script src="js/network-topology-ctrl.js" type="text/javascript"></script>
+		<script src="js/network-config-ctrl.js" type="text/javascript"></script>
+		<script src="js/researcher-analysis-ctrl.js" type="text/javascript"></script>
+		<script src="js/researcher-analysis-data.js" type="text/javascript"></script>
+		<script src="js/graph-directive.js" type="text/javascript"></script>
+		
 	</head>
-	<body>
+	<body ng-app="AGGenerator" ng-controller="mainCtrl">
 		<div class="navbar">
-			<div class="item active topo" onclick="change('topo')">网络拓扑</div>
-			<div class="item config" onclick="change('config')">网络配置</div>
-			<div class="item researcher" onclick="change('researcher')">论文调研</div>
+			<div class="item" ng-repeat="item in nav" ui-sref="{{item.id}}" ui-sref-active="active">{{item.text}}</div>
 		</div>
-		<div class="container">
-			<div class="content topo active">
-				<svg id="topo_graph"></svg>
-			</div>
-			<div class="content config">
-				<svg id="config_graph"></svg>
-			</div>
-			<div class="content researcher">
-				<svg id="researcher_graph"></svg>
-			</div>
+		<div class="container" ui-view="">
 		</div>
-	<script src="js/d3.v4.min.js"></script>
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/lab.js"></script>
-	<script src="js/topoData.js"></script>
-	<script src="js/topo.js"></script>
-	<script src="js/config.js"></script>
-	<script src="js/researcherAnalysisData.js"></script>
-	<script src="js/researcher.js"></script>
 	</body>
+	<script type="text/ng-template" id="network-topology.html">
+		<tree-graph nodes="graph.nodes" links="graph.links" options="options"></tree-graph>
+	</script>
+	<script type="text/ng-template" id="network-config.html">
+		<div class="config">
+			<h4>配置说明</h4>
+			<p>添加节点</p>
+			<pre>+[id],[type],[ip1],[ip2],...</pre>
+			<pre>type: center,sensor,switch,host</pre>
+			<p>添加链接</p>
+			<pre>-[source_id],[target_id]</pre>
+			<p>样例</p>
+			<pre>+Switch1,switch,192.0.0.0
++host1,Host,192.1.1.1
+-Switch1,host1</pre>
+			<h4>配置信息</h4>
+			<textarea class="config_text" ng-model="config"></textarea>
+			<button ng-click="apply()">预览</button>
+			<button ng-click="save()">保存</button>
+		</div>
+		<div class="graph">
+			<tree-graph nodes="nodes" links="links" options="options"></tree-graph>
+		</div>
+	</script>
+	<script type="text/ng-template" id="researcher-analysis.html">
+		<tree-graph nodes="graph.nodes" links="graph.links" options="options"></tree-graph>
+	</script>
 </html>
