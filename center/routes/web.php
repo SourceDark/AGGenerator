@@ -11,6 +11,14 @@
 |
 */
 
+/*
 Route::get('/', function () {
     return view('welcome');
+});*/
+
+/**
+ * This part of router is for getting basic router
+ */
+Route::get('/{catchall?}', function () {
+    return view('agbot.layouts.app');
 });
