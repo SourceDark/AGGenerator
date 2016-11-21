@@ -1,5 +1,5 @@
-agbotApp.controller('navbarCtrl', function ($scope, $http) {
-
+agbotApp.controller('navbarCtrl', function ($scope, $http, $state) {
+    $state.go('vision');
 });
 
 agbotApp.config(function($stateProvider) {

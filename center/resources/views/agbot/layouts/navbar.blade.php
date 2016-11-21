@@ -7,8 +7,8 @@
                 </li>
                 <li><div class="line"></div></li>
                 <li><a href="" ui-sref="vision" ui-sref-active="active">Vision</a></li>
-                <li><a href="">Sensor</a></li>
-                <li><a href="">Attack Graph</a></li>
+                <li><a href="" ui-sref="sensor" ui-sref-active="active">Sensor</a></li>
+                <li><a href="" ui-sref="attack_graph" ui-sref-active="active">Attack Graph</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" ui-sref="aboutUs" ui-sref-active="active">About Us</a></li>
