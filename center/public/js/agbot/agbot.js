@@ -1,1 +1,2 @@
-var agbotApp = angular.module('agbotApp', []);
+var agbotApp = angular.module('agbotApp', ['ui.router']);
+

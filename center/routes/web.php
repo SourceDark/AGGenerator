@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'html'], function () {
     Route::get('aboutUs', function ()    {
-        // Matches The "/admin/users" URL
+        return view('agbot.aboutUs.index');
     });
 });
 /**
