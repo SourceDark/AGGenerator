@@ -11,7 +11,7 @@
                 <li><a href="">Attack Graph</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> Info</a></li>
+                <li><a href="#" ui-sref="aboutUs" ui-sref-active="active">About Us</a></li>
                 <li><div class="line"></div></li>
                 <li><a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a></li>
             </ul>
