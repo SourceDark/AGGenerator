@@ -7,16 +7,18 @@ angular.module('agbotApp')
 			scope: {
 				nodes   : '=nodes',
 				links   : '=links',
-				options : '=options'
+				options : '=options',
+				height: '=height',
+				width: '=width'
 			},
 			template: '<svg id="tree-graph"></svg>',
 			link : function(scope, element, attrs) {	
 				// var height = element[0].offsetHeight;
 				// var width = element[0].offsetWidth;
-				var height = window.innerHeight - 51;
-				var width = window.innerWidth;
-				console.log(element[0]);
-				console.log(height + ' ' + width);
+				var height = scope.height ? scope.height : window.innerHeight - 51;
+				var width = scope.width ? scope.width : window.innerWidth;
+				// console.log(element[0]);
+				// console.log(height + ' ' + width);
 				scope.svg = d3.select('#tree-graph');
 				
 				scope.update = function() {
