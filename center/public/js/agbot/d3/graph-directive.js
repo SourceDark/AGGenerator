@@ -11,12 +11,13 @@ angular.module('agbotApp')
 			},
 			template: '<svg id="tree-graph"></svg>',
 			link : function(scope, element, attrs) {	
-				var height = element[0].offsetHeight;
-				var width = element[0].offsetWidth;
+				// var height = element[0].offsetHeight;
+				// var width = element[0].offsetWidth;
+				var height = window.innerHeight - 51;
+				var width = window.innerWidth;
 				console.log(element[0]);
+				console.log(height + ' ' + width);
 				scope.svg = d3.select('#tree-graph');
-				//scope.svg.attr('height', height);
-				//scope.svg.attr('width', width);
 				
 				scope.update = function() {
 					scope.color = d3.scaleOrdinal(d3.schemeCategory20);
