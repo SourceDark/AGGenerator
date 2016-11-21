@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\SensorController;
-use App\Http\Controllers\VulnerabilityController;
+use App\Http\Services\SensorService;
+use App\Http\Services\VulnerabilityService;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,17 +20,33 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 
-Route::post('/sensor/record', function (Request $request) {
-    $sensor_name = $request->input('sensor_name');
-    $host_ip = $request->input('host_ip');
-    $vulnerabilities = json_decode($request->input('vulnerabilities'));
-
-    $sensor = SensorController::getSensorByName($sensor_name);
-    $vul_report = VulnerabilityController::createVulReportBySensorAndHostIp($sensor, $host_ip);
-
-    foreach ($vulnerabilities as $vulnerability) {
-        VulnerabilityController::createVulReportRecordByRecordAndVulReportId($vulnerability, $vul_report->id);
+Route::post('/sensor/reports', function (Request $request) {
+    // Decode parameters
+    $report = json_decode($request->input('report'));
+    if ($report == null) {
+        return response()->json("Can't Analyze parameter 'report'");
     }
 
-    return response()->json($vul_report -> id, 200);
+    // Find sensor, create a new sensor if not exists
+    $sensor_name = $report->sensor;
+    $sensor = SensorService::getSensorByName($sensor_name);
+    if ($sensor == null) {
+        $sensor = SensorService::createSensorByName($sensor_name);
+    }
+
+    $vulnerabilities = $report->vulnerabilities;
+    foreach ($vulnerabilities as $ip => $ports) {
+        $vul_report = VulnerabilityService::createVulReportBySensorIdAndHostIp($sensor->id, $ip);
+        foreach ($ports as $port) {
+            $record = array(
+                'port_name' => $port->port->port_name,
+                'port_proto' => $port->port->proto,
+                'threat' => $port->threat,
+                'cves' => json_encode($port->cves)
+            );
+            VulnerabilityService::createVulReportRecordByRecordAndVulReportId($record, $vul_report->id);
+        }
+    }
+
+    return response()->json("Reports created successfully.", 200);
 });
