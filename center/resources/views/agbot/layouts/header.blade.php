@@ -4,8 +4,13 @@
 <link rel="stylesheet" type="text/css" href="/css/lib/bootstrap/bootstrap.min.css"/>
 <script src="/js/lib/bootstrap/bootstrap.min.js"></script>
 <script src="/js/lib/angular/ui-bootstrap-tpls-1.3.3.min.js"></script>
+
+<!-- js files -->
 <script src="/js/agbot/agbot.js"></script>
 <script src="/js/agbot/layouts/navbar.js"></script>
+<script src="/js/agbot/layouts/sidebar.js"></script>
 
 <!-- less files -->
+<link rel="stylesheet/less" type="text/css" href="/css/agbot/agbot.less"/>
 <link rel="stylesheet/less" type="text/css" href="/css/agbot/layouts/navbar.less"/>
+<link rel="stylesheet/less" type="text/css" href="/css/agbot/layouts/sidebar.less"/>
