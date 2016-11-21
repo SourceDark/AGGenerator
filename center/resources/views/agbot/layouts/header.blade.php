@@ -15,6 +15,8 @@
 <!-- -->
 <script src="/js/agbot/vision/vision-ctrl.js"></script>
 <script src="/js/agbot/sensor/sensor-ctrl.js"></script>
+<script src="/js/agbot/attack_graph/attack-graph-ctrl.js"></script>
+<script src="/js/agbot/attack_graph/attack-graph-data.js"></script>
 
 <!-- less files -->
 <link rel="stylesheet/less" type="text/css" href="/css/agbot/agbot.less"/>

@@ -27,6 +27,9 @@ Route::group(['prefix' => 'html'], function () {
     Route::get('sensor', function () {
         return view('agbot.sensor.index');
     });
+    Route::get('attackGraph', function () {
+        return view('agbot.attackGraph.index');
+    });
 });
 /**
  * This part of router is for getting basic router
