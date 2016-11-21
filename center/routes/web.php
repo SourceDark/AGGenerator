@@ -21,6 +21,12 @@ Route::group(['prefix' => 'html'], function () {
     Route::get('aboutUs', function ()    {
         // Matches The "/admin/users" URL
     });
+    Route::get('vision', function () {
+        return view('agbot.vision.index');
+    });
+    Route::get('sensor', function () {
+        return view('agbot.sensor.index');
+    });
 });
 /**
  * This part of router is for getting basic router
