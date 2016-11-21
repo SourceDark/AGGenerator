@@ -39,7 +39,7 @@ Route::post('/sensor/reports', function (Request $request) {
                 'port_name' => $port['port']['port_name'],
                 'port_proto' => $port['port']['proto'],
                 'threat' => $port['threat'],
-                'cves' => json_encode($port['cves'])
+                'cves' => json_encode($port['nvt']['cves'])
             );
             VulnerabilityService::createVulReportRecordByRecordAndVulReportId($record, $vul_report->id);
         }
