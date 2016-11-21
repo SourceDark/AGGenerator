@@ -22,27 +22,24 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/sensor/reports', function (Request $request) {
     // Decode parameters
-    $report = json_decode($request->input('report'));
-    if ($report == null) {
-        return response()->json("Can't Analyze parameter 'report'");
-    }
+    $report = $request->input('report');
 
     // Find sensor, create a new sensor if not exists
-    $sensor_name = $report->sensor;
+    $sensor_name = $report['sensor'];
     $sensor = SensorService::getSensorByName($sensor_name);
     if ($sensor == null) {
         $sensor = SensorService::createSensorByName($sensor_name);
     }
 
-    $vulnerabilities = $report->vulnerabilities;
+    $vulnerabilities = $report['vulnerabilities'];
     foreach ($vulnerabilities as $ip => $ports) {
         $vul_report = VulnerabilityService::createVulReportBySensorIdAndHostIp($sensor->id, $ip);
         foreach ($ports as $port) {
             $record = array(
-                'port_name' => $port->port->port_name,
-                'port_proto' => $port->port->proto,
-                'threat' => $port->threat,
-                'cves' => json_encode($port->cves)
+                'port_name' => $port['port']['port_name'],
+                'port_proto' => $port['port']['proto'],
+                'threat' => $port['threat'],
+                'cves' => json_encode($port['cves'])
             );
             VulnerabilityService::createVulReportRecordByRecordAndVulReportId($record, $vul_report->id);
         }
