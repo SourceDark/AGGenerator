@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Services\SensorService;
 use App\Http\Services\VulnerabilityService;
+use App\Http\Services\AlgorithmService;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
+Route::get('/algorithms', function (Request $request) {
+    return response() -> json(
+        array(
+            "generation" => AlgorithmService::getGenerationAlgorithms(),
+            "analysis" => AlgorithmService::getAnalysisAlgorithms()
+        )
+    );
+});
 
 Route::post('/sensor/reports', function (Request $request) {
     // Decode parameters

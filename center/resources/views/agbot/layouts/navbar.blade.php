@@ -6,11 +6,12 @@
                     <div class="logo-text">AGBOT</div>
                 </li>
                 <li><div class="line"></div></li>
+                <li><a href="" ui-sref="algorithms.index" ng-class="{active: inState('algorithms')}">Algorithms</a></li>
                 <li><a href="" ui-sref="vision" ui-sref-active="active">Vision</a></li>
-                <li><a href="">Sensor</a></li>
-                <li><a href="">Attack Graph</a></li>
+                <li><a href="" ui-sref="sensor" ui-sref-active="active">Sensor</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="" ui-sref="attack_graph" ui-sref-active="active">Other researchers</a></li>
                 <li><a href="#" ui-sref="aboutUs" ui-sref-active="active">About Us</a></li>
                 <li><div class="line"></div></li>
                 <li><a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a></li>
