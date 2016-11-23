@@ -31,7 +31,10 @@ Route::group(['prefix' => '/algorithms'], function () {
         );
     });
     Route::group(['prefix' => '{algorithm_id}'], function () {
-        Route::get('results', function(Request $request, $algorithm_id) {
+        Route::get('/', function($algorithm_id) {
+            return response()->json(AlgorithmService::getAlgorithmById($algorithm_id));
+        });
+        Route::get('results', function($algorithm_id) {
             return response()->json(AlgorithmService::getResultsByAlgorithmId($algorithm_id));
         });
         Route::post('results', function(Request $request, $algorithm_id) {

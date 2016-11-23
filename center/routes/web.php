@@ -30,7 +30,6 @@ Route::group(['prefix' => 'html'], function () {
     Route::get('attackGraph', function () {
         return view('agbot.attackGraph.index');
     });
-
     Route::group(['prefix' => 'algorithms'], function () {
         Route::get('/', function () {
             return view('agbot.algorithms.index');

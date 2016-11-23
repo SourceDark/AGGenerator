@@ -16,7 +16,7 @@ agbotApp.config(function($stateProvider) {
     });
     $stateProvider.state({
         name: 'algorithms.algorithm',
-        url: '/{id:[0-9]+}',
+        url: '/{algorithm_id:[0-9]+}',
         templateUrl: 'html/algorithms/algorithm'
     });
 });

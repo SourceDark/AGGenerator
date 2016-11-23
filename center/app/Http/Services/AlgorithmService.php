@@ -19,6 +19,11 @@ class AlgorithmService
         return $algorithms;
     }
 
+    static public function getAlgorithmById($algorithm_id) {
+        $algorithm = DB::table('algorithms')->where('id', $algorithm_id)->first();
+        return $algorithm;
+    }
+
     static public function getResultsByAlgorithmId($algorithm_id) {
         $algorithm_results = DB::table('algorithm_results')->where('algorithm_id', $algorithm_id)->get();
         return $algorithm_results;
