@@ -52,7 +52,7 @@ angular.module('agbotApp')
 						.selectAll(".node_text")
 						.data(scope.nodes)
 						.enter().append("text")
-							.text(function(d) { return d.id; });	
+							.text(function(d) { return d.id; });
 							
 					scope.node.append("title")
 						.text(function(d) { return d.id; });
