@@ -11,12 +11,9 @@
 |
 */
 
-/*
-Route::get('/', function () {
-    return view('welcome');
-});*/
-
-
+/**
+ * This part of router is for providing html fragments
+ */
 Route::group(['prefix' => 'html'], function () {
     Route::get('aboutUs', function ()    {
         return view('agbot.aboutUs.index');
@@ -30,11 +27,14 @@ Route::group(['prefix' => 'html'], function () {
     Route::get('attackGraph', function () {
         return view('agbot.attackGraph.index');
     });
+    Route::get('algorithms', function () {
+        return view('agbot.algorithm.index');
+    });
 });
+
 /**
  * This part of router is for getting basic router
  */
-
 Route::get('/{catchall?}', function () {
     return view('agbot.layouts.app');
 });

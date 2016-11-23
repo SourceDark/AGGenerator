@@ -13,6 +13,7 @@
 <script src="/js/agbot/d3/graph-directive.js"></script>
 
 <!-- -->
+<script src="/js/agbot/algorithm/algorithm-ctrl.js"></script>
 <script src="/js/agbot/vision/vision-ctrl.js"></script>
 <script src="/js/agbot/sensor/sensor-ctrl.js"></script>
 <script src="/js/agbot/attack_graph/attack-graph-ctrl.js"></script>

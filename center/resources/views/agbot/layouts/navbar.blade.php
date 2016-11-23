@@ -6,6 +6,7 @@
                     <div class="logo-text">AGBOT</div>
                 </li>
                 <li><div class="line"></div></li>
+                <li><a href="" ui-sref="algorithms" ui-sref-active="active">Algorithms</a></li>
                 <li><a href="" ui-sref="vision" ui-sref-active="active">Vision</a></li>
                 <li><a href="" ui-sref="sensor" ui-sref-active="active">Sensor</a></li>
                 <li><a href="" ui-sref="attack_graph" ui-sref-active="active">Attack Graph</a></li>
