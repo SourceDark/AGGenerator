@@ -20,13 +20,25 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-Route::get('/algorithms', function (Request $request) {
-    return response() -> json(
-        array(
-            "generation" => AlgorithmService::getGenerationAlgorithms(),
-            "analysis" => AlgorithmService::getAnalysisAlgorithms()
-        )
-    );
+
+Route::group(['prefix' => '/algorithms'], function () {
+    Route::get('/', function (Request $request) {
+        return response()->json(
+            array(
+                "generation" => AlgorithmService::getGenerationAlgorithms(),
+                "analysis" => AlgorithmService::getAnalysisAlgorithms()
+            )
+        );
+    });
+    Route::group(['prefix' => '{algorithm_id}'], function () {
+        Route::get('results', function(Request $request, $algorithm_id) {
+            return response()->json(AlgorithmService::getResultsByAlgorithmId($algorithm_id));
+        });
+        Route::post('results', function(Request $request, $algorithm_id) {
+            $content = $request->input('content');
+            return response()->json(AlgorithmService::createResultsByAlgorithmIdAndContent($algorithm_id, $content));
+        });
+    });
 });
 
 Route::post('/sensor/reports', function (Request $request) {
