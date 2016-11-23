@@ -1,5 +1,10 @@
 agbotApp.controller('navbarCtrl', function ($scope, $http, $state) {
-    $state.go('vision');
+    if ($state.current.name == "") {
+        $state.go("algorithms.index");
+    }
+    $scope.inState = function($prefix) {
+        return $state.current.name.indexOf($prefix) == 0;
+    }
 });
 
 agbotApp.config(function($stateProvider) {

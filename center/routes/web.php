@@ -11,6 +11,9 @@
 |
 */
 
+Blade::setContentTags('<%', '%>');
+Blade::setEscapedContentTags('<%%', '%%>');
+
 /**
  * This part of router is for providing html fragments
  */
@@ -27,9 +30,16 @@ Route::group(['prefix' => 'html'], function () {
     Route::get('attackGraph', function () {
         return view('agbot.attackGraph.index');
     });
-    Route::get('algorithms', function () {
-        return view('agbot.algorithm.index');
+
+    Route::group(['prefix' => 'algorithms'], function () {
+        Route::get('/', function () {
+            return view('agbot.algorithms.index');
+        });
+        Route::get('/algorithm', function() {
+            return view('agbot.algorithms.algorithm');
+        });
     });
+
 });
 
 /**
