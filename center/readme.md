@@ -1,40 +1,39 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img width="150"src="https://laravel.com/laravel.png"></a></p>
+## Installation
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+### 安装第三方软件：
 
-## About Laravel
+包括但不限于PHP、Composer、Git、MySQL
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### 克隆代码
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+从服务器上下载源代码，可以直接下载zip包，当然最好是通过git的本地客户端管理源代码
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+### 下载依赖的第三方库
 
-## Learning Laravel
+在根目录运行“php composer.phar install”，或者“composer install”（全局安装了composer的情况下）
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+### Laravel框架配置
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+1）复制根目录下的.env.example并重命名为.env，在这里可以配置数据库的信息(以“DB_”开头)，其他配置暂时没有什么用
 
-## Contributing
+2）设置APP_KEY：在根目录下运行“php artisan key:generate”
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+### PHP配置
 
-## Security Vulnerabilities
+1）依赖库（php_mysql.dll/php_mysqli.dll/php_pdo_mysql.dll/其他）：直接在php.ini中打开对应的库（删除行首的“；”）或者使用包管理器安装（类linux系统）
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### 连接数据库
 
-## License
+修改配置为：162.105.30.65:9002 root 123456（公共数据库）
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+也可以连接本地安装的数据库
+
+如果是本地安装的数据库，需要运行"php artisan migrate:refresh --seed" 来初始化数据库表并且导入初始数据库
+
+### 运行测试服务器
+
+1）在根目录下运行“php artisan serve”
+
+### 快捷方式
+
+1）Windows操作系统下可以使用"run_server.bat"或"run_server_light.bat"，前者在配置好.env之后会自动完成整个服务器的配置和启动，后者仅启动服务器
