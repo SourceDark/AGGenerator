@@ -21,39 +21,84 @@ angular.module('myApp', [])
 				var width = scope.width ? scope.width : window.innerWidth;
 
 				// setLevel
+				scope.start = 0;
+				scope.nodes.filter(function (a) {
+					if (a.info.indexOf('attackerLocated') >= 0) scope.start = a.id;
+				});
 				scope.nodes[0].lv = 1;
 				scope.nodes[0].offset = 0;
+				scope.nodes[0].dr = 1;
+				scope.nodes[scope.start - 1].lv = scope.nodes.length;
+				scope.nodes[scope.start - 1].offset = 0;
+				scope.nodes[scope.start - 1].dr = -1;
+
+
 				var seq = [], num = [0];
 				for (var i in scope.nodes) num.push(0);
-				num[1] = 1;
-				seq.push(1);
+				num[1] = 1, num[scope.nodes.length] = 1;
+				seq.push(1);seq.push(scope.start);
+
 				for (var i = 0; i < seq.length; ++i) {
 					var v = seq[i];
-					scope.nodes[v - 1].child = [];
+					// scope.nodes[v - 1].child = [];
 					for (var j = 0; j < scope.links.length; ++j)
-						if (scope.links[j].target == v && !scope.nodes[ scope.links[j].source - 1 ].lv) {
-							scope.nodes[v - 1].child.push(scope.links[j].source);
-							scope.nodes[ scope.links[j].source - 1 ].lv = scope.nodes[v - 1].lv + 1;
-							scope.nodes[ scope.links[j].source - 1 ].offset = num[ scope.nodes[ scope.links[j].source - 1 ].lv ] ++;
-							seq.push(scope.links[j].source);
+						if (scope.nodes[v - 1].dr == 1) {
+							if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv) {
+								// scope.nodes[v - 1].child.push(scope.links[j].source);
+								if (scope.nodes[v - 1].lv + 1 >= scope.nodes.length) {
+									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv - 1;
+									scope.nodes[scope.links[j].source - 1].dr = 1;
+								}	else {
+									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv + scope.nodes[v - 1].dr;
+									scope.nodes[scope.links[j].source - 1].dr = scope.nodes[v - 1].dr;
+								}
+								scope.nodes[scope.links[j].source - 1].offset = num[scope.nodes[scope.links[j].source - 1].lv]++;
+								seq.push(scope.links[j].source);
+							}
+						}	else {
+							if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv) {
+								// scope.nodes[v - 1].child.push(scope.links[j].source)
+								if (scope.nodes[v - 1].lv + 1 >= scope.nodes.length) {
+									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv - 1;
+								} 	else {
+									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv + 1;
+									scope.nodes[scope.links[j].source - 1].dr = 1;
+								}
+								scope.nodes[scope.links[j].source - 1].offset = num[scope.nodes[scope.links[j].source - 1].lv]++;
+								seq.push(scope.links[j].source);
+							}
+							if (scope.links[j].source == v && !scope.nodes[scope.links[j].target - 1].lv) {
+								// scope.nodes[v - 1].child.push(scope.links[j].target);
+								scope.nodes[scope.links[j].target - 1].lv = scope.nodes[v - 1].lv - 1;
+								scope.nodes[scope.links[j].target - 1].dr = -1;
+								scope.nodes[scope.links[j].target - 1].offset = num[scope.nodes[scope.links[j].target - 1].lv]++;
+								seq.push(scope.links[j].target);
+							}
 						}
 				}
 
-				function myComp(element_x, element_y) {
-					return scope.nodes[element_x-1].type < scope.nodes[element_y-1].type;
-				};
-
-				var maxSize = 0, maxLv = 0;
-				for (var i in num)
-					if (num[i] > maxSize) maxSize = num[i];
-				for (var i in scope.nodes) {
-					if (maxLv < scope.nodes[i].lv) maxLv = scope.nodes[i].lv;
-				}
-				console.log(maxSize);
-
-
 				for (var i in scope.nodes)
 					console.log(scope.nodes[i].lv + ' ' + scope.nodes[i].offset);
+
+				var maxSize = 0, maxLv = 0;
+
+				for (var i in num)
+					if (num[i] > maxSize) maxSize = num[i];
+
+				maxLv = num.filter(function (d) {
+					return d > 0;
+				}).length;
+				var tp = 1, delta = scope.nodes.length - maxLv;
+				for (var i = 1; i <= scope.nodes.length; ++i)
+					if (num[i] > 0) {
+						num[tp] = num[i];
+						tp ++;
+					}
+				for (var i in scope.nodes) {
+					if (scope.nodes[i].lv - delta > 0)
+						scope.nodes[i].lv -= delta;
+				}
+				console.log(maxSize);
 
 				scope.nodes.forEach(function (node) {
 					var offset = (maxSize - num[ node.lv ]) * (scope.r*2 + scope.gap) / 2;
@@ -108,6 +153,7 @@ angular.module('myApp', [])
 
 				scope.getColor = function (d) {
 					if (d.id == 1) return '#FF3030';
+					if (d.id == scope.start) return '#d65222';
 					if (d.type == 'OR') return '#EEEE00';
 					if (d.type == 'AND') return '#66ccff';
 					return '#7CCD7C';
@@ -175,6 +221,8 @@ angular.module('myApp', [])
 					.attr("width", function(d) { return scope.r*2; })
 					.attr("height", function(d) { return scope.r*2; })
 					.attr("fill", function(d) { return scope.getColor(d); });
+
+
 				// scope.typeOP.append("title")
 				// 	.text(function(d) {
 				// 		return d.id;
