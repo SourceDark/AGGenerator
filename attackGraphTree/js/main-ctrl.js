@@ -14,15 +14,67 @@ angular.module('myApp', [])
 			template: '<svg id="attack-graph"></svg>',
 			link: function (scope, element, attrs) {
 				scope.r = 30;
+				scope.gap = 20;
 				scope.svg = d3.select('#attack-graph');
 
 				var height = scope.height ? scope.height : window.innerHeight;
 				var width = scope.width ? scope.width : window.innerWidth;
 
-				scope.simulation = d3.forceSimulation()
-					.force("link", d3.forceLink().id(function(d) { return d.id; }).distance(function(d) {return 150;}))
-					.force("charge", d3.forceManyBody().strength(function(d) {return -300;}))
-					.force("center", d3.forceCenter(width / 2, height / 2));
+				// setLevel
+				scope.nodes[0].lv = 1;
+				scope.nodes[0].offset = 0;
+				var seq = [], num = [0];
+				for (var i in scope.nodes) num.push(0);
+				num[1] = 1;
+				seq.push(1);
+				for (var i = 0; i < seq.length; ++i) {
+					var v = seq[i];
+					scope.nodes[v - 1].child = [];
+					for (var j = 0; j < scope.links.length; ++j)
+						if (scope.links[j].target == v && !scope.nodes[ scope.links[j].source - 1 ].lv) {
+							scope.nodes[v - 1].child.push(scope.links[j].source);
+							scope.nodes[ scope.links[j].source - 1 ].lv = scope.nodes[v - 1].lv + 1;
+							scope.nodes[ scope.links[j].source - 1 ].offset = num[ scope.nodes[ scope.links[j].source - 1 ].lv ] ++;
+							seq.push(scope.links[j].source);
+						}
+				}
+
+				function myComp(element_x, element_y) {
+					return scope.nodes[element_x-1].type < scope.nodes[element_y-1].type;
+				};
+
+				var maxSize = 0, maxLv = 0;
+				for (var i in num)
+					if (num[i] > maxSize) maxSize = num[i];
+				for (var i in scope.nodes) {
+					if (maxLv < scope.nodes[i].lv) maxLv = scope.nodes[i].lv;
+				}
+				console.log(maxSize);
+
+
+				for (var i in scope.nodes)
+					console.log(scope.nodes[i].lv + ' ' + scope.nodes[i].offset);
+
+				scope.nodes.forEach(function (node) {
+					var offset = (maxSize - num[ node.lv ]) * (scope.r*2 + scope.gap) / 2;
+					node.y = (maxLv - node.lv) * (scope.r*2+scope.gap*2)+scope.r;
+					node.x = offset + (node.offset)*(scope.r*2+scope.gap) + scope.r;
+				});
+
+				// function setOffset(id, offset) {
+				// 	var root = scope.nodes[id - 1];
+				// 	root.offset = offset;
+				// 	if (root.child.length < 1) {
+				// 		root.size = scope.r * 2;
+				// 	}	else {
+				// 		root.size = 0;
+				// 		for (var i in root.child) {
+				// 			root.size += setOffset(root.child[i], root.size) + scope.gap;
+				// 		}
+				// 	}
+				// 	return root.size;
+				// }
+				// setOffset(1,0);
 
 				var svg = d3.select("body").append("svg")
 					.attr("width", width)
@@ -30,8 +82,14 @@ angular.module('myApp', [])
 
 				var defs = scope.svg.append("defs");
 
-				var arrowMarker = defs.append("marker")
-					.attr("id","arrow")
+				var arrows = [{id: 'arrow', color: 'black'}, {id: 'arrow_red', color: 'red'}];
+
+				var arrowMarker = defs.selectAll('marker')
+					.data(arrows)
+					.enter().append("marker")
+					.attr("id", function (d) {
+						return d.id;
+					})
 					.attr("markerUnits","strokeWidth")
 					.attr("markerWidth","12")
 					.attr("markerHeight","12")
@@ -44,7 +102,9 @@ angular.module('myApp', [])
 
 				arrowMarker.append("path")
 					.attr("d",arrow_path)
-					.attr("fill","#000");
+					.attr("fill",function (d) {
+						return d.color;
+					});
 
 				scope.getColor = function (d) {
 					if (d.id == 1) return '#FF3030';
@@ -55,11 +115,16 @@ angular.module('myApp', [])
 
 				scope.link = scope.svg.append("g")
 					.attr("class", "links")
+					.attr("stroke","black")
+					.attr("stroke-width",2)
 					.selectAll("line")
 					.data(scope.links)
-					.enter().append("line")
-					.attr("stroke","black")
-					.attr("stroke-width", 2)
+					.enter()
+					.append("line")
+					.attr("x1", function(d) { return scope.nodes[d.source-1].x; })
+					.attr("y1", function(d) { return scope.nodes[d.source-1].y; })
+					.attr("x2", function(d) { return scope.nodes[d.target-1].x; })
+					.attr("y2", function(d) { return scope.nodes[d.target-1].y; })
 					.attr("marker-end","url(#arrow)");
 
 				scope.node_g = scope.svg.append("g")
@@ -67,107 +132,66 @@ angular.module('myApp', [])
 					.attr("stroke","black")
 					.attr("stroke-width",2);
 
-				scope.typeOP = scope.node_g
-					.selectAll("circle")
+				scope.node = scope.node_g
+					.selectAll('g')
 					.data(scope.nodes)
-					.enter().filter(function (d) {
-						return !(d.type == "LEAF");
-					})
-					.append("circle")
+					.enter()
+					.append('g')
 					.attr('class', 'node')
-					.attr("r", function(d) { return scope.r; })
-					.attr("fill", function(d) { return scope.getColor(d); })
 					.on('click', function(d,i) {
-						if (d3.select(this).attr("stroke") == "red")
+						if (d3.select(this).attr("stroke") == "red") {
+							d3.selectAll('.node').attr("stroke", "black");
+							scope.link
+								.attr("stroke","black")
+								.attr("marker-end","url(#arrow)");;
+						}	else {
 							d3.selectAll('.node').attr("stroke","black");
-						else {
-							d3.selectAll('.node').attr("stroke","black");
+							scope.link
+								.attr("stroke","black")
+								.attr("marker-end","url(#arrow)");;
 							d3.select(this).attr("stroke", "red");
+							scope.link
+								.filter(function (edge) {
+									return edge.source == d.id || edge.target == d.id;
+								})
+								.attr("stroke","red")
+								.attr("marker-end","url(#arrow_red)");;
 						}
-					}).call(d3.drag()
-						.on("start", dragstarted)
-						.on("drag", dragged)
-						.on("end", dragended));
-
-				scope.typeLEAF = scope.node_g
-					.selectAll("rect")
-					.data(scope.nodes)
-					.enter().filter(function (d) {
-						return d.type == "LEAF"
-					})
-					.append("rect")
-					.attr('class', 'node')
-					.attr("width", function(d) { return scope.r*2; })
-					.attr("height", function(d) { return scope.r*2; })
-					.attr("fill", function(d) { return scope.getColor(d); })
-					.on('click', function(d,i) {
-						if (d3.select(this).attr("stroke") == "red")
-							d3.selectAll('.node').attr("stroke","black");
-						else {
-							d3.selectAll('.node').attr("stroke","black");
-							d3.select(this).attr("stroke", "red");
-						}
-					}).call(d3.drag()
-						.on("start", dragstarted)
-						.on("drag", dragged)
-						.on("end", dragended));
-
-				scope.opText = scope.svg.append('g')
-					.attr('class', 'info')
-					.selectAll("circle")
-					.data(scope.nodes)
-					.enter().filter(function (d) {
-						return !(d.type == "LEAF");
-					})
-					.append("text")
-					.attr('class', 'type_info')
-					.text(function (d) {
-						return d.type;
 					});
 
-				scope.simulation
-					.nodes(scope.nodes)
-					.on("tick", ticked);
+				scope.node.filter(function (d) {
+					return !(d.type == 'LEAF');
+				}).attr('transform', function(d) {
+					return 'translate('+d.x+' '+d.y+')';
+				}).append('circle')
+					.attr("r", function(d) { return scope.r; })
+					.attr("fill", function(d) { return scope.getColor(d); });
 
-				scope.simulation.force("link")
-					.links(scope.links);
-
-				function ticked() {
-					 scope.link
-					 	.attr("x1", function(d) { return d.source.x; })
-					 	.attr("y1", function(d) { return d.source.y; })
-					 	.attr("x2", function(d) { return d.target.x; })
-					 	.attr("y2", function(d) { return d.target.y; });
-
-					 scope.typeLEAF
-						 .attr('x', function (d) {return d.x - scope.r})
-						 .attr('y', function (d) {return d.y - scope.r});
-
-					 scope.typeOP
-						 .attr('cx', function (d) {return d.x})
-						 .attr('cy', function (d) {return d.y});
-
-					scope.opText
-						.attr('x', function (d) {return d.x - (d.type == 'OR' ? 12 : 17)})
-						.attr('y', function (d) {return d.y + 6});
-				}
-
-				function dragstarted(d) {
-					if (!d3.event.active) scope.simulation.alphaTarget(0.1).restart();
-					d.fx = d.x;
-					d.fy = d.y;
-				}
-
-				function dragged(d) {
-					d.fx = d3.event.x;
-					d.fy = d3.event.y;
-				}
-
-				function dragended(d) {
-					if (!d3.event.active) scope.simulation.alphaTarget(0);
-					d.fx = null;
-					d.fy = null;
-				}
+				scope.node.filter(function (d) {
+					return d.type == 'LEAF';
+				}).attr('transform', function(d) {
+					return 'translate('+(d.x-scope.r)+' '+(d.y-scope.r)+')';
+				}).append('rect')
+					.attr("width", function(d) { return scope.r*2; })
+					.attr("height", function(d) { return scope.r*2; })
+					.attr("fill", function(d) { return scope.getColor(d); });
+				// scope.typeOP.append("title")
+				// 	.text(function(d) {
+				// 		return d.id;
+				// 	});
+                //
+				// scope.opText = scope.svg.append('g')
+				// 	.attr('class', 'info')
+				// 	.selectAll("circle")
+				// 	.data(scope.nodes)
+				// 	.enter().filter(function (d) {
+				// 		return !(d.type == "LEAF");
+				// 	})
+				// 	.append("text")
+				// 	.attr('class', 'type_info')
+				// 	.text(function (d) {
+				// 		return d.type;
+				// 	});
 			}
 		}
 	});
