@@ -58,7 +58,7 @@ public:
 map<int, node> nodes;
 
 void input() {
-	ifstream fin("input.txt");
+	ifstream fin("input");
 	fin >> n >> m;
 	for (int i = 1; i <= n; i++) {
 		string str;
