@@ -29,6 +29,11 @@ class AlgorithmService
         return $algorithm_results;
     }
 
+    static public function getResultByAlgorithmIdAndResultId($algorithm_id, $result_id) {
+        $algorithm_result = DB::table('algorithm_results')->where('algorithm_id', $algorithm_id)->where('id', $result_id)->first();
+        return $algorithm_result;
+    }
+
     static public function createResultsByAlgorithmIdAndContent($algorithm_id, $content) {
         $algorithm_result_id = DB::table('algorithm_results')->insertGetId(array(
             "algorithm_id" => $algorithm_id,
