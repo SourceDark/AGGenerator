@@ -31,15 +31,22 @@ Route::group(['prefix' => '/algorithms'], function () {
         );
     });
     Route::group(['prefix' => '{algorithm_id}'], function () {
-        Route::get('/', function($algorithm_id) {
+        Route::get('/', function ($algorithm_id) {
             return response()->json(AlgorithmService::getAlgorithmById($algorithm_id));
         });
-        Route::get('results', function($algorithm_id) {
-            return response()->json(AlgorithmService::getResultsByAlgorithmId($algorithm_id));
-        });
-        Route::post('results', function(Request $request, $algorithm_id) {
-            $content = $request->input('content');
-            return response()->json(AlgorithmService::createResultsByAlgorithmIdAndContent($algorithm_id, $content));
+        Route::group(['prefix' => 'results'], function () {
+            Route::get('/', function ($algorithm_id) {
+                return response()->json(AlgorithmService::getResultsByAlgorithmId($algorithm_id));
+            });
+            Route::post('/', function (Request $request, $algorithm_id) {
+                $content = $request->input('content');
+                return response()->json(AlgorithmService::createResultsByAlgorithmIdAndContent($algorithm_id, $content));
+            });
+            Route::group(['prefix' => '{result_id}'], function () {
+                Route::get('/', function ($algorithm_id, $results_id) {
+                    return response()->json(AlgorithmService::getResultByAlgorithmIdAndResultId($algorithm_id, $results_id));
+                });
+            });
         });
     });
 });
