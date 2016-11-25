@@ -38,6 +38,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                                 scope.nodes = JSON.parse(result.data.content).nodes;
                                 scope.links = JSON.parse(result.data.content).edges;
                                 scope.drawGraph();
+                                scope.drawPath(scope.analysis.PathList[1]);
                             });
                     }   else {
                         scope.nodes = JSON.parse(result[1].data.content).nodes;
@@ -174,7 +175,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                                         return edge.source == d.id || edge.target == d.id;
                                     })
                                     .attr("stroke","red")
-                                    .attr("marker-end","url(#arrow_red)");;
+                                    .attr("marker-end","url(#arrow_red)");
                             }
                         });
 
@@ -195,6 +196,36 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                         .attr("width", function(d) { return scope.r*2; })
                         .attr("height", function(d) { return scope.r*2; })
                         .attr("fill", function(d) { return scope.getColor(d); });
+                }
+                
+                scope.drawPath = function (path) {
+                    scope.nodes.forEach(function (d) {
+                        d.inPath = false;
+                    });
+                    scope.links.forEach(function (d) {
+                        d.inPath = false;
+                    });
+                    path.forEach(function (d) {
+                        scope.nodes[d-1].inPath = true;
+                    });
+                    scope.links.forEach(function (d) {
+                        if (scope.nodes[d.source-1].inPath && scope.nodes[d.target-1].inPath) {
+                            d.inPath = true;
+                        }
+                    });
+                    console.log(scope.links);
+                    scope.link
+                        .attr("stroke","black")
+                        .style("opacity", '0.2');
+                    scope.node
+                        .attr("stroke","black")
+                        .style("opacity", '1');
+                    scope.link
+                        .filter(function (d) {return d.inPath;})
+                        .style("opacity", '1');
+                    scope.node
+                        .filter(function (d) {return d.inPath;})
+                        .style("opacity", '1');
                 }
             }
         }
