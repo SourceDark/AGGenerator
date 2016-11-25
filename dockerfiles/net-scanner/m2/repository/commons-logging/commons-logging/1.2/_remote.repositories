@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Sun Nov 20 09:25:52 UTC 2016
+commons-logging-1.2.jar>aliyun-nexus=
+commons-logging-1.2.jar>central=
+commons-logging-1.2.pom>central=
+commons-logging-1.2.pom>aliyun-nexus=

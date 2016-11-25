@@ -3,9 +3,11 @@
     <title>AGBot</title>
     @include('agbot.layouts.header')
 </head>
-<body>
+<body id="agbot">
     @include('agbot.layouts.navbar')
-    <div></div>
+    <ui-view>
+
+    </ui-view>
     <div style="display: none">
         @include('agbot.layouts.footer')
     </div>

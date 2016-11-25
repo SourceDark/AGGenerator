@@ -2,11 +2,11 @@
 @deeper-green: #00B69A;
 @lighter-green: #00C0A3;
 @cb-blue: #0066da;
+@sb-blue: #0675df;
 
 .logo {
-  .logo-image {
-
-  }
+  padding: 10px 10px 10px 20px;
+  display: inline-block;
   .logo-text {
     display: inline-block;
     font-family: impact;
@@ -22,24 +22,30 @@
   border-radius: 0px;
   border-color: @cb-blue;
   z-index: 1;
+  border: none;
 }
 
 .navbar-nav {
   li {
     font-size: 16px;
+    border-radius: 10px;
     a {
       color: white;
+      &.active {
+        background-color: @sb-blue;
+      }
     }
     a:hover {
       color: white;
-      background-color: @cb-blue;
+      background-color: @sb-blue;
     }
     a:focus {
       color: white;
-      background-color: @cb-blue;
+      background-color: @sb-blue;
     }
 
     .line {
+      margin: 0px 10px;
       height: 18px;
       width: 2px;
       background-color: #00336d;

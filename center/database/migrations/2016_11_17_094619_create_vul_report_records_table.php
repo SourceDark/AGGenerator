@@ -16,11 +16,11 @@ class CreateVulReportRecordsTable extends Migration
         Schema::create('vul_report_records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('vul_report_id');
-            $table->string('service');
-            $table->string('vul_name');
-            $table->integer('severity');
-            $table->string('cve_id');
-            $table->string('description');
+            $table->string('port_name');
+            $table->string('port_proto');
+            $table->string('threat');
+            $table->string('cves');
+            $table->string('description')->default("");
             $table->timestamps();
         });
     }

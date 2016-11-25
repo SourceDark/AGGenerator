@@ -47,7 +47,6 @@ def launch_scanner(target):
                 "summary" : opr.nvt.summary,
                 "description" : opr.nvt.description,
                 "family" : opr.nvt.family,
-
                 "cves" : opr.nvt.cve,
                 "bids" : opr.nvt.bid,
                 "bugtraqs" : opr.nvt.bugtraq,
