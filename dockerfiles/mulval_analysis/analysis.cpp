@@ -25,6 +25,7 @@ template<class T> string itos(T i) {
 }
 
 class edge;
+class PathList;
 
 class node {
 public:
@@ -33,8 +34,13 @@ public:
 	string type;
 	int value;
 	edge *link;
+	int status; // 0:none, 1:visiting, 2:visited
+	PathList *pl;
+	
 	node() {
 		link = NULL;
+		status = 0;
+		pl = NULL;
 	} 
 	string toString() {
 		string str = "";
@@ -57,11 +63,13 @@ public:
 class Path {
 public:
 	set<node *> nodes;
-	Path() {}
+	Path(int size = 0, node *t = NULL) {
+		if (size > 0) nodes.insert(t);
+	}
 	void push(node *t) {
 		nodes.insert(t);
 	}
-	Path operator + (Path &p) {
+	Path operator + (Path p) {
 		Path ret;
 		ret.nodes.insert(nodes.begin(), nodes.end());
 		ret.nodes.insert(p.nodes.begin(), p.nodes.end());
@@ -71,18 +79,22 @@ public:
 		set<node *>::iterator it;
 		for (it = nodes.begin(); it != nodes.end(); it ++) {
 			cout << (*it) -> no;
-			cout << ' ';
+			cout << ',';
 		}
 	}
 };
 
 class PathList {
-	vector<Path> paths;
 public:
-	PathList(int size = 0) {
+	vector<Path> paths;
+	PathList(int size = 0, int ps = 0, node *t = NULL) {
+		paths = vector<Path>();
 		for (int i = 0; i < size; i++) {
-			paths.push_back(Path());
+			paths.push_back(Path(ps, t));
 		}
+	}
+	PathList(const PathList &pl) {
+		paths = pl.paths;
 	}
 	unsigned int size() {
 		return paths.size();
@@ -93,13 +105,21 @@ public:
 	Path operator [] (int i) {
 		return paths[i];
 	}
-	PathList operator * (PathList &pl) {
+	PathList operator * (PathList pl) {
+		cout << this -> size() << ' ' << pl.size() << endl;
 		PathList ret;
 		for (int i = 0; i < paths.size(); i++) {
 			for (int j = 0; j < pl.size(); j++) {
 				ret.push(paths[i] + pl[j]);
 			}
 		}
+		return ret;
+	}
+	PathList operator + (PathList pl) {
+		PathList ret;
+		for (int i = 0; i < paths.size(); i++) ret.push(paths[i]);
+		for (int i = 0; i < pl.size(); i++) ret.push(pl[i]);
+		return ret;
 	}
 	void output() {
 		for (int i = 0; i < paths.size(); i++) {
@@ -131,47 +151,46 @@ void input() {
 	}
 }
 
-PathList search(node *t) {
+PathList* search(node *t) {
 	//cout << t -> no << endl;
+	cout << t -> no << ' ' << t -> type << endl;
+	if (t -> status == 2) {
+		return t -> pl;
+	}
+	if (t -> status == 1) {
+		return new PathList();
+	}
+	t -> status = 1;
+	PathList *pl = new PathList();
 	if (t -> type == "LEAF") {
-		PathList pl;
 		if (t -> value == 1) {
-			Path p;
-			p.push(t);
-			pl.push(p);
+			pl = new PathList(1, 1, t);
 		}
-		return pl;
 	}
 	if (t -> type == "AND") {
-		PathList pl(1);
-		Path p;
-		pl.push(p);
+		pl = new PathList(1, 1, t);
 		for (edge *e = t -> link; e != NULL; e = e -> next) {
-			PathList p2 = search(e -> dst);
-			p1 = p1 * p2;
+			PathList *pl2 = search(e -> dst);
+			*pl = *pl * *pl2;
 		}
-		return p1;
 	}
 	if (t -> type == "OR") {
-		PathList pl;
-		bool valid = false;
-		for (edge *p = t -> link; p != NULL; p = p -> next) {
-			vector<string> s;
-			if (search(p -> dst, s)) {
-				for (int i = 0; i < s.size(); i++) steps.push_back(s[i]);
-				valid = true;
-				break;
-			}
+		PathList tmp = PathList(1, 1, t);
+		for (edge *e = t -> link; e != NULL; e = e -> next) {
+			PathList *pl2 = search(e -> dst);
+			*pl = *pl + (tmp * *pl2);
 		}
-		steps.push_back(itos<int>(t -> no));
-		return valid;
 	}
+	t -> pl = pl;
+	t -> status = 2;
+	return t -> pl;
 }
 
 void analysis() {
-	PathList pl = search(&nodes[59]);
-	if (pl.size() > 0) {
-		pl.output();
+	PathList *pl = search(&nodes[1]);
+	if (pl -> size() > 0) {
+		cout << "Routes" << endl;
+		pl -> output();
 	}
 	else {
 		cout << "There is no attack path exists." << endl;
