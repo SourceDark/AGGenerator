@@ -152,6 +152,7 @@ angular.module('myApp', [])
 					});
 
 				scope.getColor = function (d) {
+					if (d.id == 44) return '#FF3030';
 					if (d.id == 1) return '#FF3030';
 					if (d.id == scope.start) return '#d65222';
 					if (d.type == 'OR') return '#EEEE00';
