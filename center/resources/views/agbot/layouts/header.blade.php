@@ -11,11 +11,13 @@
 <script src="/js/agbot/layouts/navbar.js"></script>
 <script src="/js/agbot/layouts/sidebar.js"></script>
 <script src="/js/agbot/d3/graph-directive.js"></script>
+<script src="/js/agbot/d3/attack-graph-directive.js"></script>
 
 <!-- -->
 <script src="/js/agbot/algorithms/index.js"></script>
 <script src="/js/agbot/algorithms/algorithms-ctrl.js"></script>
 <script src="/js/agbot/algorithms/algorithm-ctrl.js"></script>
+<script src="/js/agbot/algorithms/attack-graph-ctrl.js"></script>
 <script src="/js/agbot/vision/vision-ctrl.js"></script>
 <script src="/js/agbot/sensor/sensor-ctrl.js"></script>
 <script src="/js/agbot/attack_graph/attack-graph-ctrl.js"></script>

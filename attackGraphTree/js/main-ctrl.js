@@ -27,58 +27,23 @@ angular.module('myApp', [])
 				});
 				scope.nodes[0].lv = 1;
 				scope.nodes[0].offset = 0;
-				scope.nodes[0].dr = 1;
-				scope.nodes[scope.start - 1].lv = scope.nodes.length;
-				scope.nodes[scope.start - 1].offset = 0;
-				scope.nodes[scope.start - 1].dr = -1;
-
 
 				var seq = [], num = [0];
 				for (var i in scope.nodes) num.push(0);
-				num[1] = 1, num[scope.nodes.length] = 1;
-				seq.push(1);seq.push(scope.start);
+				num[1] = 1;
+				seq.push(1);
 
 				for (var i = 0; i < seq.length; ++i) {
 					var v = seq[i];
 					// scope.nodes[v - 1].child = [];
 					for (var j = 0; j < scope.links.length; ++j)
-						if (scope.nodes[v - 1].dr == 1) {
-							if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv) {
-								// scope.nodes[v - 1].child.push(scope.links[j].source);
-								if (scope.nodes[v - 1].lv + 1 >= scope.nodes.length) {
-									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv - 1;
-									scope.nodes[scope.links[j].source - 1].dr = 1;
-								}	else {
-									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv + scope.nodes[v - 1].dr;
-									scope.nodes[scope.links[j].source - 1].dr = scope.nodes[v - 1].dr;
-								}
-								scope.nodes[scope.links[j].source - 1].offset = num[scope.nodes[scope.links[j].source - 1].lv]++;
-								seq.push(scope.links[j].source);
-							}
-						}	else {
-							if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv) {
-								// scope.nodes[v - 1].child.push(scope.links[j].source)
-								if (scope.nodes[v - 1].lv + 1 >= scope.nodes.length) {
-									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv - 1;
-								} 	else {
-									scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv + 1;
-									scope.nodes[scope.links[j].source - 1].dr = 1;
-								}
-								scope.nodes[scope.links[j].source - 1].offset = num[scope.nodes[scope.links[j].source - 1].lv]++;
-								seq.push(scope.links[j].source);
-							}
-							if (scope.links[j].source == v && !scope.nodes[scope.links[j].target - 1].lv) {
-								// scope.nodes[v - 1].child.push(scope.links[j].target);
-								scope.nodes[scope.links[j].target - 1].lv = scope.nodes[v - 1].lv - 1;
-								scope.nodes[scope.links[j].target - 1].dr = -1;
-								scope.nodes[scope.links[j].target - 1].offset = num[scope.nodes[scope.links[j].target - 1].lv]++;
-								seq.push(scope.links[j].target);
-							}
+						if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv) {
+							// scope.nodes[v - 1].child.push(scope.links[j].source);
+							scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv + 1;
+							scope.nodes[scope.links[j].source - 1].offset = num[scope.nodes[scope.links[j].source - 1].lv]++;
+							seq.push(scope.links[j].source);
 						}
 				}
-
-				for (var i in scope.nodes)
-					console.log(scope.nodes[i].lv + ' ' + scope.nodes[i].offset);
 
 				var maxSize = 0, maxLv = 0;
 
@@ -88,38 +53,12 @@ angular.module('myApp', [])
 				maxLv = num.filter(function (d) {
 					return d > 0;
 				}).length;
-				var tp = 1, delta = scope.nodes.length - maxLv;
-				for (var i = 1; i <= scope.nodes.length; ++i)
-					if (num[i] > 0) {
-						num[tp] = num[i];
-						tp ++;
-					}
-				for (var i in scope.nodes) {
-					if (scope.nodes[i].lv - delta > 0)
-						scope.nodes[i].lv -= delta;
-				}
-				console.log(maxSize);
 
 				scope.nodes.forEach(function (node) {
 					var offset = (maxSize - num[ node.lv ]) * (scope.r*2 + scope.gap) / 2;
 					node.y = (maxLv - node.lv) * (scope.r*2+scope.gap*2)+scope.r;
 					node.x = offset + (node.offset)*(scope.r*2+scope.gap) + scope.r;
 				});
-
-				// function setOffset(id, offset) {
-				// 	var root = scope.nodes[id - 1];
-				// 	root.offset = offset;
-				// 	if (root.child.length < 1) {
-				// 		root.size = scope.r * 2;
-				// 	}	else {
-				// 		root.size = 0;
-				// 		for (var i in root.child) {
-				// 			root.size += setOffset(root.child[i], root.size) + scope.gap;
-				// 		}
-				// 	}
-				// 	return root.size;
-				// }
-				// setOffset(1,0);
 
 				var svg = d3.select("body").append("svg")
 					.attr("width", width)
@@ -152,7 +91,6 @@ angular.module('myApp', [])
 					});
 
 				scope.getColor = function (d) {
-					if (d.id == 44) return '#FF3030';
 					if (d.id == 1) return '#FF3030';
 					if (d.id == scope.start) return '#d65222';
 					if (d.type == 'OR') return '#EEEE00';
