@@ -16,6 +16,7 @@ agbotApp.directive('attackGraph', ['$http', function ($http) {
 
             scope.r = 30;
             scope.gap = 20;
+            scope.headHeight = 80;
             scope.svg = d3.select('#attack-graph');
 
             var height = scope.height ? scope.height : window.innerHeight;
@@ -28,6 +29,15 @@ agbotApp.directive('attackGraph', ['$http', function ($http) {
                         console.log(result.data);
                         scope.nodes = JSON.parse(result.data.content).nodes;
                         scope.links = JSON.parse(result.data.content).edges;
+
+                        scope.svg.call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", zoomed)).on("dblclick.zoom", null);
+
+                        function zoomed() {
+                            scope.svg.select('.links').attr("transform",
+                                'translate('+(d3.event.transform.x)+' '+(d3.event.transform.y+scope.headHeight)+')' + "scale(" + d3.event.transform.k + ")");
+                            scope.svg.select('.nodes').attr("transform",
+                                'translate('+(d3.event.transform.x)+' '+(d3.event.transform.y+scope.headHeight)+')' + "scale(" + d3.event.transform.k + ")");
+                        };
 
                         // setLevel
                         scope.start = 0;
@@ -107,6 +117,7 @@ agbotApp.directive('attackGraph', ['$http', function ($http) {
                             .attr("class", "links")
                             .attr("stroke","black")
                             .attr("stroke-width",2)
+                            .attr("transform",'translate('+0+' '+scope.headHeight+')')
                             .selectAll("line")
                             .data(scope.links)
                             .enter()
@@ -120,7 +131,8 @@ agbotApp.directive('attackGraph', ['$http', function ($http) {
                         scope.node_g = scope.svg.append("g")
                             .attr("class", "nodes")
                             .attr("stroke","black")
-                            .attr("stroke-width",2);
+                            .attr("stroke-width",2)
+                            .attr("transform",'translate('+0+' '+scope.headHeight+')');
 
                         scope.node = scope.node_g
                             .selectAll('g')

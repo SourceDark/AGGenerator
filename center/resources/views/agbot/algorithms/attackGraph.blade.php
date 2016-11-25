@@ -1,1 +1,1 @@
-<attack-graph rid="id" algorithmid="algorithm_id" style="height: 100%; width: 100%;"></attack-graph>
+<attack-graph rid="id" algorithmid="algorithm_id" style="height: 100%; width: 100%;position: absolute;top: 0;"></attack-graph>
