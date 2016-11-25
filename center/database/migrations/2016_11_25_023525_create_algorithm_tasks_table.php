@@ -29,6 +29,6 @@ class CreateAlgorithmTasksTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('algorithm_results');
     }
 }

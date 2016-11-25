@@ -55,19 +55,22 @@ public:
 };
 
 class Path {
-	set<node *> nodes;
 public:
+	set<node *> nodes;
 	Path() {}
 	void push(node *t) {
 		nodes.insert(t);
 	}
 	Path operator + (Path &p) {
 		Path ret;
-		for (int i = 0; i < nodes.size(); i++) ret.push(
+		ret.nodes.insert(nodes.begin(), nodes.end());
+		ret.nodes.insert(p.nodes.begin(), p.nodes.end());
+		return ret;
 	}
 	void output() {
-		for (int i = 0; i < nodes.size(); i++) {
-			cout << nodes[i] -> no;
+		set<node *>::iterator it;
+		for (it = nodes.begin(); it != nodes.end(); it ++) {
+			cout << (*it) -> no;
 			cout << ' ';
 		}
 	}
