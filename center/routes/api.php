@@ -43,8 +43,11 @@ Route::group(['prefix' => '/algorithms'], function () {
                 return response()->json(AlgorithmService::createResultsByAlgorithmIdAndContent($algorithm_id, $content));
             });
             Route::group(['prefix' => '{result_id}'], function () {
-                Route::get('/', function ($algorithm_id, $results_id) {
-                    return response()->json(AlgorithmService::getResultByAlgorithmIdAndResultId($algorithm_id, $results_id));
+                Route::get('/', function ($algorithm_id, $result_id) {
+                    return response()->json(AlgorithmService::getResultByAlgorithmIdAndResultId($algorithm_id, $result_id));
+                });
+                Route::post('/analysis', function (Request $request, $algorithm_id, $result_id) {
+                    return response()->json($algorithm_id . ',' . $result_id);
                 });
             });
         });
