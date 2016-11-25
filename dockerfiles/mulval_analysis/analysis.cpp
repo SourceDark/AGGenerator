@@ -132,21 +132,20 @@ public:
 map<int, node> nodes;
 
 void input() {
-	ifstream fin("input");
-	fin >> n >> m;
+	cin >> n >> m;
 	for (int i = 1; i <= n; i++) {
 		string str;
 		node new_node;
-		fin >> new_node.no;
-		getline(fin, str);
-		getline(fin, new_node.des);
-		getline(fin, new_node.type);
-		fin >> new_node.value;
+		cin >> new_node.no;
+		getline(cin, str);
+		getline(cin, new_node.des);
+		getline(cin, new_node.type);
+		cin >> new_node.value;
 		nodes[new_node.no] = new_node;
 	}
 	for (int i = 1; i <= m; i++) {
 		int src, dst;
-		fin >> src >> dst;
+		cin >> src >> dst;
 		nodes[src].link = new edge(&nodes[src], &nodes[dst], nodes[src].link);
 	}
 }

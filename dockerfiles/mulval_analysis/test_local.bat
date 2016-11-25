@@ -1,0 +1,1 @@
+analysis.exe < input > output

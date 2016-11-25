@@ -25,15 +25,19 @@ if (!is_dir('/data/algorithm')) {
     mkdir('/data/algorithm');
 }
 $ouf = fopen('/data/algorithm/input', "w");
-fwrite($ouf, sizeof($nodes) . ' ' . sizeof($edges) . "\r\n");
+fwrite($ouf, sizeof($nodes) . ' ' . sizeof($edges) . PHP_EOL);
 foreach ($nodes as $node) {
-    fwrite($ouf, $node->id . "\r\n");
-    fwrite($ouf, $node->info . "\r\n");
-    fwrite($ouf, $node->type . "\r\n");
-    fwrite($ouf, $node->initial . "\r\n");
+    fwrite($ouf, $node->id . PHP_EOL);
+    fwrite($ouf, $node->info . PHP_EOL);
+    fwrite($ouf, $node->type . PHP_EOL);
+    fwrite($ouf, $node->initial . PHP_EOL);
 }
 foreach ($edges as $edge) {
-    fwrite($ouf, $edge->target . "\r\n");
-    fwrite($ouf, $edge->source . "\r\n");
+    fwrite($ouf, $edge->target . PHP_EOL);
+    fwrite($ouf, $edge->source . PHP_EOL);
 }
+
+/**
+ * Use docker remote api
+ */
 ?>

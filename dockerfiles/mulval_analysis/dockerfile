@@ -1,21 +1,17 @@
 FROM centos
 
 # install required softwares
-RUN yum -y install nmap
 RUN yum -y install gcc-c++
 
 # copy required files
 RUN mkdir /src
 RUN mkdir /data
-ADD scan.cpp /src/scan.cpp
-ADD config.ini /src/config.ini
-ADD input.txt /data/input.txt
-ADD input.txt /src/input.txt
+ADD analysis.cpp /src/analysis.cpp
 
 # build
-RUN g++ /src/scan.cpp -std=c++11 -o /src/scan
+RUN g++ /src/analysis.cpp -std=c++11 -o /src/analysis
 
 WORKDIR /src
 
 # enrtypoint
-CMD ./scan
+CMD /src/analysis < /data/input > /data/output
