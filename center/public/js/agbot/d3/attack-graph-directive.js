@@ -218,6 +218,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                     var ratio = height / (gHeight + 40);
                     if (ratio > width / (gWidth + 40))
                         ratio = width / (gWidth + 40);
+                    if (ratio > 1) ratio = 1;
                     scope.graphOffsetTop = (height - gHeight*ratio)/2;
                     scope.graphOffsetLeft = (width - gWidth*ratio)/2;
                     scope.graphRatio = ratio;
