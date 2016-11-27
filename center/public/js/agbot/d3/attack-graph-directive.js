@@ -33,14 +33,15 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
         link: function (scope, element, attrs) {
             var height = window.innerHeight - 51;
             var width  = window.innerWidth -  256;
-            console.log(height + ' ' + width);
+            // console.log(height + ' ' + width);
             scope.r = 30;
+            scope.dr = 4;
             scope.gap = 20;
             scope.selectedPathId = -1;
             scope.ag = d3.select('#attack-graph');
             scope.svg = scope.ag.append('g');
 
-            console.log(scope.algorithm_id + ' ' + scope.id);
+            // console.log(scope.algorithm_id + ' ' + scope.id);
             if (scope.id && scope.algorithm_id) {
                 var request = [
                     $http.get(['api','algorithms',scope.algorithm_id].join('/')),
@@ -69,7 +70,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                     if (id != -1) scope.drawPath(scope.analysis.PathList[id]);
                     else {
                         scope.link.classed("light", false);
-                        // scope.node.classed("light", false);
+                        scope.node.classed("light", false);
                     }
                 };
 
@@ -195,13 +196,33 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                             scope.$apply();
                         });
 
+                    // render
+                    scope.node.filter(function (d) {
+                        return !(d.type == 'LEAF');
+                    }).attr('transform', function(d) {
+                        return 'translate('+d.x+' '+d.y+')';
+                    }).append('circle')
+                        .attr("class", 'render')
+                        .attr("r", function(d) { return scope.r; })
+                        .attr("fill", function(d) { return scope.getColor(d); });
+
+                    scope.node.filter(function (d) {
+                        return d.type == 'LEAF';
+                    }).attr('transform', function(d) {
+                        return 'translate('+(d.x-scope.r)+' '+(d.y-scope.r)+')';
+                    }).append('rect')
+                        .attr("class", 'render')
+                        .attr("width", function(d) { return scope.r*2; })
+                        .attr("height", function(d) { return scope.r*2; })
+                        .attr("fill", function(d) { return scope.getColor(d); });
+
                     scope.node.filter(function (d) {
                         return !(d.type == 'LEAF');
                     }).attr('transform', function(d) {
                         return 'translate('+d.x+' '+d.y+')';
                     }).append('circle')
                         .attr("r", function(d) { return scope.r; })
-                        .attr("fill", function(d) { return scope.getColor(d); })
+                        .attr("fill", function(d) { return scope.getColor(d); });
 
                     scope.node.filter(function (d) {
                         return d.type == 'LEAF';
@@ -210,6 +231,33 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                     }).append('rect')
                         .attr("width", function(d) { return scope.r*2; })
                         .attr("height", function(d) { return scope.r*2; })
+                        .attr("fill", function(d) { return scope.getColor(d); });
+
+                    // important
+                    scope.analysis.PathList.forEach(function (path) {
+                        path.forEach(function (d) {
+                            if (!scope.nodes[d - 1].inPathTimes)
+                                scope.nodes[d - 1].inPathTimes = 0;
+                            scope.nodes[d - 1].inPathTimes ++;
+                        })
+                    });
+                    scope.node.filter(function (d) {
+                        return !(d.type == 'LEAF') && d.inPathTimes == scope.analysis.PathList.length;
+                    }).attr('transform', function(d) {
+                        return 'translate('+d.x+' '+d.y+')';
+                    }).append('circle')
+                        .attr("r", function(d) { return scope.r - scope.dr; })
+                        .attr("fill", function(d) { return scope.getColor(d); });
+
+                    scope.node.filter(function (d) {
+                        return d.type == 'LEAF' && d.inPathTimes == scope.analysis.PathList.length;
+                    }).attr('transform', function(d) {
+                        return 'translate('+(d.x-scope.r+scope.dr)+' '+(d.y-scope.r+scope.dr)+')';
+                    }).append('rect')
+                        .attr("x", scope.dr)
+                        .attr("y", scope.dr)
+                        .attr("width", function(d) { return scope.r*2 - scope.dr*2; })
+                        .attr("height", function(d) { return scope.r*2 - scope.dr*2; })
                         .attr("fill", function(d) { return scope.getColor(d); });
 
                     // init position
@@ -240,15 +288,15 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                             d.inPath = true;
                         }
                     });
-                    console.log(scope.links);
+                    // console.log(scope.links);
                     scope.link.classed("light", true);
-                    // scope.node.classed("light", true);
+                    scope.node.classed("light", true);
                     scope.link
                         .filter(function (d) {return d.inPath;})
                         .classed("light", false);
-                    // scope.node
-                    //     .filter(function (d) {return d.inPath;})
-                    //     .classed("light", false);
+                    scope.node
+                        .filter(function (d) {return d.inPath;})
+                        .classed("light", false);
                 }
             }    
         }

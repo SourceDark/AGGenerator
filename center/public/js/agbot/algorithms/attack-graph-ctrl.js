@@ -9,7 +9,7 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
         controller: 'algorithmAttackGraphCtrl'
     });
 }]).controller('algorithmAttackGraphCtrl', ['$scope', '$stateParams', '$http', function($scope, $stateParams, $http) {
-    console.log($stateParams.id);
+    // console.log($stateParams.id);
     $scope.id = $stateParams.id;
     $scope.algorithm_id = $stateParams.algorithm_id;
 }]);
