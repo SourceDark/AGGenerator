@@ -33,7 +33,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
         link: function (scope, element, attrs) {
             var height = window.innerHeight - 51;
             var width  = window.innerWidth -  256;
-            console.log(height + ' ' + width);
+            // console.log(height + ' ' + width);
             scope.r = 30;
             scope.dr = 4;
             scope.gap = 20;
@@ -41,7 +41,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
             scope.ag = d3.select('#attack-graph');
             scope.svg = scope.ag.append('g');
 
-            console.log(scope.algorithm_id + ' ' + scope.id);
+            // console.log(scope.algorithm_id + ' ' + scope.id);
             if (scope.id && scope.algorithm_id) {
                 var request = [
                     $http.get(['api','algorithms',scope.algorithm_id].join('/')),
@@ -288,7 +288,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                             d.inPath = true;
                         }
                     });
-                    console.log(scope.links);
+                    // console.log(scope.links);
                     scope.link.classed("light", true);
                     scope.node.classed("light", true);
                     scope.link
