@@ -78,8 +78,8 @@ public:
 	void output() {
 		set<node *>::iterator it;
 		for (it = nodes.begin(); it != nodes.end(); it ++) {
+		    if (it != nodes.begin()) cout << ',';
 			cout << (*it) -> no;
-			cout << ',';
 		}
 	}
 };
@@ -106,7 +106,7 @@ public:
 		return paths[i];
 	}
 	PathList operator * (PathList pl) {
-		cout << this -> size() << ' ' << pl.size() << endl;
+		//cout << this -> size() << ' ' << pl.size() << endl;
 		PathList ret;
 		for (int i = 0; i < paths.size(); i++) {
 			for (int j = 0; j < pl.size(); j++) {
@@ -122,6 +122,7 @@ public:
 		return ret;
 	}
 	void output() {
+	    cout << paths.size() << endl;
 		for (int i = 0; i < paths.size(); i++) {
 			paths[i].output();
 			cout << endl;
@@ -152,7 +153,7 @@ void input() {
 
 PathList* search(node *t) {
 	//cout << t -> no << endl;
-	cout << t -> no << ' ' << t -> type << endl;
+	//cout << t -> no << ' ' << t -> type << endl;
 	if (t -> status == 2) {
 		return t -> pl;
 	}
@@ -188,7 +189,7 @@ PathList* search(node *t) {
 void analysis() {
 	PathList *pl = search(&nodes[1]);
 	if (pl -> size() > 0) {
-		cout << "Routes" << endl;
+		//cout << "Routes" << endl;
 		pl -> output();
 	}
 	else {
