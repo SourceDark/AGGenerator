@@ -15,7 +15,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
             <div class="infobar">\
                 <h3 ng-if="analysis">Attack Path</h3>\
                 <div ng-if="analysis" class="infobar-content">\
-                    <div class="path_id" ng-click="showPath(-1)" ng-class="{true: \'active\'}[selectedPathId==-1]">All Path</div>\
+                    <div class="path_id" ng-click="showPath(-1)" ng-class="{true: \'active\'}[selectedPathId==-1]">All Paths</div>\
                     <div class="path_id" ng-repeat="path in analysis.PathList" ng-click="showPath($index)" ng-class="{true: \'active\'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>\
                 </div>\
                 <h3>Selection Detail</h3>\
