@@ -52,23 +52,23 @@ nodeAndEdges.forEach(function(nodeOrEdge) {
 		addEdge(nodeOrEdge);
 	}
 });
-console.log(nodes.length);
-console.log(edges.length);
-console.log(JSON.stringify({
-	nodes: nodes,
-	edges: edges
-}));
+// console.log(nodes.length);
+// console.log(edges.length);
+// console.log(JSON.stringify({
+// 	nodes: nodes,
+// 	edges: edges
+// }));
 
-// console.log(nodes.length + " " + edges.length);
+console.log(nodes.length + " " + edges.length);
 
-// nodes.forEach(function(node) {
-// 	console.log(node.id);
-// 	console.log(node.info);
-// 	console.log(node.type);
-// 	console.log(node.initial);
-// });
+nodes.forEach(function(node) {
+	console.log(node.id);
+	console.log(node.info);
+	console.log(node.type);
+	console.log(node.initial);
+});
 
-// edges.forEach(function(edge) {
-// 	console.log(edge.target);
-// 	console.log(edge.source);
-// });
+edges.forEach(function(edge) {
+	console.log(edge.target);
+	console.log(edge.source);
+});
