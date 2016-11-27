@@ -11,16 +11,34 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
             id: '=rid',
             algorithm_id: '=algorithmid'
         },
-        template: '<svg id="attack-graph"></svg>',
+        template: '<div>\
+            <div class="infobar">\
+                <h3 ng-if="analysis">Attack Path</h3>\
+                <div ng-if="analysis" class="infobar-content">\
+                    <div class="path_id" ng-click="showPath(-1)" ng-class="{true: \'active\'}[selectedPathId==-1]">All Path</div>\
+                    <div class="path_id" ng-repeat="path in analysis.PathList" ng-click="showPath($index)" ng-class="{true: \'active\'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>\
+                </div>\
+                <h3>Selection Detail</h3>\
+                <div ng-if="selection" class="infobar-content">\
+                    <p>ID: <span ng-bind="selection.id"></span></p>\
+                    <p>Type: <span ng-bind="selection.type"></span></p>\
+                    <p>Info: <span ng-bind="selection.info"></span></p>\
+                </div>\
+                <div ng-if="!selection" class="infobar-content">\
+                    <p>Select an element in the visualization.</p>\
+                </div>\
+            </div>\
+            <svg id="attack-graph"></svg>\
+        </div>',
         link: function (scope, element, attrs) {
-
+            var height = window.innerHeight - 51;
+            var width  = window.innerWidth -  256;
+            console.log(height + ' ' + width);
             scope.r = 30;
             scope.gap = 20;
-            scope.headHeight = 80;
-            scope.svg = d3.select('#attack-graph');
-
-            var height = scope.height ? scope.height : window.innerHeight;
-            var width = scope.width ? scope.width : window.innerWidth;
+            scope.selectedPathId = -1;
+            scope.ag = d3.select('#attack-graph');
+            scope.svg = scope.ag.append('g');
 
             console.log(scope.algorithm_id + ' ' + scope.id);
             if (scope.id && scope.algorithm_id) {
@@ -38,7 +56,6 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                                 scope.nodes = JSON.parse(result.data.content).nodes;
                                 scope.links = JSON.parse(result.data.content).edges;
                                 scope.drawGraph();
-                                scope.drawPath(scope.analysis.PathList[1]);
                             });
                     }   else {
                         scope.nodes = JSON.parse(result[1].data.content).nodes;
@@ -47,15 +64,26 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                     }
                 });
 
+                scope.showPath = function (id) {
+                    scope.selectedPathId = id;
+                    if (id != -1) scope.drawPath(scope.analysis.PathList[id]);
+                    else {
+                        scope.link.classed("light", false);
+                        // scope.node.classed("light", false);
+                    }
+                };
+
                 scope.drawGraph = function () {
-                    scope.svg.call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", zoomed)).on("dblclick.zoom", null);
+                    scope.ag.call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", zoomed)).on("dblclick.zoom", null);
+
+                    function scaleTo(x, y, k) {
+                        scope.svg.attr("transform",
+                            'translate('+(x+scope.graphOffsetLeft*k)+' '+(y+scope.graphOffsetTop*k)+')' + "scale(" + (k*scope.graphRatio) + ")");
+                    }
 
                     function zoomed() {
-                        scope.svg.select('.links').attr("transform",
-                            'translate('+(d3.event.transform.x)+' '+(d3.event.transform.y+scope.headHeight)+')' + "scale(" + d3.event.transform.k + ")");
-                        scope.svg.select('.nodes').attr("transform",
-                            'translate('+(d3.event.transform.x)+' '+(d3.event.transform.y+scope.headHeight)+')' + "scale(" + d3.event.transform.k + ")");
-                    };
+                        scaleTo(d3.event.transform.x,d3.event.transform.y,d3.event.transform.k);
+                    }
 
                     // setLevel
                     scope.start = 0;
@@ -133,9 +161,6 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
 
                     scope.link = scope.svg.append("g")
                         .attr("class", "links")
-                        .attr("stroke","black")
-                        .attr("stroke-width",2)
-                        .attr("transform",'translate('+0+' '+scope.headHeight+')')
                         .selectAll("line")
                         .data(scope.links)
                         .enter()
@@ -143,14 +168,10 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                         .attr("x1", function(d) { return scope.nodes[d.source-1].x; })
                         .attr("y1", function(d) { return scope.nodes[d.source-1].y; })
                         .attr("x2", function(d) { return scope.nodes[d.target-1].x; })
-                        .attr("y2", function(d) { return scope.nodes[d.target-1].y; })
-                        .attr("marker-end","url(#arrow)");
+                        .attr("y2", function(d) { return scope.nodes[d.target-1].y; });
 
                     scope.node_g = scope.svg.append("g")
                         .attr("class", "nodes")
-                        .attr("stroke","black")
-                        .attr("stroke-width",2)
-                        .attr("transform",'translate('+0+' '+scope.headHeight+')');
 
                     scope.node = scope.node_g
                         .selectAll('g')
@@ -159,24 +180,19 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                         .append('g')
                         .attr('class', 'node')
                         .on('click', function(d,i) {
-                            if (d3.select(this).attr("stroke") == "red") {
-                                d3.selectAll('.node').attr("stroke", "black");
-                                scope.link
-                                    .attr("stroke","black")
-                                    .attr("marker-end","url(#arrow)");;
-                            }	else {
-                                d3.selectAll('.node').attr("stroke","black");
-                                scope.link
-                                    .attr("stroke","black")
-                                    .attr("marker-end","url(#arrow)");;
-                                d3.select(this).attr("stroke", "red");
+                            var flag = !d3.select(this).classed('selected');
+                            scope.node.classed('selected', false);
+                            scope.link.classed('selected', false);
+                            scope.selection = null;
+                            if (flag) {
+                                d3.select(this).classed('selected', true);
                                 scope.link
                                     .filter(function (edge) {
                                         return edge.source == d.id || edge.target == d.id;
-                                    })
-                                    .attr("stroke","red")
-                                    .attr("marker-end","url(#arrow_red)");
+                                    }).classed('selected', true);
+                                scope.selection = d;
                             }
+                            scope.$apply();
                         });
 
                     scope.node.filter(function (d) {
@@ -186,7 +202,6 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                     }).append('circle')
                         .attr("r", function(d) { return scope.r; })
                         .attr("fill", function(d) { return scope.getColor(d); })
-                        .attr("stroke-width",2);
 
                     scope.node.filter(function (d) {
                         return d.type == 'LEAF';
@@ -196,7 +211,19 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                         .attr("width", function(d) { return scope.r*2; })
                         .attr("height", function(d) { return scope.r*2; })
                         .attr("fill", function(d) { return scope.getColor(d); });
-                }
+
+                    // init position
+                    var gHeight = (maxLv * (scope.r + scope.gap) - scope.gap) * 2;
+                    var gWidth  = (maxSize * (scope.r * 2+scope.gap) - scope.gap);
+                    var ratio = height / (gHeight + 40);
+                    if (ratio > width / (gWidth + 40))
+                        ratio = width / (gWidth + 40);
+                    if (ratio > 1) ratio = 1;
+                    scope.graphOffsetTop = (height - gHeight*ratio)/2;
+                    scope.graphOffsetLeft = (width - gWidth*ratio)/2;
+                    scope.graphRatio = ratio;
+                    scaleTo(0, 0, 1);
+                };
                 
                 scope.drawPath = function (path) {
                     scope.nodes.forEach(function (d) {
@@ -214,20 +241,16 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                         }
                     });
                     console.log(scope.links);
-                    scope.link
-                        .attr("stroke","black")
-                        .style("opacity", '0.2');
-                    scope.node
-                        .attr("stroke","black")
-                        .style("opacity", '1');
+                    scope.link.classed("light", true);
+                    // scope.node.classed("light", true);
                     scope.link
                         .filter(function (d) {return d.inPath;})
-                        .style("opacity", '1');
-                    scope.node
-                        .filter(function (d) {return d.inPath;})
-                        .style("opacity", '1');
+                        .classed("light", false);
+                    // scope.node
+                    //     .filter(function (d) {return d.inPath;})
+                    //     .classed("light", false);
                 }
-            }
+            }    
         }
     }
 }]);
