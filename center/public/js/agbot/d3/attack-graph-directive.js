@@ -36,6 +36,7 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
             console.log(height + ' ' + width);
             scope.r = 30;
             scope.gap = 20;
+            scope.selectedPathId = -1;
             scope.ag = d3.select('#attack-graph');
             scope.svg = scope.ag.append('g');
 
@@ -215,7 +216,9 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                     var gHeight = (maxLv * (scope.r + scope.gap) - scope.gap) * 2;
                     var gWidth  = (maxSize * (scope.r * 2+scope.gap) - scope.gap);
                     var ratio = height / (gHeight + 40);
-                    scope.graphOffsetTop = 20;
+                    if (ratio > width / (gWidth + 40))
+                        ratio = width / (gWidth + 40);
+                    scope.graphOffsetTop = (height - gHeight*ratio)/2;
                     scope.graphOffsetLeft = (width - gWidth*ratio)/2;
                     scope.graphRatio = ratio;
                     scaleTo(0, 0, 1);
