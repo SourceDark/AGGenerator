@@ -234,31 +234,43 @@ agbotApp.directive('attackGraph', ['$http', '$q', function ($http, $q) {
                         .attr("fill", function(d) { return scope.getColor(d); });
 
                     // important
-                    scope.analysis.PathList.forEach(function (path) {
-                        path.forEach(function (d) {
-                            if (!scope.nodes[d - 1].inPathTimes)
-                                scope.nodes[d - 1].inPathTimes = 0;
-                            scope.nodes[d - 1].inPathTimes ++;
-                        })
-                    });
-                    scope.node.filter(function (d) {
-                        return !(d.type == 'LEAF') && d.inPathTimes == scope.analysis.PathList.length;
-                    }).attr('transform', function(d) {
-                        return 'translate('+d.x+' '+d.y+')';
-                    }).append('circle')
-                        .attr("r", function(d) { return scope.r - scope.dr; })
-                        .attr("fill", function(d) { return scope.getColor(d); });
+                    if (scope.analysis) {
+                        scope.analysis.PathList.forEach(function (path) {
+                            path.forEach(function (d) {
+                                if (!scope.nodes[d - 1].inPathTimes)
+                                    scope.nodes[d - 1].inPathTimes = 0;
+                                scope.nodes[d - 1].inPathTimes++;
+                            })
+                        });
+                        scope.node.filter(function (d) {
+                            return !(d.type == 'LEAF') && d.inPathTimes == scope.analysis.PathList.length;
+                        }).attr('transform', function (d) {
+                            return 'translate(' + d.x + ' ' + d.y + ')';
+                        }).append('circle')
+                            .attr("r", function (d) {
+                                return scope.r - scope.dr;
+                            })
+                            .attr("fill", function (d) {
+                                return scope.getColor(d);
+                            });
 
-                    scope.node.filter(function (d) {
-                        return d.type == 'LEAF' && d.inPathTimes == scope.analysis.PathList.length;
-                    }).attr('transform', function(d) {
-                        return 'translate('+(d.x-scope.r+scope.dr)+' '+(d.y-scope.r+scope.dr)+')';
-                    }).append('rect')
-                        .attr("x", scope.dr)
-                        .attr("y", scope.dr)
-                        .attr("width", function(d) { return scope.r*2 - scope.dr*2; })
-                        .attr("height", function(d) { return scope.r*2 - scope.dr*2; })
-                        .attr("fill", function(d) { return scope.getColor(d); });
+                        scope.node.filter(function (d) {
+                            return d.type == 'LEAF' && d.inPathTimes == scope.analysis.PathList.length;
+                        }).attr('transform', function (d) {
+                            return 'translate(' + (d.x - scope.r + scope.dr) + ' ' + (d.y - scope.r + scope.dr) + ')';
+                        }).append('rect')
+                            .attr("x", scope.dr)
+                            .attr("y", scope.dr)
+                            .attr("width", function (d) {
+                                return scope.r * 2 - scope.dr * 2;
+                            })
+                            .attr("height", function (d) {
+                                return scope.r * 2 - scope.dr * 2;
+                            })
+                            .attr("fill", function (d) {
+                                return scope.getColor(d);
+                            });
+                    }
 
                     // init position
                     var gHeight = (maxLv * (scope.r + scope.gap) - scope.gap) * 2;
