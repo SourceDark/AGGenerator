@@ -1,0 +1,95 @@
+.attack-graph {
+  position: relative;
+  background: rgb(236,240,241);
+  overflow: hidden;
+  .infobar {
+    margin-top: -51px;
+    height: 100%;
+    width: 256px;
+    background: rgb(24,32,42);
+    padding-top: 51px;
+    h3 {
+      color: #bdc3c7;
+      background: #24323e;
+      padding: .5em;
+      cursor: default;
+      display: block;
+      font-size: 1.17em;
+      -webkit-margin-before: 1em;
+      -webkit-margin-after: 1em;
+      -webkit-margin-start: 0px;
+      -webkit-margin-end: 0px;
+      font-weight: bold;
+    }
+    .infobar-content {
+      color: #bdc3c7;
+      overflow-y: auto;
+      overflow-x: hidden;
+      p {
+        padding-left: .5em;
+        padding-right: 1em;
+        word-break:break-all;
+        span {
+          font-style: italic;
+          padding: 8px;
+        }
+      }
+      .path_id {
+        cursor: pointer;
+        background: #24323e;
+        color: #bdc3c7;
+        text-align: left;
+        margin-top: 1px;
+        padding: 0 .5em;
+        span {
+          float: right;
+        }
+      }
+      .active {
+        color: #24323e;
+        background: #bdc3c7;
+      }
+    }
+  }
+  #attack-graph {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 256px;
+    .links {
+      stroke-width: 2;
+      stroke: black;
+      line {
+        marker-end: url(#arrow);
+      }
+      .selected {
+        stroke: red;
+        marker-end: url(#arrow_red);
+      }
+      .light {
+        opacity: 0.2;
+      }
+    }
+    .nodes {
+      stroke-width: 2;
+      stroke: black;
+      .node {
+        cursor: pointer;
+      }
+      .selected {
+        stroke: red;
+      }
+      .render {
+        fill: rgb(236,240,241);
+        stroke-width: 0;
+      }
+      .light > circle, .light > rect{
+        opacity: 0.2;
+      }
+      .light > .render{
+        opacity: 1;
+      }
+    }
+  }
+}
