@@ -12,19 +12,7 @@ agbotApp.directive('topologyGraph', ['$http', '$q', function ($http, $q) {
             links: '=links',
             options: '=options'
         },
-        template: '<div>\
-            <div class="infobar">\
-                <h3>Selection Detail</h3>\
-                <div ng-if="selection" class="infobar-content">\
-                    <p>ID: <span ng-bind="selection.id"></span></p>\
-                    <p>Type: <span ng-bind="selection.type"></span></p>\
-                </div>\
-                <div ng-if="!selection" class="infobar-content">\
-                    <p>Select an element in the visualization.</p>\
-                </div>\
-            </div>\
-            <svg id="topology-graph"></svg>\
-        </div>',
+        templateUrl: 'html/vision/topology_template',
         link: function (scope, element, attrs) {
             var height = window.innerHeight - 51;
             var width  = window.innerWidth -  256;
@@ -61,16 +49,20 @@ agbotApp.directive('topologyGraph', ['$http', '$q', function ($http, $q) {
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended));
-
+            //<use xlink:href="#shape" x="50" y="50" />
             scope.node
-                .append('circle')
-                .attr('r', 30)
-                .attr('fill', function(d) {
-                    if (d.type == 'Network') return 'rgb(0,91,172)';
-                    if (d.type == 'Switch') return 'rgb(72,179,204)';
-                    if (d.type == 'Host') return 'rgb(169,208,107)';
-                    if (d.type == 'Center') return 'red';
+                .append('use')
+                .attr('xlink:href', function (d) {
+                    return '#' + d.type;
                 });
+                // .append('circle')
+                // .attr('r', 30)
+                // .attr('fill', function(d) {
+                //     if (d.type == 'Network') return 'rgb(0,91,172)';
+                //     if (d.type == 'Switch') return 'rgb(72,179,204)';
+                //     if (d.type == 'Host') return 'rgb(169,208,107)';
+                //     if (d.type == 'Center') return 'red';
+                // });
 
             scope.text = scope.node
                 .append('text')
