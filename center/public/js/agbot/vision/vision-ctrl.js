@@ -9,17 +9,17 @@ angular.module('agbotApp')
 	.controller('visionCtrl', ['$scope', '$element', function($scope, $element) {
 		$scope.graph = {
 			nodes: [
-				{'id': 'PKU School Network', 'type': 'Network', 'size': 50, 'ips': []},
-				{'id': 'Switch 1', 'type': 'Switch', 'size': 40, 'ips': []},
-				{'id': 'Switch 2', 'type': 'Switch', 'size': 40, 'ips': []},
-				{'id': '10 Server', 'type': 'Switch', 'size': 40, 'ips': ['192.168.100.9', '162.105.30.73']},
-				{'id': '11 Server', 'type': 'Switch', 'size': 40, 'ips': ['192.168.100.11', '162.105.30.*']},
-				{'id': 'HOST-192.168.100.1', 'type': 'Host', 'size': 20},
-				{'id': 'HOST-192.168.100.2', 'type': 'Host', 'size': 20},
-				{'id': 'HOST-192.168.100.3', 'type': 'Host', 'size': 20},
-				{'id': 'HOST-192.168.100.4', 'type': 'Host', 'size': 20},
-				{'id': 'HOST-192.168.100.5', 'type': 'Host', 'size': 20},
-				{'id': 'HOST-192.168.100.6', 'type': 'Host', 'size': 20}
+				{'id': 'PKU School Network', 'type': 'cloud', 'size': 50, 'ips': []},
+				{'id': 'Switch 1', 'type': 'switch', 'size': 40, 'ips': []},
+				{'id': 'Switch 2', 'type': 'switch', 'size': 40, 'ips': []},
+				{'id': '10 Server', 'type': 'switch', 'size': 40, 'ips': ['192.168.100.9', '162.105.30.73']},
+				{'id': '11 Server', 'type': 'switch', 'size': 40, 'ips': ['192.168.100.11', '162.105.30.*']},
+				{'id': 'HOST-192.168.100.1', 'type': 'host', 'size': 20},
+				{'id': 'HOST-192.168.100.2', 'type': 'host', 'size': 20},
+				{'id': 'HOST-192.168.100.3', 'type': 'host', 'size': 20},
+				{'id': 'HOST-192.168.100.4', 'type': 'host', 'size': 20},
+				{'id': 'HOST-192.168.100.5', 'type': 'host', 'size': 20},
+				{'id': 'HOST-192.168.100.6', 'type': 'host', 'size': 20}
 			],
 			links: [
 				{'source': 'PKU School Network', 'target': 'Switch 1', value: 1},
