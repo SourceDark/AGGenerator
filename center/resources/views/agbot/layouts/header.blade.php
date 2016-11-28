@@ -12,6 +12,7 @@
 <script src="/js/agbot/layouts/sidebar.js"></script>
 <script src="/js/agbot/d3/graph-directive.js"></script>
 <script src="/js/agbot/d3/attack-graph-directive.js"></script>
+<script src="/js/agbot/d3/topology-graph-directive.js"></script>
 
 <!-- -->
 <script src="/js/agbot/algorithms/index.js"></script>
