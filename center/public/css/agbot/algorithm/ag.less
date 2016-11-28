@@ -84,11 +84,16 @@
         fill: rgb(236,240,241);
         stroke-width: 0;
       }
-      .light > circle, .light > rect{
-        opacity: 0.2;
+      .inner {
+        display: none;
       }
-      .light > .render{
-        opacity: 1;
+      .light {
+        .body, .light {
+          opacity: 0.2;
+        }
+      }
+      .important .inner {
+        display: block;
       }
     }
   }
