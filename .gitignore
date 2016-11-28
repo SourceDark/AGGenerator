@@ -1,2 +1,4 @@
 .idea/
 *.exe
+m2
+target
