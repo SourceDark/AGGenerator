@@ -129,7 +129,7 @@ agbotApp.directive('attackGraph', [function () {
                         return scope.getColor(d);
                     })
                     .classed('important', function (d) {
-                        return d.inPathTimes >= scope.paths.length;
+                        return scope.paths && d.inPathTimes >= scope.paths.length;
                     }).on('click', function(d,i) {
                         var flag = !d3.select(this).classed('selected');
                         scope.node.classed('selected', false);
