@@ -21,8 +21,13 @@ Route::group(['prefix' => 'html'], function () {
     Route::get('aboutUs', function ()    {
         return view('agbot.aboutUs.index');
     });
-    Route::get('vision', function () {
-        return view('agbot.vision.index');
+    Route::group(['prefix' => 'vision'], function () {
+        Route::get('/', function () {
+            return view('agbot.vision.index');
+        });
+        Route::get('/topology_template', function() {
+            return view('agbot.vision.topologyTemplate');
+        });
     });
     Route::get('sensor', function () {
         return view('agbot.sensor.index');
@@ -39,6 +44,9 @@ Route::group(['prefix' => 'html'], function () {
         });
         Route::get('/attack_graph', function() {
             return view('agbot.algorithms.attackGraph');
+        });
+        Route::get('/attack_graph_template', function() {
+            return view('agbot.algorithms.attackGraphTemplate');
         });
     });
 
