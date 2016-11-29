@@ -1,16 +1,18 @@
 <?php
 require_once("Network.php");
+require_once("File.php");
 
 /**
  * Get configurations from file
  */
 $input_file_content = file_get_contents("/data/input");
 $inputs = json_decode($input_file_content);
-$center_api = $inputs->center_api;
-$docker_api = $inputs->docker_api;
-$algorithm_id = $inputs->algorithm_id;
-$algorithm_image = $inputs->algorithm_image;
-$base_folder = $inputs->base_folder;
+$center_api = $inputs->host->center_api;
+$docker_api = $inputs->host->docker_api;
+$base_folder = $inputs->container->base_folder;
+$algorithm_task_id = $inputs->container->algorithm_task_id;
+$algorithm_id = $inputs->algorithm->id;
+$algorithm_image = $inputs->algorithm->image;
 $gen_alg_params = $inputs->input;
 
 /**
@@ -112,9 +114,16 @@ for ($i = 0; $i < $n; $i++) {
 }
 
 /**
+ * Clean work directory
+ */
+rmdir_recursive('/data/algorithm');
+
+/**
  * Post result to center server
  */
-list($returnCode, $returnContent) = http_post_json($center_api . "/api/algorithms/" . $algorithm_id . "/results", json_encode(array(
+list($returnCode, $returnContent) = http_put_json($center_api . "/api/algorithms/" . $algorithm_id . "/tasks/" . $algorithm_task_id, json_encode([
+    "status" => 1, // success
+    "algorithm_task_id" => $algorithm_task_id,
     "content" => json_encode(array(
         "input" => array(
             "algorithm_id" => $gen_alg_params->algorithm_id,
@@ -122,12 +131,14 @@ list($returnCode, $returnContent) = http_post_json($center_api . "/api/algorithm
         ),
         "PathList" => $paths
     ))
-)));
+]));
 if ($returnCode != 200) {
     echo "When pushing result:";
     var_dump($returnCode);
     var_dump($returnContent);
     return;
 }
+var_dump($returnContent);
+echo "Finished Control." . PHP_EOL;
 
 ?>

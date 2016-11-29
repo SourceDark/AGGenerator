@@ -1,0 +1,1 @@
+docker run -v G:/data/1:/data agbot/mulval_analysis_control

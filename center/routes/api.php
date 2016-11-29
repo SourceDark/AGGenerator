@@ -55,6 +55,11 @@ Route::group(['prefix' => '/algorithms'], function () {
                 });
             });
         });
+        Route::group(['prefix' => 'tasks'], function () {
+            Route::group(['prefix' => '{task_id}'], function () {
+                Route::put('/', 'AlgorithmController@acceptAnalysisFromControl');
+            });
+        });
     });
 });
 

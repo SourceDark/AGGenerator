@@ -4,11 +4,11 @@ namespace App\Http\Utility;
 
 class DockerUtility
 {
-    static public function runAlgorithmImage($image_name, $work_folder)
+    /**
+     * Create container
+     */
+    static public function createAlgorithmContainer($image_name, $work_folder)
     {
-        /**
-         * Create container
-         */
         list($returnCode, $returnContent) = NetworkUtility::http_post_json(EnvUtility::C_DOCKER_API() . "/containers/create", json_encode(array(
             'Image' => $image_name,
             'HostConfig' => array(
@@ -23,10 +23,13 @@ class DockerUtility
         }
         $result = json_decode($returnContent);
         $container_id = $result->Id;
+        return $container_id;
+    }
 
-        /**
-         * Start container
-         */
+    /**
+     * Start container
+     */
+    static public function startAlgorithmContainer($container_id) {
         list($returnCode, $returnContent) = NetworkUtility::http_post_json(EnvUtility::C_DOCKER_API() . "/containers/" . $container_id . "/start");
         if ($returnCode != 204) {
             echo "When starting containers:";
@@ -34,7 +37,5 @@ class DockerUtility
             var_dump($returnContent);
             return null;
         }
-
-        return $container_id;
     }
 }
