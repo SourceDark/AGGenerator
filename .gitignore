@@ -2,3 +2,4 @@
 *.exe
 m2
 target
+dockerfiles/center/center
