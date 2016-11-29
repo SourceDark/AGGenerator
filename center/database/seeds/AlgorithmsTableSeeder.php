@@ -15,28 +15,32 @@ class AlgorithmsTableSeeder extends Seeder
         DB::table('algorithms')->insert([
             'name' => "MulVAL",
             'type' => 0,
-            'control-image' => 'mulval',
+            'image' => 'mulval',
+            'control-image' => 'mulval_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
         DB::table('algorithms')->insert([
             'name' => "gen1",
             'type' => 0,
-            'control-image' => 'gen1',
+            'image' => 'gen1',
+            'control-image' => 'gen1_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
         DB::table('algorithms')->insert([
             'name' => "MulVAL Analysis",
             'type' => 1,
-            'control-image' => 'mulval-analysis',
+            'image' => 'agbot/mulval_analysis',
+            'control-image' => 'agbot/mulval_analysis_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
         DB::table('algorithms')->insert([
             'name' => "analysis1",
             'type' => 1,
-            'control-image' => 'analysis1',
+            'image' => 'analysis1',
+            'control-image' => 'analysis1_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);

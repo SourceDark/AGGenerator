@@ -48,16 +48,7 @@ Route::group(['prefix' => '/algorithms'], function () {
                     return response()->json(AlgorithmService::getResultByAlgorithmIdAndResultId($algorithm_id, $result_id));
                 });
                 Route::group(['prefix' => 'analysis'], function() {
-                    Route::post('/', function (Request $request, $algorithm_id, $result_id) {
-                        $analysis_algorithm_id = $request->input("analysis_algorithm_id");
-                        /**
-                         * Create new task
-                         */
-                        // TODO validate $algorithm to be generation
-                        $algorithm_task_id = AlgorithmTaskService::createTaskByGenAndAna($algorithm_id, $result_id, $analysis_algorithm_id);
-
-                        return response()->json($algorithm_task_id, 201);
-                    });
+                    Route::post('/', 'AlgorithmController@createAnalysisByGenerationResult');
                     Route::get('/', function ($algorithm_id, $result_id) {
                         return response()->json(AlgorithmTaskService::getTasksByGen($algorithm_id, $result_id));
                     });
