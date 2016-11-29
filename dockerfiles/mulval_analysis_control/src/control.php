@@ -64,6 +64,7 @@ if ($returnCode != 201) {
 }
 $result = json_decode($returnContent);
 $container_id = $result->Id;
+echo $container_id . PHP_EOL;
 
 /**
  * Start container

@@ -16,7 +16,7 @@ class AlgorithmsTableSeeder extends Seeder
             'name' => "MulVAL",
             'type' => 0,
             'image' => 'mulval',
-            'control-image' => 'mulval_control',
+            'control_image' => 'mulval_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
@@ -24,7 +24,7 @@ class AlgorithmsTableSeeder extends Seeder
             'name' => "gen1",
             'type' => 0,
             'image' => 'gen1',
-            'control-image' => 'gen1_control',
+            'control_image' => 'gen1_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
@@ -32,7 +32,7 @@ class AlgorithmsTableSeeder extends Seeder
             'name' => "MulVAL Analysis",
             'type' => 1,
             'image' => 'agbot/mulval_analysis',
-            'control-image' => 'agbot/mulval_analysis_control',
+            'control_image' => 'agbot/mulval_analysis_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
@@ -40,7 +40,7 @@ class AlgorithmsTableSeeder extends Seeder
             'name' => "analysis1",
             'type' => 1,
             'image' => 'analysis1',
-            'control-image' => 'analysis1_control',
+            'control_image' => 'analysis1_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);

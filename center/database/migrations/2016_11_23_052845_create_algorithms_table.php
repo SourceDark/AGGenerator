@@ -17,7 +17,8 @@ class CreateAlgorithmsTable extends Migration
             $table->increments('id');
             $table->string("name");
             $table->integer("type"); // 0 生成算法，1 分析算法
-            $table->string('control-image');
+            $table->string('image');
+            $table->string('control_image');
             $table->timestamps();
         });
     }

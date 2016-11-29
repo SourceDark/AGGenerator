@@ -25,4 +25,10 @@ class AlgorithmPipeService
         $algorithm_pipes = DB::table('algorithm_pipes')->where('algorithm1_id', $algorithm1_id)->get();
         return $algorithm_pipes;
     }
+
+    static public function getById($pipe_id)
+    {
+        $algorithm_pipe = DB::table('algorithm_pipes')->where('id', $pipe_id)->get();
+        return $algorithm_pipe;
+    }
 }
