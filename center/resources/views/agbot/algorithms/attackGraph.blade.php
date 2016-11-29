@@ -1,1 +1,1 @@
-<attack-graph class="attack-graph" rid="id" algorithmid="algorithm_id"></attack-graph>
+<attack-graph class="attack-graph" nodes="nodes" links="links" paths="paths"></attack-graph>

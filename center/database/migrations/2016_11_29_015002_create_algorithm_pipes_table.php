@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAlgorithmsTable extends Migration
+class CreateAlgorithmPipesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateAlgorithmsTable extends Migration
      */
     public function up()
     {
-        Schema::create('algorithms', function (Blueprint $table) {
+        Schema::create('algorithm_pipes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("name");
-            $table->integer("type"); // 0 生成算法，1 分析算法
-            $table->string('image');
-            $table->string('control_image');
+            $table->integer('algorithm1_id');
+            $table->integer('algorithm1_result_id');
+            $table->integer('algorithm2_id');
+            $table->integer('algorithm2_task_id');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateAlgorithmsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('algorithms');
+        Schema::dropIfExists('algorithm_pipes');
     }
 }

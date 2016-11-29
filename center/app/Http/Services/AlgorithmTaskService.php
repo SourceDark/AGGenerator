@@ -7,12 +7,10 @@ use App\Http\Utility\TimeUtility;
 
 class AlgorithmTaskService
 {
-    static public function createTaskByGenAndAna($gen_algorithm_id, $gen_algorithm_result_id, $ana_algorithm_id)
+    static public function createTaskByAlgorithmId($algorithm_id)
     {
         $algorithm_task_id = DB::table('algorithm_tasks')->insertGetId(array(
-            'gen_algorithm_id' => $gen_algorithm_id,
-            'gen_algorithm_result_id' => $gen_algorithm_result_id,
-            'ana_algorithm_id' => $ana_algorithm_id,
+            'algorithm_id' => $algorithm_id->id,
             'status' => 0,
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
@@ -20,9 +18,9 @@ class AlgorithmTaskService
         return $algorithm_task_id;
     }
 
-    static public function getTasksByGen($gen_algorithm_id, $gen_algorithm_result_id)
+    static public function updateTaskByIdAndParams($task_id, $params)
     {
-        $algorithm_tasks = DB::table('algorithm_tasks')->where('gen_algorithm_id', $gen_algorithm_id)->where('gen_algorithm_result_id', $gen_algorithm_result_id)->get();
-        return $algorithm_tasks;
+        // TODO - verify param
+        DB::table('algorithm_tasks')->where('id', $task_id)->update($params);
     }
 }

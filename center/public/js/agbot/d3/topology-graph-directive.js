@@ -49,22 +49,14 @@ agbotApp.directive('topologyGraph', ['$http', '$q', function ($http, $q) {
                     .on("start", dragstarted)
                     .on("drag", dragged)
                     .on("end", dragended));
-            //<use xlink:href="#shape" x="50" y="50" />
+
             scope.node
                 .append('use')
                 .attr('xlink:href', function (d) {
                     return '#' + d.type;
                 });
-                // .append('circle')
-                // .attr('r', 30)
-                // .attr('fill', function(d) {
-                //     if (d.type == 'Network') return 'rgb(0,91,172)';
-                //     if (d.type == 'Switch') return 'rgb(72,179,204)';
-                //     if (d.type == 'Host') return 'rgb(169,208,107)';
-                //     if (d.type == 'Center') return 'red';
-                // });
 
-            scope.text = scope.node
+            scope.node
                 .append('text')
                 .attr('y', 50)
                 .text(function (d) {

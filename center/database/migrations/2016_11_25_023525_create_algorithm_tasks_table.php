@@ -15,11 +15,10 @@ class CreateAlgorithmTasksTable extends Migration
     {
         Schema::create('algorithm_tasks', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('gen_algorithm_id');
-            $table->integer('gen_algorithm_result_id');
-            $table->integer('ana_algorithm_id');
-            $table->integer('ana_algorithm_result_id')->nullable()->default(null);
-            $table->string('docker_container_id')->nullable()->default(null);
+            $table->integer('algorithm_id');
+            $table->string('input')->nullable()->default(null);
+            $table->integer('result_id')->nullable()->default(null);
+            $table->string('container_id')->nullable()->default(null);
             $table->integer('status'); // 0-running 1-done
             $table->timestamps();
         });
