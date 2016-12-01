@@ -42,6 +42,9 @@ Route::group(['prefix' => 'html'], function () {
         Route::get('/algorithm', function() {
             return view('agbot.algorithms.algorithm');
         });
+        Route::get('/algorithmResult', function() {
+            return view('agbot.algorithms.algorithmResult');
+        });
         Route::get('/attack_graph', function() {
             return view('agbot.algorithms.attackGraph');
         });
