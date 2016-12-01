@@ -1,14 +1,13 @@
 agbotApp.config(function($stateProvider) {
     $stateProvider.state({
-        name: 'algorithms.algorithmResult',
+        name: 'algorithms.result',
         url: '/{algorithm_id:[0-9]+}/results/{result_id:[0-9]+}',
-        templateUrl: 'html/algorithms/algorithmResult',
-        controller: function ($scope, $http, $stateParams, jsonViewerService) {
-            $scope.algorithm = {};
-            $scope.result = {};
+        templateUrl: 'html/algorithms/result',
+        controller: function ($scope, $http, $state, $stateParams, jsonViewerService) {
             $scope.algorithm_id = $stateParams.algorithm_id;
             $scope.result_id = $stateParams.result_id;
 
+            $scope.algorithm = {};
             $http.get('/api/algorithms/' + $stateParams.algorithm_id)
                 .success(function (response)  {
                     $scope.algorithm = response;
@@ -16,10 +15,11 @@ agbotApp.config(function($stateProvider) {
             $http.get('/api/algorithms/' + $stateParams.algorithm_id + '/results/'+ $stateParams.result_id)
                 .success(function (response) {
                     $scope.result = response;
-                    $scope.content = JSON.parse($scope.result.content);
-                    jsonViewerService.jsonString = $scope.result.content;
-                    jsonViewerService.parseJson();
                 });
+
+            if ($state.current.name == "algorithms.result") {
+                $state.go('algorithms.result.info');
+            }
         }
     });
 });

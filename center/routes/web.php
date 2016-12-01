@@ -42,8 +42,17 @@ Route::group(['prefix' => 'html'], function () {
         Route::get('/algorithm', function() {
             return view('agbot.algorithms.algorithm');
         });
-        Route::get('/algorithmResult', function() {
-            return view('agbot.algorithms.algorithmResult');
+        Route::get('/result', function() {
+            return view('agbot.algorithms.result.index');
+        });
+        Route::get('/result/info', function() {
+            return view('agbot.algorithms.result.info');
+        });
+        Route::get('/result/tasks', function() {
+            return view('agbot.algorithms.result.tasks');
+        });
+        Route::get('/result/newTask', function() {
+            return view('agbot.algorithms.result.newTask');
         });
         Route::get('/attack_graph', function() {
             return view('agbot.algorithms.attackGraph');
