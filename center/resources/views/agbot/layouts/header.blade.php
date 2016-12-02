@@ -14,10 +14,19 @@
 <script src="/js/agbot/d3/attack-graph-directive.js"></script>
 <script src="/js/agbot/d3/topology-graph-directive.js"></script>
 
+<script src="/js/lib/ng-json-viewer/jv.json-viewer.module.js"></script>
+<script src="/js/lib/ng-json-viewer/jsonViewer.tpl.js"></script>
+<script src="/js/lib/ng-json-viewer/jsonViewer.service.js"></script>
+<script src="/js/lib/ng-json-viewer/jsonViewer.directive.js"></script>
+
 <!-- -->
 <script src="/js/agbot/algorithms/index.js"></script>
 <script src="/js/agbot/algorithms/algorithms-ctrl.js"></script>
 <script src="/js/agbot/algorithms/algorithm-ctrl.js"></script>
+<script src="/js/agbot/algorithms/result/index-ctrl.js"></script>
+<script src="/js/agbot/algorithms/result/info-ctrl.js"></script>
+<script src="/js/agbot/algorithms/result/tasks-ctrl.js"></script>
+<script src="/js/agbot/algorithms/result/new-task-ctrl.js"></script>
 <script src="/js/agbot/algorithms/attack-graph-ctrl.js"></script>
 <script src="/js/agbot/vision/vision-ctrl.js"></script>
 <script src="/js/agbot/sensor/sensor-ctrl.js"></script>
@@ -26,4 +35,5 @@
 <script src="/js/agbot/cve/cve-ctrl.js"></script>
 
 <!-- less files -->
+<link rel="stylesheet/less" type="text/css" href="/css/lib/ng-json-viewer/jsonViewer.less"/>
 <link rel="stylesheet/less" type="text/css" href="/css/agbot/agbot.less"/>

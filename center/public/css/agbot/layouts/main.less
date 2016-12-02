@@ -1,0 +1,30 @@
+.route-path {
+  margin: 15px 0 15px 0;
+  .item {
+    margin: 0 0;
+  }
+}
+
+.board {
+  padding: 20px 20px 20px 20px;
+  border: 1px solid #cccccc;
+  .tag-list {
+    margin: 0 0 10px 0;
+    .tag {
+      display: inline;
+      cursor: pointer;
+      font-size: 18px;
+      margin-right: 10px;
+      text-decoration: underline;
+      color: @sb-blue;
+      &.hide {
+        display: none;
+      }
+      &.active {
+        display: inline !important;
+        text-decoration: none;
+        color: black;
+      }
+    }
+  }
+}

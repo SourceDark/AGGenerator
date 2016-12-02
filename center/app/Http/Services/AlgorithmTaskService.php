@@ -18,6 +18,12 @@ class AlgorithmTaskService
         return $algorithm_task_id;
     }
 
+    static public function getTaskById($task_id)
+    {
+        $algorithm_task = DB::table('algorithm_tasks')->where('id', $task_id)->first();
+        return $algorithm_task;
+    }
+
     static public function updateTaskByIdAndParams($task_id, $params)
     {
         // TODO - verify param

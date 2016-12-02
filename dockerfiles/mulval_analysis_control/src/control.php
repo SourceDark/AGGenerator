@@ -124,7 +124,7 @@ rmdir_recursive('/data/algorithm');
 list($returnCode, $returnContent) = http_put_json($center_api . "/api/algorithms/" . $algorithm_id . "/tasks/" . $algorithm_task_id, json_encode([
     "status" => 1, // success
     "algorithm_task_id" => $algorithm_task_id,
-    "content" => json_encode(array(
+    "result" => json_encode(array(
         "input" => array(
             "algorithm_id" => $gen_alg_params->algorithm_id,
             "result_id" => $gen_alg_params->result_id

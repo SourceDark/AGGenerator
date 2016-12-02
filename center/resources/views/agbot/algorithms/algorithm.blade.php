@@ -17,7 +17,7 @@
                     <td>
                         <a href="#/algorithms/{{algorithm_id}}/attack_graph/{{result.id}}" target="_blank">Visualization</a>
                         <span ng-if="algorithm.type == 0">
-                            / <a href="#">Analysis</a>
+                            / <a href="#/algorithms/{{algorithm_id}}/results/{{result.id}}">Analysis</a>
                         </span>
                     </td>
                 </tr>

@@ -25,7 +25,7 @@ function http_put_json($url, $jsonStr)
     echo $url . PHP_EOL;
     var_dump($jsonStr);
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_PUT, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
     curl_setopt($ch, CURLOPT_URL, $url);
     if ($jsonStr != null) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);

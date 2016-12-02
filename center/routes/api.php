@@ -5,6 +5,7 @@ use App\Http\Services\SensorService;
 use App\Http\Services\VulnerabilityService;
 use App\Http\Services\AlgorithmService;
 use App\Http\Services\AlgorithmTaskService;
+use App\Http\Services\AlgorithmPipeService;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,13 +46,12 @@ Route::group(['prefix' => '/algorithms'], function () {
             });
             Route::group(['prefix' => '{result_id}'], function () {
                 Route::get('/', function ($algorithm_id, $result_id) {
-                    return response()->json(AlgorithmService::getResultByAlgorithmIdAndResultId($algorithm_id, $result_id));
+                    $result = AlgorithmService::getResultByAlgorithmIdAndResultId($algorithm_id, $result_id);
+                    AlgorithmPipeService::fillResultWithExportTasks($result);
+                    return response()->json($result);
                 });
                 Route::group(['prefix' => 'analysis'], function() {
                     Route::post('/', 'AlgorithmController@createAnalysisByGenerationResult');
-                    Route::get('/', function ($algorithm_id, $result_id) {
-                        return response()->json(AlgorithmTaskService::getTasksByGen($algorithm_id, $result_id));
-                    });
                 });
             });
         });
