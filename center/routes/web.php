@@ -50,6 +50,13 @@ Route::group(['prefix' => 'html'], function () {
         });
     });
 
+    Route::get('cve/item', function () {
+        return view('agbot.cve.item');
+    });
+    Route::get('cve/list', function () {
+        return view('agbot.cve.list');
+    });
+
 });
 
 /**

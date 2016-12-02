@@ -9,6 +9,7 @@
                 <li><a href="" ui-sref="algorithms.index" ng-class="{active: inState('algorithms')}">Algorithms</a></li>
                 <li><a href="" ui-sref="vision" ui-sref-active="active">Vision</a></li>
                 <li><a href="" ui-sref="sensor" ui-sref-active="active">Sensor</a></li>
+                <li><a href="" ui-sref="cves" ng-class="{active: inState('cves{page:1}')}">Vulnerabilities </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="" ui-sref="attack_graph" ui-sref-active="active">Other researchers</a></li>

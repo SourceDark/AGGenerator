@@ -28,4 +28,15 @@ class SensorService
         ]);
         return self::getSensorById($sensor_id);
     }
+
+    static public function getSensors() {
+        $sensors = DB::select('select * from sensors');
+        foreach ($sensors as $sensor) {
+            $sensor -> hosts = DB::select('select * from vul_reports where sensor_id = ?', array($sensor -> id));
+            foreach ($sensor -> hosts as $host) {
+                $host -> reports = DB::select('select * from vul_report_records where vul_report_id = ?', array($host -> id));
+            }
+        }
+        return $sensors;
+    }
 }

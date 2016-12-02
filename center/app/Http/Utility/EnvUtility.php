@@ -23,4 +23,7 @@ class EnvUtility
     {
         return env('BASE_STORAGE');
     }
+    static public function CVE_API() {
+        return env('CVE_API');
+    }
 }

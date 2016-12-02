@@ -6,38 +6,50 @@ angular.module('agbotApp')
 			controller: 'visionCtrl'
 		});
 	}])
-	.controller('visionCtrl', ['$scope', '$element', function($scope, $element) {
+	.controller('visionCtrl', ['$scope', '$element', '$http', function($scope, $element, $http) {
 		$scope.graph = {
 			nodes: [
 				{'id': 'PKU School Network', 'type': 'cloud', 'size': 50, 'ips': []},
 				{'id': 'Switch 1', 'type': 'switch', 'size': 40, 'ips': []},
-				{'id': 'Switch 2', 'type': 'switch', 'size': 40, 'ips': []},
-				{'id': '10 Server', 'type': 'switch', 'size': 40, 'ips': ['192.168.100.9', '162.105.30.73']},
-				{'id': '11 Server', 'type': 'switch', 'size': 40, 'ips': ['192.168.100.11', '162.105.30.*']},
-				{'id': 'HOST-192.168.100.1', 'type': 'host', 'size': 20},
-				{'id': 'HOST-192.168.100.2', 'type': 'host', 'size': 20},
-				{'id': 'HOST-192.168.100.3', 'type': 'host', 'size': 20},
-				{'id': 'HOST-192.168.100.4', 'type': 'host', 'size': 20},
-				{'id': 'HOST-192.168.100.5', 'type': 'host', 'size': 20},
-				{'id': 'HOST-192.168.100.6', 'type': 'host', 'size': 20}
+				{'id': 'xr-test', 'type': 'sensor', 'size': 40, 'ips': ['192.168.100.9', '162.105.30.73']}
 			],
 			links: [
 				{'source': 'PKU School Network', 'target': 'Switch 1', value: 1},
-				{'source': 'Switch 1', 'target': 'Switch 2', value: 1},
-				{'source': 'Switch 1', 'target': '10 Server', value: 1},
-				{'source': 'Switch 1', 'target': '11 Server', value: 1},
-				{'source': '11 Server', 'target': 'HOST-192.168.100.1', value: 1},
-				{'source': '11 Server', 'target': 'HOST-192.168.100.2', value: 1},
-				{'source': '11 Server', 'target': 'HOST-192.168.100.3', value: 1},
-				{'source': '11 Server', 'target': 'HOST-192.168.100.4', value: 1},
-				{'source': '11 Server', 'target': 'HOST-192.168.100.5', value: 1},
-				{'source': '11 Server', 'target': 'HOST-192.168.100.6', value: 1},
+				{'source': 'Switch 1', 'target': 'xr-test', value: 1}
 			]
-		}
+		};
 		
 		$scope.options = {
 			distance: 200,
-			charge  : -500
+			charge  : -1000
 		};
+
+		function getNode(id) {
+			for(var i = 0; i < $scope.graph.nodes.length; i++) {
+				if($scope.graph.nodes[i].id.trim() == id.trim()) {
+					return $scope.graph.nodes[i];
+				}
+			}
+			return;
+		}
+		
+
+		$http.get("/api/sensors").success(function(sensors) {
+			sensors.forEach(function(sensor) {
+				var sensorNode = getNode(sensor['name']);
+				if(!sensorNode) {
+					sensorNode = {'id': sensor['name'], 'type': 'sensor', 'size': 20, 'ips': [sensor['ip']]};
+					$scope.graph.nodes.push(sensorNode);
+				} 
+				sensor.hosts.forEach(function(host) {
+					host['nodeId'] = sensor['name'] + '-' + host['host_ip'];
+					$scope.graph.nodes.push({'id': host['nodeId'], 'type': 'host', 'size': 20, 'reports': host.reports});
+					$scope.graph.links.push({'source': sensor['name'], 'target': host['nodeId'], value: 1});
+				});
+				
+
+			});
+			$scope.ready = true;
+		});
 		
 	}]);

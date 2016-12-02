@@ -20,6 +20,17 @@ agbotApp.directive('topologyGraph', ['$http', '$q', function ($http, $q) {
             scope.tg = d3.select('#topology-graph');
             scope.svg = scope.tg.append('g');
 
+            scope.tg.call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", zoomed)).on("dblclick.zoom", null);
+
+            function scaleTo(x, y, k) {
+                scope.svg.attr("transform",
+                    'translate('+(x)+' '+(y)+')' + "scale(" + (k) + ")");
+            }
+
+            function zoomed() {
+                scaleTo(d3.event.transform.x,d3.event.transform.y,d3.event.transform.k);
+            }
+
             scope.link = scope.svg
                 .append("g")
                 .attr("class", "links")
@@ -43,6 +54,31 @@ agbotApp.directive('topologyGraph', ['$http', '$q', function ($http, $q) {
                     if (flag) {
                         d3.select(this).classed('selected', true);
                         scope.selection = d;
+                        if(scope.selection.reports && !scope.selection.cves) {
+                            var cveIds = [], filter = "";
+                            scope.selection.reports.forEach(function(resport) {
+                                if(!resport.cves == '[]') {
+                                    return;
+                                }
+                                resport.cves.substr(1, resport.cves.length - 2).split(",").forEach(function(cveId) {
+                                    cveId = cveId.substr(1, cveId.length - 2);
+                                    if(cveIds.indexOf(cveId) >= 0) {
+                                        return;
+                                    }
+                                    cveIds.push(cveId);
+                                    filter += cveId + ",";
+                                });
+                            });
+                            scope.selection.cveIds = cveIds;
+                            if(cveIds.length) {
+                                $http.get("/api/cve?filter=" + filter).success(function(cves){
+                                    scope.selection.cves = cves;
+                                });    
+                            } else {
+                                scope.selection.cves = [];
+                            }
+                            
+                        }
                     }
                     scope.$apply();
                 }).call(d3.drag()

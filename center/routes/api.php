@@ -90,3 +90,10 @@ Route::post('/sensor/reports', function (Request $request) {
 
     return response()->json("Reports created successfully.", 200);
 });
+
+Route::get('/sensors', function (Request $request) {
+    $sensors = SensorService::getSensors();
+    return response()->json($sensors, 200);
+});
+
+Route::get('/cve', 'ApiController@cve');
