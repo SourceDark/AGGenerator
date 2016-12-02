@@ -3,7 +3,10 @@ agbotApp.config(function($stateProvider) {
         name: 'algorithms',
         url: '/algorithms',
         template: '<ui-view></ui-view>',
-        controller: function($state) {
+        controller: function($scope, $state, $http) {
+            $http.get('/api/algorithms').success(function (response) {
+                $scope.algorithms = response;
+            });
             if ($state.current.name == 'algorithms') {
                 $state.go('algorithms.index');
             }
