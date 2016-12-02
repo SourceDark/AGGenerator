@@ -51,7 +51,7 @@ class AlgorithmController extends Controller
         FileUtility::writeJson2File($control_input, (string)$algorithm_task_id, 'input');
 
         // Create Container
-        $container_id = DockerUtility::createAlgorithmContainer($analysis_algorithm->control_image, EnvUtility::BASE_STORAGE() . '/' . $algorithm_task_id);
+        $container_id = DockerUtility::createAlgorithmContainer($analysis_algorithm->control_image, EnvUtility::C_STORAGE() . '/' . $algorithm_task_id);
 
         // Update Task
         AlgorithmTaskService::updateTaskByIdAndParams($algorithm_task_id, [
