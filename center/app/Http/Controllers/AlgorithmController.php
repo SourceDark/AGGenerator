@@ -70,7 +70,7 @@ class AlgorithmController extends Controller
     }
 
     public function acceptAnalysisFromControl(Request $request, $algorithm_id, $task_id) {
-        $result = $request->input("content");
+        $result = $request->input("result");
         $algorithm_result_id = AlgorithmService::createResultsByAlgorithmIdAndContent($algorithm_id, $result);
         $algorithm_task = AlgorithmTaskService::getTaskById($task_id);
         if ($algorithm_task->status != 0) {
