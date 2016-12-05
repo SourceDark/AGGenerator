@@ -97,3 +97,5 @@ Route::get('/sensors', function (Request $request) {
 });
 
 Route::get('/cve', 'ApiController@cve');
+Route::get('/algorithm', 'ApiController@algorithm');
+Route::post('/algorithm', 'ApiController@algorithm_post');

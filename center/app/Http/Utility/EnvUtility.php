@@ -26,4 +26,7 @@ class EnvUtility
     static public function CVE_API() {
         return env('CVE_API');
     }
+    static public function ALGORITHM_API() {
+        return env('ALGORITHM_API');
+    }
 }

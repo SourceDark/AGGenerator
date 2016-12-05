@@ -60,6 +60,9 @@ Route::group(['prefix' => 'html'], function () {
         Route::get('/attack_graph_template', function() {
             return view('agbot.algorithms.attackGraphTemplate');
         });
+        Route::get('/tasks/new', function() {
+            return view('agbot.algorithms.task.new');
+        });
     });
 
     Route::get('cve/item', function () {
