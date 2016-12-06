@@ -116,7 +116,7 @@ for ($i = 0; $i < $n; $i++) {
 /**
  * Clean work directory
  */
-rmdir_recursive('/data/algorithm');
+////rmdir_recursive('/data/algorithm');
 
 /**
  * Post result to center server
