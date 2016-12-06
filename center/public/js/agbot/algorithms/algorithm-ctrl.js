@@ -8,7 +8,6 @@ agbotApp.controller('algorithmCtrl', function ($scope, $http, $stateParams) {
         });
     $http.get('/api/algorithms/' + $stateParams.algorithm_id + '/results')
         .success(function (response) {
-            console.log(response);
             $scope.results = response;
         });
 });

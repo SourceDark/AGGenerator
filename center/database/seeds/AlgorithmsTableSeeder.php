@@ -16,7 +16,7 @@ class AlgorithmsTableSeeder extends Seeder
             'name' => "MulVAL",
             'type' => 0,
             'image' => 'mulval',
-            'control_image' => 'mulval_control',
+            'control_image' => '162.105.30.65:9998/serc/agbot:mulval',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);
@@ -31,8 +31,8 @@ class AlgorithmsTableSeeder extends Seeder
         DB::table('algorithms')->insert([
             'name' => "MulVAL Analysis",
             'type' => 1,
-            'image' => 'agbot/mulval_analysis',
-            'control_image' => 'agbot/mulval_analysis_control',
+            'image' => '162.105.30.65:9998/mulval_analysis',
+            'control_image' => '162.105.30.65:9998/mulval_analysis_control',
             'created_at' => TimeUtility::currentTimeStamp(),
             'updated_at' => TimeUtility::currentTimeStamp()
         ]);

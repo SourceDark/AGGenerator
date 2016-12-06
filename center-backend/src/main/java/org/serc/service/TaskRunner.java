@@ -47,6 +47,7 @@ public class TaskRunner {
         task.setResult(result);
         task.setStatus(Status.success);
         algorithmTaskRepository.saveAndFlush(task);
+        afterRun(task, dataDir);
     }
     
     private File initData(AlgorithmTask task) throws IOException {
@@ -65,7 +66,6 @@ public class TaskRunner {
     private String runContainer(AlgorithmTask task, File dataDir) throws IOException {
         dockerClient.startContainerCmd(task.getContainerId()).exec();
         dockerClient.waitContainerCmd(task.getContainerId()).exec(new WaitContainerResultCallback()).awaitStatusCode();
-//        dockerClient.removeContainerCmd(task.getContainerId()).withRemoveVolumes(true).exec();
         return FileUtils.readFileToString(new File(dataDir, OUTPUT_NAME), "UTF-8");
     }
     
@@ -74,6 +74,11 @@ public class TaskRunner {
         result.setAlgorithm(task.getAlgorithm());
         result.setContent(output);
         return algorithmResultRepository.save(result);
+    }
+    
+    private void afterRun(AlgorithmTask task, File dataDir) throws IOException {
+        dockerClient.removeContainerCmd(task.getContainerId()).withRemoveVolumes(true).exec();
+        FileUtils.deleteQuietly(dataDir);
     }
     
 }

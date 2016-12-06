@@ -12,11 +12,5 @@ class SensorsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sensors')->insert([
-            'name' => str_random(10),
-            'ip' => '192.168.100.53',
-            'created_at' => TimeUtility::currentTimeStamp(),
-            'updated_at' => TimeUtility::currentTimeStamp()
-        ]);
     }
 }
