@@ -2,4 +2,4 @@
 *.exe
 m2
 target
-dockerfiles/center/center
+dockerfiles/ag_frontend/center
