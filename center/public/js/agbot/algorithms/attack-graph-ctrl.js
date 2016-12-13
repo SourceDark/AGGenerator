@@ -19,7 +19,6 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
     $q.all(request).then( function (result) {
         if (result[0].data.type == 1) {
             $scope.analysis = JSON.parse(result[1].data.content);
-            $scope.paths = $scope.analysis.PathList;
             $http.get(['api','algorithms',$scope.analysis.input.algorithm_id,'results',$scope.analysis.input.result_id].join('/'))
                 .then(function (result) {
                     $scope.nodes = JSON.parse(result.data.content).nodes;

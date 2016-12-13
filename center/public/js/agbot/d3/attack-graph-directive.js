@@ -10,7 +10,7 @@ agbotApp.directive('attackGraph', [function () {
         scope: {
             nodes: '=nodes',
             links: '=links',
-            paths: '=paths'
+            infomation: '=infomation'
         },
         templateUrl: 'html/algorithms/attack_graph_template',
         link: function (scope, element, attrs) {
@@ -35,7 +35,11 @@ agbotApp.directive('attackGraph', [function () {
                 scaleTo(d3.event.transform.x,d3.event.transform.y,d3.event.transform.k);
             }
 
-            scope.$watchGroup(['nodes','links','paths'], function() {
+            scope.$watchGroup(['nodes','links','infomation'], function() {
+                if (scope.infomation && scope.infomation.PathList)
+                    scope.paths = scope.infomation.PathList;
+                if (scope.infomation && scope.infomation.probabilities)
+                    scope.probabilities = scope.infomation.probabilities;
                 if (scope.nodes && scope.links)
                     scope.drawGraph();
             });
@@ -50,7 +54,12 @@ agbotApp.directive('attackGraph', [function () {
             };
 
             scope.drawGraph = function () {
+                scope.svg.html('');
+
                 // calculate coordinate
+                scope.nodes.forEach(function (d) {
+                    d.lv = 0;
+                });
                 scope.nodes[0].lv = 1;
                 scope.nodes[0].offset = 0;
 
@@ -93,6 +102,12 @@ agbotApp.directive('attackGraph', [function () {
                             scope.nodes[d - 1].inPathTimes++;
                         })
                     });
+                }
+
+                if (scope.probabilities) {
+                    for (var i = 1; i <= scope.nodes.length; ++i) {
+                        scope.nodes[i - 1].probability = scope.probabilities[i - 1];
+                    }
                 }
 
                 scope.getColor = function (d) {
