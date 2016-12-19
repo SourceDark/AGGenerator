@@ -1,8 +1,8 @@
-package org.serc.repository;
+package org.serc.workbench.support;
 
 import java.util.List;
 
-import org.serc.model.Sensor;
+import org.serc.workbench.model.Sensor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SensorRepository extends JpaRepository<Sensor, Long> {

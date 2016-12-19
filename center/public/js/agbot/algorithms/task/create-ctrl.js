@@ -17,7 +17,7 @@ agbotApp.config(function($stateProvider) {
                 }).map(function(item) {
                     return item.name;
                 });
-                $http.post("/api/algorithm?uri=/algorithms/" + $stateParams.algorithm_id + "/tasks", $scope.task)
+                $http.post("/api/algorithm?uri=/algorithms/" + $stateParams.algorithm_id + "/tasks/generation", $scope.task)
                 .success(function() {
                     $state.go('algorithms.algorithm', {algorithm_id: $stateParams.algorithm_id});
                 });

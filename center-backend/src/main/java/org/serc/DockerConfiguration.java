@@ -17,7 +17,7 @@ public class DockerConfiguration {
     @Bean
     public DockerClient getDockerClient() {
         return DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
-                .withDockerHost(applicationContext.dockerHost)).build();
+                .withDockerHost(ApplicationContext.dockerHost)).build();
     }
 
 }

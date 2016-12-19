@@ -1,4 +1,4 @@
-package org.serc.model;
+package org.serc.workbench.model;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.serc.model.AbstractEntity;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -18,8 +20,7 @@ public class Host extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "sensor_id")
-    @JsonIgnore
-    private Sensor snesor;
+    private Sensor sensor;
     
     @Column(name = "host_ip")
     private String ip;
@@ -27,12 +28,13 @@ public class Host extends AbstractEntity {
     @OneToMany(mappedBy = "host", fetch = FetchType.EAGER)
     private List<HostVulnerability> vulnerabilities;
 
+    @JsonIgnore
     public Sensor getSnesor() {
-        return snesor;
+        return sensor;
     }
 
-    public void setSnesor(Sensor snesor) {
-        this.snesor = snesor;
+    public void setSensor(Sensor snesor) {
+        this.sensor = snesor;
     }
 
     public String getIp() {
@@ -49,5 +51,9 @@ public class Host extends AbstractEntity {
 
     public void setVulnerabilities(List<HostVulnerability> vulnerabilities) {
         this.vulnerabilities = vulnerabilities;
+    }
+    
+    public String getName() {
+        return String.format("%s_%s", sensor.getName(), getIp()).replace(".", "_").replace("-", "_");
     }
 }
