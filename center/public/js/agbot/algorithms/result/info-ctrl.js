@@ -5,9 +5,9 @@ agbotApp.config(function($stateProvider) {
         templateUrl: 'html/algorithms/result/info',
         controller: function ($scope, $http, $stateParams, jsonViewerService) {
             $scope.$watch(
-                'result', function() {
-                    if ($scope.result != null) {
-                        jsonViewerService.jsonString = $scope.result.content;
+                'task', function() {
+                    if ($scope.task != null) {
+                        jsonViewerService.jsonString = $scope.task.output || $scope.task.errorStack;
                         jsonViewerService.parseJson();
                     }
                 }

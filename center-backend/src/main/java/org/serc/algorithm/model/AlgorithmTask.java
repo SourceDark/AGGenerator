@@ -1,36 +1,34 @@
-package org.serc.model;
+package org.serc.algorithm.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.serc.model.AbstractEntity;
 
 @Entity
 @Table(name = "algorithm_tasks")
 public class AlgorithmTask extends AbstractEntity {
-    
+
     public enum Status {
-        running, success, fail, created;
+        running, success, failure, created;
     }
     
     @ManyToOne
     @JoinColumn(name = "algorithm_id")
     private Algorithm algorithm;
     
-    @Lob
-    private String input;
+    @ManyToOne(optional = true)
+    private AlgorithmTask inputTask;
     
-    @OneToOne
-    @JoinColumn(name = "result_id")
-    private AlgorithmResult result;
-    
-    private String containerId;
-    
-    @Enumerated
-    private Status status;
+    @Lob String input;
+    @Lob String output;
+    @Lob String errorStack; // optional, then reason why status is failure
+    @Enumerated Status status;
+    String containerId;
     
     public Algorithm getAlgorithm() {
         return algorithm;
@@ -44,12 +42,6 @@ public class AlgorithmTask extends AbstractEntity {
     public void setInput(String input) {
         this.input = input;
     }
-    public AlgorithmResult getResult() {
-        return result;
-    }
-    public void setResult(AlgorithmResult result) {
-        this.result = result;
-    }
     public String getContainerId() {
         return containerId;
     }
@@ -62,9 +54,29 @@ public class AlgorithmTask extends AbstractEntity {
     public void setStatus(Status status) {
         this.status = status;
     }
+    public String getOutput() {
+        return output;
+    }
+    public void setOutput(String output) {
+        this.output = output;
+    }
+    public String getErrorStack() {
+        return errorStack;
+    }
+    public void setErrorStack(String errorStack) {
+        this.errorStack = errorStack;
+    }
+    
+    public AlgorithmTask getInputTask() {
+        return inputTask;
+    }
+    
+    public void setInputTask(AlgorithmTask inputTask) {
+        this.inputTask = inputTask;
+    }
     @Override
     public String toString() {
-        return "AlgorithmTask [algorithm=" + algorithm + ", input=" + input + ", result=" + result + ", containerId="
+        return "AlgorithmTask [algorithm=" + algorithm + ", input=" + input + ", containerId="
                 + containerId + ", status=" + status + "]";
     }
 

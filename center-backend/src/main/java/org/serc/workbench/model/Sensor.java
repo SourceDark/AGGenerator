@@ -1,4 +1,4 @@
-package org.serc.model;
+package org.serc.workbench.model;
 
 import java.util.List;
 
@@ -7,14 +7,18 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.serc.model.AbstractEntity;
+import org.springframework.context.annotation.Configuration;
+
 @Entity
 @Table(name = "sensors")
+@Configuration
 public class Sensor extends AbstractEntity {
-
+    
     private String name;
     private String ip;
     
-    @OneToMany(mappedBy = "snesor", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER)
     private List<Host> hosts;
     
     public String getName() {

@@ -7,7 +7,7 @@ agbotApp.config(function($stateProvider) {
             console.log($scope.algorithms);
             $scope.export = function($analysis_algorithm_id) {
                 $http
-                    .post('/api/algorithms/' + $scope.algorithm_id + '/results/' + $scope.result_id + '/analysis',
+                    .post('/api/algorithms/' + $scope.algorithm_id + '/results/' + $scope.task_id + '/analysis',
                         {
                             analysis_algorithm_id: $analysis_algorithm_id
                         }
