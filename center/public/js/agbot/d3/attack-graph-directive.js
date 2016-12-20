@@ -8,8 +8,8 @@ agbotApp.directive('attackGraph', [function () {
         replace: true,
         transclude: true,
         scope: {
-            nodes: '=nodes',
-            links: '=links',
+            originalNodes: '=nodes',
+            originalLinks: '=links',
             infomation: '=infomation'
         },
         templateUrl: 'html/algorithms/attack_graph_template',
@@ -35,13 +35,17 @@ agbotApp.directive('attackGraph', [function () {
                 scaleTo(d3.event.transform.x,d3.event.transform.y,d3.event.transform.k);
             }
 
-            scope.$watchGroup(['nodes','links','infomation'], function() {
+            scope.$watchGroup(['originalNodes','originalLinks','infomation'], function() {
                 if (scope.infomation && scope.infomation.PathList)
                     scope.paths = scope.infomation.PathList;
                 if (scope.infomation && scope.infomation.probabilities)
                     scope.probabilities = scope.infomation.probabilities;
-                if (scope.nodes && scope.links)
+                if (scope.originalNodes && scope.originalLinks) {
+                    scope.nodes = angular.copy(scope.originalNodes);
+                    scope.links = angular.copy(scope.originalLinks);
+                    scope.simplify();
                     scope.drawGraph();
+                }
             });
 
             scope.showPath = function (id) {
@@ -71,6 +75,7 @@ agbotApp.directive('attackGraph', [function () {
                 for (var i = 0; i < seq.length; ++i) {
                     var v = seq[i];
                     for (var j = 0; j < scope.links.length; ++j)
+                        //if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv && scope.nodes[scope.links[j].source - 1].type != 'LEAF') {
                         if (scope.links[j].target == v && !scope.nodes[scope.links[j].source - 1].lv) {
                             scope.nodes[scope.links[j].source - 1].lv = scope.nodes[v - 1].lv + 1;
                             scope.nodes[scope.links[j].source - 1].offset = num[scope.nodes[scope.links[j].source - 1].lv]++;
@@ -112,7 +117,7 @@ agbotApp.directive('attackGraph', [function () {
 
                 scope.getColor = function (d) {
                     if (d.id == 1) return '#FF3030';
-                    if (d.info.indexOf('attackerLocated') >= 0) return '#d65222';
+                    if (d.info.indexOf('attackerLocated') >= 0 || d.type == 'START') return '#d65222';
                     if (d.type == 'OR') return '#EEEE00';
                     if (d.type == 'AND') return '#66ccff';
                     return '#7CCD7C';
@@ -123,6 +128,9 @@ agbotApp.directive('attackGraph', [function () {
                     .selectAll("line")
                     .data(scope.links)
                     .enter()
+                    // .filter(function (d) {
+                    //     return scope.nodes[d.source-1].type != 'LEAF' && scope.nodes[d.target-1].type != 'LEAF';
+                    // })
                     .append("line")
                     .attr("x1", function(d) { return scope.nodes[d.source-1].x; })
                     .attr("y1", function(d) { return scope.nodes[d.source-1].y; })
@@ -135,6 +143,9 @@ agbotApp.directive('attackGraph', [function () {
                     .selectAll('g')
                     .data(scope.nodes)
                     .enter()
+                    // .filter(function (d) {
+                    //     return d.type != 'LEAF'
+                    // })
                     .append('g')
                     .attr('class', 'node')
                     .attr('transform', function(d) {
@@ -219,7 +230,77 @@ agbotApp.directive('attackGraph', [function () {
                 scope.node
                     .filter(function (d) {return d.inPath;})
                     .classed("light", false);
-            }
-            }    
+            };
+
+            scope.simplify = function () {
+                var newLinks = [];
+                scope.orNodeCount = 0;
+                scope.nodes.forEach(function (d) {
+                    if (d.type == 'OR' || d.info.indexOf('attackerLocated') >= 0) {
+                        d.type = 'OR';
+                        d.mark = d.id;
+                        d.orNodeId = ++scope.orNodeCount;
+                    }
+                });
+                scope.links.forEach(function (d) {
+                    if (scope.nodes[d.source - 1].type == 'AND')
+                        scope.nodes[d.source - 1].mark = d.target;
+                });
+                scope.links.forEach(function (d) {
+                    if (scope.nodes[d.target - 1].type == 'AND') {
+                        if (scope.nodes[d.source - 1].type == 'LEAF')
+                            scope.nodes[d.source - 1].mark = scope.nodes[d.target - 1].mark;
+                        else
+                            newLinks.push({
+                                source: d.source,
+                                target: scope.nodes[d.target - 1].mark
+                            });
+                    }
+                });
+                
+                scope.newId = scope.nodes.map(function (d) {
+                    return scope.nodes[d.mark - 1].orNodeId;
+                });
+
+                var newNodes = [];
+                scope.nodes.forEach(function (d) {
+                    if (d.type == 'OR') {
+                        newNodes.push({
+                            id: d.orNodeId,
+                            originalId: d.id,
+                            info: d.info
+                        });
+                    }
+                });
+                newLinks.forEach(function (d) {
+                    d.source = scope.newId[d.source - 1];
+                    d.target = scope.newId[d.target - 1];
+                });
+
+                // path
+                if (scope.paths) {
+                    scope.paths = scope.paths.map(function (path) {
+                       return $.unique(path.map(function (d) {
+                           return scope.newId[d - 1];
+                       }));
+                    });
+                }
+                // pro
+                if (scope.probabilities) {
+                    scope.probabilities = newNodes.map(function (d) {
+                        return scope.probabilities[d.originalId - 1];
+                    });
+                }
+
+                newNodes.forEach(function (d) {
+                    if (d.info.indexOf('attackerLocated') >= 0)
+                        d.type = 'LEAF';
+                    else d.type = 'OR';
+                });
+
+                scope.nodes = newNodes;
+                scope.links = newLinks;
+            };
         }
+    }
 }]);

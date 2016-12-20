@@ -10,7 +10,7 @@
             <p>ID: <span ng-bind="selection.id"></span></p>
             <p>Type: <span ng-bind="selection.type"></span></p>
             <p>Info: <span ng-bind="selection.info"></span></p>
-            <p>Probabilities: <span ng-bind="selection.probability"></span></p>
+            <p ng-if="selection.probability">Probabilities: <span ng-bind="selection.probability"></span></p>
         </div>
         <div ng-if="!selection" class="infobar-content">
             <p>Select an element in the visualization.</p>
