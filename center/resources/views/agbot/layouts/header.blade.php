@@ -23,6 +23,7 @@
 <script src="/js/agbot/algorithms/index.js"></script>
 <script src="/js/agbot/algorithms/algorithms-ctrl.js"></script>
 <script src="/js/agbot/algorithms/algorithm-ctrl.js"></script>
+<script src="/js/agbot/algorithms/algorithm-edit-ctrl.js"></script>
 <script src="/js/agbot/algorithms/result/index-ctrl.js"></script>
 <script src="/js/agbot/algorithms/result/info-ctrl.js"></script>
 <script src="/js/agbot/algorithms/result/tasks-ctrl.js"></script>

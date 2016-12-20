@@ -1,6 +1,11 @@
 <div class="container">
     <p class="route-path"></p>
     <div class="board">
+        <a ui-sref="algorithms.new">
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New Algorithm
+            </button>
+        </a>
         <table class="table">
             <thead>
             <tr>
@@ -21,6 +26,7 @@
                 <td>{{algorithm.inputType}}</td>
                 <td>{{algorithm.outputType}}</td>
                 <td ng-bind="algorithm.updatedTime | date:'yyyy-MM-dd HH:mm:ss'"></td>
+                <td style="vertical-align: middle;"><a ui-sref="algorithms.edit({algorithm_id:algorithm.id})" title="config"><span class="glyphicon glyphicon-cog"></span></a></td>
             </tr>
             </tbody>
         </table>
