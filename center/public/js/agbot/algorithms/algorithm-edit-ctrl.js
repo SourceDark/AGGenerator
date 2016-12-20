@@ -19,7 +19,7 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
     if ($scope.algorithm_id) {
         $http
             // api/algorithm?uri=/algorithms
-            .get(['api','algorithm?uri=','algorithms',$scope.algorithm_id].join('/'))
+            .get(['api','algorithms',$scope.algorithm_id].join('/'))
             .then(function (result) {
                 $scope.algorithm = result.data;
             });
@@ -33,7 +33,7 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
     }
 
     $http
-        .get(['api','algorithm?uri=','result-types'].join('/'))
+        .get(['api','result-types'].join('/'))
         .then(function (result) {
             $scope.resultTypes = result.data;
         });
@@ -57,7 +57,7 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
             }
             console.log($scope.dataType);
             $http
-                .post(['api','algorithm?uri=','result-types'].join('/'), $scope.dataType)
+                .post(['api','result-types'].join('/'), $scope.dataType)
                 .then(function (result) {
                     $scope.resultTypes.push($scope.dataType);
                     $scope.createResultType = false;
@@ -74,17 +74,16 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
     };
 
     $scope.submit = function () {
-        console.log($scope.algorithm);
         if ($scope.algorithm_id) {
             $http
-                .put(['api','algorithm?uri=','algorithms',$scope.algorithm_id].join('/'), $scope.algorithm)
+                .put(['api','algorithms',$scope.algorithm_id].join('/'), $scope.algorithm)
                 .then(function (result) {
                     $scope.algorithm = result.data;
                     $state.go('algorithms.index');
                 });
         }   else {
             $http
-                .post(['api', 'algorithm?uri=', 'algorithms'].join('/'), $scope.algorithm)
+                .post(['api', 'algorithms'].join('/'), $scope.algorithm)
                 .then(function (result) {
                     $scope.algorithm = result.data;
                     $state.go('algorithms.index');
