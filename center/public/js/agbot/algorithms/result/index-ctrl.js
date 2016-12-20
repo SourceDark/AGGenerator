@@ -12,7 +12,7 @@ agbotApp.config(function($stateProvider) {
                 .success(function (response)  {
                     $scope.algorithm = response;
                 });
-            $http.get('/api/algorithm?uri=/tasks/' + $stateParams.task_id)
+            $http.get('/api/tasks/' + $stateParams.task_id)
                 .success(function (response) {
                     $scope.task = response;
                 });

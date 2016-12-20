@@ -4,7 +4,7 @@ agbotApp.config(function($stateProvider) {
         url: '/algorithms',
         template: '<ui-view></ui-view>',
         controller: function($scope, $state, $http) {
-            $http.get('api/algorithm?uri=/algorithms').success(function (response) {
+            $http.get('api/algorithms').success(function (response) {
                 $scope.algorithms = response;
                 console.log(response);
             });

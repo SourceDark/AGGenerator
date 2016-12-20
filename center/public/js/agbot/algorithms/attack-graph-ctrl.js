@@ -13,8 +13,8 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
     $scope.id = $stateParams.id;
     $scope.algorithm_id = $stateParams.algorithm_id;
     var request = [
-        $http.get('/api/algorithm?uri=/algorithms/' + $scope.algorithm_id),
-        $http.get('/api/algorithm?uri=/tasks/' + $scope.id)
+        $http.get('/api/algorithms/' + $scope.algorithm_id),
+        $http.get('/api/tasks/' + $scope.id)
     ];
     $q.all(request).then( function (result) {
         if (result[0].data.type == 1) {
