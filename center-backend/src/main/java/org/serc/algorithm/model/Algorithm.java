@@ -1,6 +1,7 @@
 package org.serc.algorithm.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -12,7 +13,7 @@ public class Algorithm extends AbstractEntity {
     
     private String name;
     private String image;
-    private String description;
+    @Lob String description;
     @ManyToOne ResultType inputType;
     @ManyToOne ResultType outputType;
     

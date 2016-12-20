@@ -1,13 +1,14 @@
 package org.serc.algorithm.model;
 
 import javax.persistence.Entity;
-
-import org.serc.model.AbstractEntity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
 
 @Entity
-public class ResultType extends AbstractEntity {
+public class ResultType {
     
-    private String name;
+    @Id String name;
+    @Lob String description;
 
     public String getName() {
         return name;
@@ -15,6 +16,14 @@ public class ResultType extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 

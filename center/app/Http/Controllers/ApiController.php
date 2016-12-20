@@ -27,7 +27,6 @@ class ApiController extends Controller
         $query = $request->query();
         unset($query['uri']);
         $result = ApiService::doGet(EnvUtility::ALGORITHM_API(), $uri, $query);
-        header("Content-type: application/json");
         return response()->json($result);
     }
 
@@ -38,7 +37,6 @@ class ApiController extends Controller
         $query = $request->query();
         unset($query['uri']);
         $result = ApiService::doPOST(EnvUtility::ALGORITHM_API(), $uri, $data, $query);
-        header("Content-type: application/json");
         return response()->json($result);
     }
 
