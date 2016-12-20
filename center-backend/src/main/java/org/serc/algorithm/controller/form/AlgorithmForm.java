@@ -13,10 +13,10 @@ public class AlgorithmForm {
     private String image;
     
     @NotNull
-    private Long inputType;
+    private String inputType;
     
     @NotNull
-    private Long outputType;
+    private String outputType;
     
     public String getName() {
         return name;
@@ -34,19 +34,19 @@ public class AlgorithmForm {
         this.image = image;
     }
 
-    public Long getInputType() {
+    public String getInputType() {
         return inputType;
     }
 
-    public void setInputType(Long inputType) {
+    public void setInputType(String inputType) {
         this.inputType = inputType;
     }
 
-    public Long getOutputType() {
+    public String getOutputType() {
         return outputType;
     }
 
-    public void setOutputType(Long outputType) {
+    public void setOutputType(String outputType) {
         this.outputType = outputType;
     }
 

@@ -28,6 +28,8 @@ public class AlgorithmTask extends AbstractEntity {
     @Lob String output;
     @Lob String errorStack; // optional, then reason why status is failure
     @Enumerated Status status;
+    @ManyToOne(optional = true) ResultType inputType;
+    @ManyToOne(optional = true) ResultType outputType;
     String containerId;
     
     public Algorithm getAlgorithm() {
@@ -73,6 +75,18 @@ public class AlgorithmTask extends AbstractEntity {
     
     public void setInputTask(AlgorithmTask inputTask) {
         this.inputTask = inputTask;
+    }
+    public ResultType getInputType() {
+        return inputType;
+    }
+    public void setInputType(ResultType inputType) {
+        this.inputType = inputType;
+    }
+    public ResultType getOutputType() {
+        return outputType;
+    }
+    public void setOutputType(ResultType outputType) {
+        this.outputType = outputType;
     }
     @Override
     public String toString() {
