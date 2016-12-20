@@ -11,7 +11,7 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
         templateUrl: '/html/algorithms/algorithm_edit',
         controller: 'algorithmEditCtrl'
     });
-}]).controller('algorithmEditCtrl', ['$scope', '$stateParams', '$http', '$q', function($scope, $stateParams, $http, $q) {
+}]).controller('algorithmEditCtrl', ['$scope', '$stateParams', '$http', '$state', function($scope, $stateParams, $http, $state) {
     // console.log($stateParams.id);
     $scope.algorithm_id = $stateParams.algorithm_id;
     $scope.createResultType = false;
@@ -75,5 +75,20 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
 
     $scope.submit = function () {
         console.log($scope.algorithm);
+        if ($scope.algorithm_id) {
+            $http
+                .put(['api','algorithm?uri=','algorithms',$scope.algorithm_id].join('/'), $scope.algorithm)
+                .then(function (result) {
+                    $scope.algorithm = result.data;
+                    $state.go('algorithms.index');
+                });
+        }   else {
+            $http
+                .post(['api', 'algorithm?uri=', 'algorithms'].join('/'), $scope.algorithm)
+                .then(function (result) {
+                    $scope.algorithm = result.data;
+                    $state.go('algorithms.index');
+                });
+        }
     };
 }]);
