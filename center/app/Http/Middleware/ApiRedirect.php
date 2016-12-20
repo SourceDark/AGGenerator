@@ -23,25 +23,29 @@ class ApiRedirect
         if(strcmp(substr($uri, 0, 8), '/api/cve') == 0) {
             $host = EnvUtility::CVE_API();
             $uri = substr($uri, 8, strlen($uri) - 8);
-            $api = $host . $uri;
         } else {
             $host = EnvUtility::ALGORITHM_API();
             $uri = substr($uri, 4, strlen($uri) - 4);
-            $api = $host . $uri;
         }
+        $api = $host . $uri;
         if ($request->isMethod('get')){
             $sFile = json_decode(file_get_contents($api));
             return response()->json($sFile);
         }
 
         if ($request->isMethod('post')){
-            $data= $request->instance()->getContent();
+            $data= json_decode($request->instance()->getContent());
+            $content = http_build_query($data);
+            $content_length = strlen($content);
             $opts = array(
                 'http'=>array(
                     'method'=>"POST",
                     'ignore_errors' => true,
-                    'header'=>"Content-type: application/json; charset=utf-8",  //x-www-form-urlencoded
-                    'content' => $data
+                    'header'=>"Content-type: application/x-www-form-urlencoded\r\n".
+                                 "Content-length:".$content_length."\r\n" .
+                                 "Cookie: foo=bar\r\n" .
+                                 "\r\n",
+                    'content' => $content
                 )
             );
             $cxContext = stream_context_create($opts);
@@ -51,26 +55,27 @@ class ApiRedirect
         }
 
         if ($request->isMethod('delete')){
-            $data= $request->instance()->getContent();
-            if ($data == null){
-                $opts = array(
-                    'http'=>array(
-                        'method'=>"DELETE",
-                        'header'=>"Content-type: application/json; charset=utf-8", //x-www-form-urlencoded
-                    )
-                );
-                $cxContext = stream_context_create($opts);
-                $sFile = file_get_contents($api, false, $cxContext);
-                return response()->json($sFile);
-            }
+            $opts = array(
+                'http'=>array(
+                    'method'=>"DELETE"
+                )
+            );
+            $cxContext = stream_context_create($opts);
+            $sFile = file_get_contents($api, false, $cxContext);
+            return response()->json($sFile);
         }
 
         if ($request->isMethod('put')){
-            $data= $request->instance()->getContent();
+            $data= json_decode($request->instance()->getContent());
+            $content = http_build_query($data);
+            $content_length = strlen($content);
             $opts = array(
                 'http'=>array(
                     'method'=>"PUT",
-                    'header'=>"Content-type: application/json; charset=utf-8",  //x-www-form-urlencoded
+                    'header'=>"Content-type: application/x-www-form-urlencoded\r\n".
+                                 "Content-length:".$content_length."\r\n" .
+                                 "Cookie: foo=bar\r\n" .
+                                 "\r\n",
                     'content' => $data
                 )
             );
