@@ -1,27 +1,14 @@
 agbotApp.config(function($stateProvider) {
+    var algorithms = {
+        '3': 'bayesianNetworkCtrl'
+    };
     $stateProvider.state({
         name: 'algorithms.newAlgorithmTask',
         url: '/{algorithm_id:[0-9]+}/newTask',
-        templateUrl: 'html/algorithms/tasks/new',
-        controller: function ($scope, $http, $stateParams, $state) {
-            $scope.task = {
-                hacls: ""
-            };
-            $http.get("/api/sensors").success(function(sensors) {
-                $scope.sensors = sensors;
-            });
-
-            $scope.submit = function() {
-                $scope.task.sensors = $scope.sensors.filter(function(item) { 
-                    return item.checked; 
-                }).map(function(item) {
-                    return item.name;
-                });
-                $http.post("/api/algorithms/" + $stateParams.algorithm_id + "/tasks/generation", $scope.task)
-                .success(function() {
-                    $state.go('algorithms.algorithm', {algorithm_id: $stateParams.algorithm_id});
-                });
-            }
+        templateUrl: function ($routeParams) {
+            if (algorithms[$routeParams.algorithm_id])
+                return 'html/algorithms/algorithm_new_task/' + $routeParams.algorithm_id;
+            return 'html/algorithms/algorithm_new_task/default';
         }
     });
 });

@@ -36,6 +36,9 @@
 <script src="/js/agbot/attack_graph/attack-graph-data.js"></script>
 <script src="/js/agbot/cve/cve-ctrl.js"></script>
 
+<!-- algorithm task -->
+<script src="/js/agbot/algorithms/task/default-ctrl.js"></script>
+<script src="/js/agbot/algorithms/task/bayesian-network-ctrl.js"></script>
 
 <!-- less files -->
 <link rel="stylesheet/less" type="text/css" href="/css/lib/ng-json-viewer/jsonViewer.less"/>

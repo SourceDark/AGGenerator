@@ -45,6 +45,9 @@ Route::group(['prefix' => 'html'], function () {
         Route::get('/algorithm_edit', function() {
             return view('agbot.algorithms.algorithmEdit');
         });
+        Route::get('/algorithm_new_task/{id}', function($id) {
+            return view('agbot.algorithms.task.'.$id);
+        });
         Route::get('/result', function() {
             return view('agbot.algorithms.result.index');
         });
