@@ -131,20 +131,21 @@ agbotApp.directive('attackGraph', [function () {
                     // .filter(function (d) {
                     //     return scope.nodes[d.source-1].type != 'LEAF' && scope.nodes[d.target-1].type != 'LEAF';
                     // })
-                    .append("path")
-                    .attr('d', function (d) {
-                        //x*cosA-y*sinA  x*sinA+y*cosA
-                        var _x = scope.nodes[d.target-1].x - scope.nodes[d.source-1].x;
-                        var _y = scope.nodes[d.target-1].y - scope.nodes[d.source-1].y;
-                        var newX = (_x * Math.cos(0.785) - _y * Math.sin(0.785)) / Math.sqrt(2);
-                        var newY = (_x * Math.sin(0.785) + _y * Math.cos(0.785)) / Math.sqrt(2);
-                        return "M" +  scope.nodes[d.source-1].x + ' ' + scope.nodes[d.source-1].y + 'S' + (scope.nodes[d.source-1].x + newX) + ' ' + (scope.nodes[d.source-1].y + newY) + ' ' + scope.nodes[d.target-1].x + ' ' + scope.nodes[d.target-1].y;
-                    })
-                    .attr('fill', 'none');
-                    // .attr("x1", function(d) { return scope.nodes[d.source-1].x; })
-                    // .attr("y1", function(d) { return scope.nodes[d.source-1].y; })
-                    // .attr("x2", function(d) { return scope.nodes[d.target-1].x; })
-                    // .attr("y2", function(d) { return scope.nodes[d.target-1].y; });
+                    .append("line")
+                    // .attr('d', function (d) {
+                    //     return "M" +  scope.nodes[d.source-1].x + ' ' + scope.nodes[d.source-1].y + 'L' + scope.nodes[d.target-1].x + ' ' + scope.nodes[d.target-1].y;
+                    //     //x*cosA-y*sinA  x*sinA+y*cosA
+                    //     var _x = scope.nodes[d.target-1].x - scope.nodes[d.source-1].x;
+                    //     var _y = scope.nodes[d.target-1].y - scope.nodes[d.source-1].y;
+                    //     var newX = (_x * Math.cos(0.785) - _y * Math.sin(0.785)) / Math.sqrt(2);
+                    //     var newY = (_x * Math.sin(0.785) + _y * Math.cos(0.785)) / Math.sqrt(2);
+                    //     return "M" +  scope.nodes[d.source-1].x + ' ' + scope.nodes[d.source-1].y + 'S' + (scope.nodes[d.source-1].x + newX) + ' ' + (scope.nodes[d.source-1].y + newY) + ' ' + scope.nodes[d.target-1].x + ' ' + scope.nodes[d.target-1].y;
+                    // })
+                    // .attr('fill', 'none');
+                    .attr("x1", function(d) { return scope.nodes[d.source-1].x; })
+                    .attr("y1", function(d) { return scope.nodes[d.source-1].y; })
+                    .attr("x2", function(d) { return scope.nodes[d.target-1].x; })
+                    .attr("y2", function(d) { return scope.nodes[d.target-1].y; });
 
                 //<path d="M10 10L90 90" stroke="#000000" style="stroke-width: 5px;"></path>
 

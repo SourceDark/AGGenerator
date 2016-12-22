@@ -22,12 +22,13 @@
         <div class="form-group">
             <label for="result_id" class="col-sm-2 control-label">Output Type</label>
             <div class="col-sm-10">
-                <topology-event-graph nodes="nodes" links="links" node-selected="nodeSelected"></topology-event-graph>
+                <div ng-hide="ready" style="margin-top: 7px;">Loading Topology Graph ...</div>
+                <topology-event-graph ng-show="ready" ready="ready" node-selected="nodeSelected"></topology-event-graph>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-10 col-sm-offset-2">
-                <button type="submit" class="btn btn-default" ng-click="submit()" ng-disabled="bayesForm.$invalid">Submit</button>
+                <button type="submit" class="btn btn-default" ng-click="submit()" ng-disabled="bayesForm.$invalid || sending">Submit</button>
             </div>
         </div>
     </form>
