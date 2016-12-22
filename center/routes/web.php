@@ -14,6 +14,12 @@
 Blade::setContentTags('<%', '%>');
 Blade::setEscapedContentTags('<%%', '%%>');
 
+
+Route::get('ip', function() {
+    $ip = $_SERVER["REMOTE_ADDR"];
+    echo $ip;
+});
+
 /**
  * This part of router is for providing html fragments
  */

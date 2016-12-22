@@ -15,13 +15,13 @@ angular.module('agbotApp')
 			],
 			links: [
 				{'source': 'PKU School Network', 'target': 'Switch 1', value: 1},
-				{'source': 'Switch 1', 'target': 'xr-test', value: 1}
+				{'source': 'Switch 1', 'target': 'xr_test', value: 1}
 			]
 		};
 		
 		$scope.options = {
 			distance: 200,
-			charge  : -1000
+			charge  : -100
 		};
 
 		function getNode(id) {
@@ -36,13 +36,15 @@ angular.module('agbotApp')
 
 		$http.get("/api/sensors").success(function(sensors) {
 			sensors.forEach(function(sensor) {
+				sensor['name'] = sensor['name'].replace(/-/g, '_').replace(/\./g, '_');
 				var sensorNode = getNode(sensor['name']);
 				if(!sensorNode) {
 					sensorNode = {'id': sensor['name'], 'type': 'sensor', 'size': 20, 'ips': [sensor['ip']]};
 					$scope.graph.nodes.push(sensorNode);
 				} 
 				sensor.hosts.forEach(function(host) {
-					host['nodeId'] = sensor['name'] + '-' + host['host_ip'];
+					host['nodeId'] = sensor['name'] + '-' + host['ip'];
+					host['nodeId'] = host['nodeId'].replace(/-/g, '_').replace(/\./g, '_');
 					$scope.graph.nodes.push({'id': host['nodeId'], 'type': 'host', 'size': 20, 'reports': host.reports});
 					$scope.graph.links.push({'source': sensor['name'], 'target': host['nodeId'], value: 1});
 				});
