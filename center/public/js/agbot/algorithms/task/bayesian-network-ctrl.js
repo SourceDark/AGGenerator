@@ -10,6 +10,7 @@ agbotApp
 
         $scope.resultCache = {};
         $scope.noResultFlag = true;
+        $scope.nodeSelected = [];
 
         $q
             .all([$http.get(['api','algorithms'].join('/')), $http.get(['api','algorithms', $stateParams.algorithm_id].join('/'))])
@@ -60,6 +61,7 @@ agbotApp
                 })
             };
             console.log(data);
+
             $http
                 .post(['api','algorithms', $stateParams.algorithm_id,'tasks'].join('/'), {
                     input: JSON.stringify(data)
@@ -67,7 +69,7 @@ agbotApp
                 .success(function (data) {
                     console.log(data);
                     $scope.sending = false;
-                    $state.go('algorithms.algorithm({algorithm_id:'+$stateParams.algorithm_id+'})');
+                    window.location.href='/#/algorithms/3';
                 })
                 .error(function (data) {
                     $scope.sending = false;
