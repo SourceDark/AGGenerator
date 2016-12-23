@@ -12,21 +12,38 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
     // console.log($stateParams.id);
     $scope.id = $stateParams.id;
     $scope.algorithm_id = $stateParams.algorithm_id;
-    var request = [
-        $http.get('/api/algorithms/' + $scope.algorithm_id),
-        $http.get('/api/tasks/' + $scope.id)
-    ];
-    $q.all(request).then( function (result) {
-        if (result[0].data.type == 1) {
-            $scope.analysis = JSON.parse(result[1].data.output);
-            $http.get(['api','algorithms',$scope.analysis.input.algorithm_id,'results',$scope.analysis.input.result_id].join('/'))
-                .then(function (result) {
-                    $scope.nodes = JSON.parse(result.data.output).nodes;
-                    $scope.links = JSON.parse(result.data.output).edges;
-                });
-        }   else {
-            $scope.nodes = JSON.parse(result[1].data.output).nodes;
-            $scope.links = JSON.parse(result[1].data.output).edges;
-        }
-    });
+
+    if ($scope.algorithm_id == 3) {
+        $http
+            .get(['api', 'tasks', $stateParams.id].join('/'))
+            .success(function (data) {
+                $scope.input = JSON.parse(data.input);
+                $scope.analysis = JSON.parse(JSON.parse(data.output).result);
+                $http
+                    .get(['api', 'tasks', $scope.input.result_id].join('/'))
+                    .success(function (data) {
+                        $scope.nodes = JSON.parse(data.output).nodes;
+                        $scope.links = JSON.parse(data.output).edges;
+                    })
+            });
+    }
+    else {
+        var request = [
+            $http.get('/api/algorithms/' + $scope.algorithm_id),
+            $http.get('/api/tasks/' + $scope.id)
+        ];
+        $q.all(request).then(function (result) {
+            if (result[0].data.type == 1) {
+                $scope.analysis = JSON.parse(result[1].data.output);
+                $http.get(['api', 'algorithms', $scope.analysis.input.algorithm_id, 'results', $scope.analysis.input.result_id].join('/'))
+                    .then(function (result) {
+                        $scope.nodes = JSON.parse(result.data.output).nodes;
+                        $scope.links = JSON.parse(result.data.output).edges;
+                    });
+            } else {
+                $scope.nodes = JSON.parse(result[1].data.output).nodes;
+                $scope.links = JSON.parse(result[1].data.output).edges;
+            }
+        });
+    }
 }]);

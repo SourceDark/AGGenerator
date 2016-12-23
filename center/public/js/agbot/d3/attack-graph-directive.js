@@ -14,6 +14,7 @@ agbotApp.directive('attackGraph', [function () {
         },
         templateUrl: 'html/algorithms/attack_graph_template',
         link: function (scope, element, attrs) {
+
             var height = window.innerHeight - 51;
             var width  = window.innerWidth -  256;
 
@@ -40,10 +41,12 @@ agbotApp.directive('attackGraph', [function () {
                     scope.paths = scope.infomation.PathList;
                 if (scope.infomation && scope.infomation.probabilities)
                     scope.probabilities = scope.infomation.probabilities;
+                if (scope.infomation && scope.infomation.attacked)
+                    scope.attacked = scope.infomation.attacked;
                 if (scope.originalNodes && scope.originalLinks) {
                     scope.nodes = angular.copy(scope.originalNodes);
                     scope.links = angular.copy(scope.originalLinks);
-                    // scope.simplify();
+                    scope.simplify();
                     scope.drawGraph();
                 }
             });
@@ -113,6 +116,15 @@ agbotApp.directive('attackGraph', [function () {
                     for (var i = 1; i <= scope.nodes.length; ++i) {
                         scope.nodes[i - 1].probability = scope.probabilities[i - 1];
                     }
+                }
+
+
+                if (scope.attacked) {
+                    scope.attacked.forEach(function (id) {
+                        scope.nodes.forEach(function (d) {
+                            if (d.id == id) d.attacked = true;
+                        });
+                    });
                 }
 
                 scope.getColor = function (d) {
@@ -205,6 +217,16 @@ agbotApp.directive('attackGraph', [function () {
                     .attr('xlink:href', function (d) {
                         return '#' + (d.type == 'LEAF' ? 'leaf' : 'nonleaf') + '_inner';
                     });
+                // add attacked
+                if (scope.attacked)
+                    scope.node
+                        .filter(function (d) {
+                            return d.attacked;
+                        })
+                        .append('text')
+                        .attr('y', 20)
+                        .attr('class', 'attacked')
+                        .text('!');
 
                 // init position
                 var gHeight = (maxLv * (scope.r + scope.gap) - scope.gap) * 2;
@@ -302,6 +324,12 @@ agbotApp.directive('attackGraph', [function () {
                     scope.probabilities = newNodes.map(function (d) {
                         return scope.probabilities[d.originalId - 1];
                     });
+                }
+                // attacked
+                if (scope.attacked) {
+                    scope.attacked = $.unique(scope.attacked.map(function (d) {
+                        return scope.newId[d - 1];
+                    }));
                 }
 
                 newNodes.forEach(function (d) {
