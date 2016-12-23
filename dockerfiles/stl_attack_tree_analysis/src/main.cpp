@@ -46,10 +46,9 @@ template<class T> string itos(T i) {
 	return ret;
 }
 
-class Edge;
+class edge;
 class PathList;
 
-/*
 class node {
 public:
 	int no;
@@ -73,56 +72,20 @@ public:
 		str += "," + itos<int>(value);	
 		return str;
 	}
-};*/
-
-class GraphNode{
-public:
-	Edge *link;
-	int status;
-	GraphNode() {
-		link = NULL;
-		status = 0;
-	}
 };
 
-class Node : public GraphNode {
+class edge {
 public:
-	int id;
-	string nodeType;
-	//
-	Node():GraphNode() {}
-	Node(const Value& dnode):GraphNode() {
-		id = stoi<int>(string(dnode["id"].GetString()).c_str());
-		nodeType = dnode["nodeType"].GetString();
-	}
+	node *src;
+	node *dst;
+	edge *next;
+	edge(node *src_, node *dst_, edge *next_):src(src_), dst(dst_), next(next_) {}
 };
 
-class AttackerNode : public Node {
-public:
-	AttackerNode(const Value& dnode):Node(dnode) {}
-};
-
-class PrivilegeNode : public Node {
-public:
-	bool goal;
-	PrivilegeNode(const Value& dnode):Node(dnode) {
-		goal = dnode["goal"].GetBool();
-	}
-};
-
-class Edge {
-public:
-	Node *src;
-	Node *dst;
-	Edge *next;
-	Edge(Node *src_, Node *dst_, Edge *next_):src(src_), dst(dst_), next(next_) {}
-};
-
-/*
 class Path {
 public:
-	set<Node *> nodes;
-	Path(int size = 0, Node *t = NULL) {
+	set<node *> nodes;
+	Path(int size = 0, node *t = NULL) {
 		if (size > 0) nodes.insert(t);
 	}
 	void push(node *t) {
@@ -190,10 +153,9 @@ public:
 		}
 		ouf << ']';
 	}
-};*/
+};
 
-map<int, Node*> nodes;
-vector<Node *> attackers;
+map<int, node> nodes;
 
 void throw_error(string str) {
 	ofstream erf(error_file);
@@ -205,8 +167,8 @@ void throw_error(string str) {
 void input() {
 	// Read json-string from input
 	ifstream inf(input_file);
-	string jsonString, str;
-	while (getline(inf, str)) jsonString += str;
+	string jsonString;
+	getline(inf, jsonString);
 	inf.close();
 		
 	// Parse object from json-string
@@ -227,19 +189,12 @@ void input() {
 	n = dnodes.Size();
 	for (int i = 0; i < n; i++) {
 		const Value& dnode = dnodes[i];
-		Node *node;
-		string nodeType = dnode["nodeType"].GetString();
-		if (nodeType == "attacker") {
-			node = new Node(dnode);
-			attackers.push_back(node);
-		}
-		else if (nodeType == "privilege") {
-			node = new PrivilegeNode(dnode);	
-		}
-		else {
-			node = new Node(dnode);
-		}
-		nodes[node -> id] = node;
+		node new_node;
+		new_node.no = stoi<int>(string(dnode["id"].GetString()).c_str());
+		new_node.des = dnode["info"].GetString();
+		new_node.type = dnode["type"].GetString();
+		new_node.value = stoi<int>(string(dnode["initial"].GetString()).c_str());
+		nodes[new_node.no] = new_node;
 	}
 	if (!d.HasMember("edges")) {
 		throw_error("Input \"Nodes\" Not Found.");
@@ -251,29 +206,21 @@ void input() {
 	m = dedges.Size();
 	for (int i = 0; i < m; i++) {
 		const Value& dedge = dedges[i];
-		int src = stoi<int>(string(dedge["source"].GetString()).c_str());
-		int dst = stoi<int>(string(dedge["target"].GetString()).c_str());
-		nodes[src] -> link = new Edge(nodes[src], nodes[dst], nodes[src] -> link);
+		int src = stoi<int>(string(dedge["target"].GetString()).c_str());
+		int dst = stoi<int>(string(dedge["source"].GetString()).c_str());
+		nodes[src].link = new edge(&nodes[src], &nodes[dst], nodes[src].link);
 	}
-	cout << "Parsed " << n << " nodes and " << m << " edges" << endl;
-	cout << attackers.size() << " attacker detected:" << endl;
-	for (vector<Node*>::iterator it = attackers.begin(); it != attackers.end(); it ++) {
-		Node *node = *it;
-		if (it != attackers.begin()) cout << ',';
-		cout << node -> id;
-	}
-	cout << endl;
 }
 
-/*
 PathList* search(node *t) {
+	//cout << t -> no << endl;
+	//cout << t -> no << ' ' << t -> type << endl;
 	if (t -> status == 2) {
 		return t -> pl;
 	}
 	if (t -> status == 1) {
 		return new PathList();
 	}
-	cout << t -> no << ' ' << t -> type << endl;
 	t -> status = 1;
 	PathList *pl = new PathList();
 	if (t -> type == "LEAF") {
@@ -298,44 +245,12 @@ PathList* search(node *t) {
 	t -> pl = pl;
 	t -> status = 2;
 	return t -> pl;
-}*/
-
-bool first = true;
-void search(Node *node, vector<Node *> &path, ofstream &ouf) {
-	//cout << node -> id << endl;
-	if (node -> nodeType == "privilege") {
-		PrivilegeNode *pnode = (PrivilegeNode *) node;
-		if (pnode -> goal) {
-			if (!first) ouf << ',';
-			else first = false;
-			ouf << '[';
-			for (int i = 0; i < path.size(); i++) {
-				if (i != 0) ouf << ',';
-				ouf << path[i] -> id;
-			}
-			ouf << ']';
-			return;	
-		}
-	}
-	for (Edge *edge = node -> link; edge != NULL; edge = edge -> next) if (edge -> dst -> status == 0) {
-		//cout << edge -> src -> id << ' ' << edge -> dst -> id << endl;
-		path.push_back(edge -> dst); edge -> dst -> status = 1;
-		search(edge -> dst, path, ouf);
-		path.pop_back(); edge -> dst -> status = 0;
-	}
 }
 
 void analysis() {
+	PathList *pl = search(&nodes[1]);
 	ofstream ouf(output_file);
-	ouf << '[';
-	for (vector<Node*>::iterator it = attackers.begin(); it != attackers.end(); it ++) {
-		Node *node = *it; 
-		vector<Node *> path(1, node);
-		node -> status = 1;
-		search(node, path, ouf);
-		node -> status = 0;
-	}
-	ouf << ']';
+	pl -> output(ouf);
 	ouf.close();
 }
 

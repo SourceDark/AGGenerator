@@ -3,7 +3,7 @@
     <div class="board">
         <div class="tag-list">
             <div class="tag" ui-sref="algorithms.result.info" ui-sref-active="active">Info</div>
-            <div class="tag" ng-if="algorithm.type == 0" ui-sref="algorithms.result.tasks" ui-sref-active="active">Tasks</div>
+            <div class="tag" ui-sref="algorithms.result.tasks" ui-sref-active="active">Tasks</div>
             <div class="tag hide" ui-sref="algorithms.result.newTask" ui-sref-active="active">Export</div>
         </div>
         <ui-view>
