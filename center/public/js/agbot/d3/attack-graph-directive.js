@@ -43,7 +43,7 @@ agbotApp.directive('attackGraph', [function () {
                 if (scope.originalNodes && scope.originalLinks) {
                     scope.nodes = angular.copy(scope.originalNodes);
                     scope.links = angular.copy(scope.originalLinks);
-                    scope.simplify();
+                    // scope.simplify();
                     scope.drawGraph();
                 }
             });

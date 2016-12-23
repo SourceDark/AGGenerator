@@ -42,7 +42,7 @@
             </div>
         </div>
     </form>
-    <hr />
+    <hr  ng-if="createResultType" />
     <form name="resultTypeForm" ng-if="createResultType" class="form-horizontal" role="form">
         <h4>Create Result Type</h4>
         <div class="form-group">

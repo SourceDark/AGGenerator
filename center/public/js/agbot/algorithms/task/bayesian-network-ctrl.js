@@ -52,14 +52,17 @@ agbotApp
             var data = {
                 algorithm_id: $scope.task.algorithm_id,
                 result_id: $scope.task.result_id,
-                attacked: $scope.nodeSelected.map(function (id) {
-                    return id.replace(/\n/g, '');
+                attacked: $scope.nodeSelected.map(function (node) {
+                    return {
+                        id: node.id.replace(/\n/g, ''),
+                        authority: node.authority
+                    }
                 })
             };
             console.log(data);
             $http
                 .post(['api','algorithms', $stateParams.algorithm_id,'tasks'].join('/'), {
-                    input: data
+                    input: JSON.stringify(data)
                 })
                 .success(function (data) {
                     console.log(data);
@@ -167,12 +170,13 @@ agbotApp
                         .attr('class', 'node')
                         .on('click', function (d) {
                             if (d.type != 'host') return ;
+                            if (!d.authority) d.authority = '1';
                             d.selected = !d.selected;
                             d3.select(this).classed('selected', d.selected);
                             scope.selected = scope.nodes.filter(function (node) {
                                 return node.selected;
                             }).map(function (node) {
-                                return node.id;
+                                return node;
                             });
                             scope.$apply();
                         }).call(d3.drag()

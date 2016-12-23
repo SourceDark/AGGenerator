@@ -20,10 +20,37 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="result_id" class="col-sm-2 control-label">Output Type</label>
+            <label for="result_id" class="col-sm-2 control-label">Topology Graph</label>
             <div class="col-sm-10">
                 <div ng-hide="ready" style="margin-top: 7px;">Loading Topology Graph ...</div>
                 <topology-event-graph ng-show="ready" ready="ready" node-selected="nodeSelected"></topology-event-graph>
+            </div>
+        </div>
+        <div class="form-group" ng-if="nodeSelected.length">
+            <label for="result_id" class="col-sm-2 control-label">Authority</label>
+            <div class="col-sm-10">
+                <table class="table">
+                    <thead>
+                        <th>Host ID</th>
+                        <th>Authority</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="host in nodeSelected">
+                            <td ng-bind="host.id"></td>
+                            <td>
+                                <label class="radio-inline">
+                                    <input type="radio" name="{{host.id}}-authority-level" value="1" ng-model="host.authority" />Root
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="{{host.id}}-authority-level" value="2" ng-model="host.authority" />User
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="{{host.id}}-authority-level" value="3" ng-model="host.authority" />NetAccess
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="form-group">
