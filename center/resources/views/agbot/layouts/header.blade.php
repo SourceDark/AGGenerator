@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/css/lib/bootstrap/bootstrap.min.css"/>
 <script src="/js/lib/bootstrap/bootstrap.min.js"></script>
 <script src="/js/lib/angular/ui-bootstrap-tpls-1.3.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/lib/font-awesome/css/font-awesome.min.css"/>
 
 <!-- js files -->
 <script src="/js/agbot/agbot.js"></script>

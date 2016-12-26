@@ -1,6 +1,6 @@
 <html ng-app="agbotApp">
 <head>
-    <title>AGBot</title>
+    <title>REBOT</title>
     @include('agbot.layouts.header')
 </head>
 <body id="agbot">

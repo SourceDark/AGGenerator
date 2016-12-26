@@ -3,7 +3,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="padding-left: 1px;">
             <ul class="nav navbar-nav navbar-left">
                 <li class="logo left" style="padding-left: 0px;">
-                    <div class="logo-text">AGBOT</div>
+                    <div class="logo-text">REBOT</div>
                 </li>
                 <li><div class="line"></div></li>
                 <li><a href="" ui-sref="algorithms.index" ng-class="{active: inState('algorithms')}">Algorithms</a></li>
