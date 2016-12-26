@@ -12,14 +12,14 @@
             <div class="display info" ng-if="algorithms != null && algorithms != 0 && algorithms.length == 0">No algorithm exists.</div>
             <table class="table" ng-if="algorithms != null  && algorithms != 0 && algorithms.length > 0">
                 <thead>
-                <tr>
-                    <td>#</td>
-                    <td>Name</td>
-                    <td>Image</td>
-                    <td>Input Type</td>
-                    <td>Output Type</td>
-                    <td>Updated At</td>
-                </tr>
+                    <tr>
+                        <td>#</td>
+                        <td>Name</td>
+                        <td>Image</td>
+                        <td>Input Type</td>
+                        <td>Output Type</td>
+                        <td>Updated At</td>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="algorithm in algorithms">
