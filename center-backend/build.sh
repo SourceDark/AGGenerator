@@ -1,1 +1,2 @@
-docker build -t 192.168.200.151:9995/serc/agbot:center-backend .
+mvn clean install 
+docker build -t serc/agbot:center-backend .
