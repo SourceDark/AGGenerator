@@ -18,6 +18,8 @@ public class AlgorithmForm {
     @NotNull
     private String outputType;
     
+    private String description;
+    
     public String getName() {
         return name;
     }
@@ -48,6 +50,14 @@ public class AlgorithmForm {
 
     public void setOutputType(String outputType) {
         this.outputType = outputType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

@@ -14,6 +14,9 @@ import org.serc.exception.ActionForbiddenException;
 import org.serc.network.model.Sensor;
 import org.serc.network.support.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +40,10 @@ public class AlgorithmTaskController {
     private ObjectMapper objectMapper;
     
     @GetMapping("")
-    public List<AlgorithmTaskListDto> tasks(@PathVariable Algorithm algorithm) {
-        return algorithmService.findByAlgorithm(algorithm).stream().map(AlgorithmTaskListDto::new).collect(Collectors.toList());
+    public List<AlgorithmTaskListDto> tasks(@PathVariable Algorithm algorithm,
+            @PageableDefault(sort = "createdTime", direction = Direction.DESC) Pageable pageable) {
+        return algorithmService.getTasksByAlgorithm(algorithm, pageable).getContent().stream()
+                .map(AlgorithmTaskListDto::new).collect(Collectors.toList());
     }
 
     @PostMapping("")

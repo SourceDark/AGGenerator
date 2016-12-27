@@ -7,6 +7,8 @@ import org.serc.algorithm.model.AlgorithmTask;
 import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.algorithm.service.AlgorithmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.github.dockerjava.api.DockerClient;
@@ -21,8 +23,13 @@ public class AlgorithmServiceImpl implements AlgorithmService {
     @Autowired DockerClient dockerClient;
     
     @Override
-    public List<AlgorithmTask> findByAlgorithm(Algorithm algorithm) {
-        return taskRepository.findByAlgorithm(algorithm);
+    public Page<AlgorithmTask> getTasksByAlgorithm(Algorithm algorithm, Pageable pageable) {
+        return taskRepository.findByAlgorithm(algorithm, pageable);
+    }
+    
+    @Override
+    public Page<AlgorithmTask> getTasks(Pageable pageable) {
+        return taskRepository.findAll(pageable);
     }
     
     @Override
