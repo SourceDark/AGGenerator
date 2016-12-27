@@ -2,7 +2,6 @@ package org.serc.algorithm.controller;
 
 import org.serc.algorithm.controller.dto.AlgorithmTaskDto;
 import org.serc.algorithm.controller.dto.AlgorithmTaskListDto;
-import org.serc.algorithm.model.Algorithm;
 import org.serc.algorithm.model.AlgorithmTask;
 import org.serc.algorithm.support.AlgorithmServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,7 @@ public class TaskController {
     }
     
     @GetMapping("")
-    public Page<AlgorithmTaskListDto> tasks(@PathVariable Algorithm algorithm, 
-            @PageableDefault(sort = "createdTime", direction = Direction.DESC) Pageable pageable) {
+    public Page<AlgorithmTaskListDto> tasks(@PageableDefault(sort = "createdTime", direction = Direction.DESC) Pageable pageable) {
         return algorithmTaskService.getTasks(pageable).map(AlgorithmTaskListDto::new);
     }
 }
