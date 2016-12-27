@@ -3,20 +3,30 @@ agbotApp.config(function($stateProvider) {
         name: 'algorithms',
         url: '/algorithms',
         template: '<ui-view></ui-view>',
-        controller: function($scope, $state, $http) {
-            $http.get('api/algorithms').success(function (response) {
-                $scope.algorithms = response;
-                console.log(response);
-            });
+        controller: function ($scope, $state) {
+            // Auto router
             if ($state.current.name == 'algorithms') {
                 $state.go('algorithms.index');
             }
         }
     });
+});
+
+agbotApp.config(function($stateProvider) {
     $stateProvider.state({
         name: 'algorithms.index',
         url: '/',
-        templateUrl: 'html/algorithms'
+        templateUrl: 'html/algorithms',
+        controller: function ($scope, $http) {
+            $scope.algorithms = null;
+            $http.get('api/algorithms')
+                .success(function(response) {
+                    $scope.algorithms = response;
+                })
+                .error(function(response) {
+                    $scope.algorithms = 0;
+                });
+        }
     });
     $stateProvider.state({
         name: 'algorithms.algorithm',

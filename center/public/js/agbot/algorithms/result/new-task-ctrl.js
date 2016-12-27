@@ -4,14 +4,13 @@ agbotApp.config(function($stateProvider) {
         url: '/export',
         templateUrl: 'html/algorithms/result/newTask',
         controller: function ($scope, $http, $state, $stateParams, jsonViewerService) {
-            console.log($scope.algorithms);
+            $http.get('api/algorithms').success(function (response) {
+                $scope.algorithms = response;
+            });
             $scope.export = function($analysis_algorithm_id) {
+                console.log($analysis_algorithm_id);
                 $http
-                    .post('/api/algorithms/' + $scope.algorithm_id + '/results/' + $scope.task_id + '/analysis',
-                        {
-                            analysis_algorithm_id: $analysis_algorithm_id
-                        }
-                    )
+                    .post('/api/algorithms/' + $analysis_algorithm_id + '/tasks/' + $scope.task_id + '/analysis', {})
                     .success(function(response) {
                         $state.go('algorithms.result.tasks');
                     });
