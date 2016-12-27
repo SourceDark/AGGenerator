@@ -6,6 +6,7 @@ import org.serc.algorithm.support.AlgorithmServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,11 @@ public class TaskController {
     
     @Autowired
     private AlgorithmServiceImpl algorithmTaskService;
+    
+    @PostMapping("/{task}/rerun")
+    public AlgorithmTaskDto rerun(@PathVariable AlgorithmTask task) {
+        return new AlgorithmTaskDto(algorithmTaskService.run(task.getAlgorithm(), task.getInput()));
+    }
     
     @GetMapping("/{task}")
     public AlgorithmTaskDto getOne(@PathVariable AlgorithmTask task) {

@@ -22,7 +22,7 @@ public class ReaderJSON {
 		BufferedWriter writer = null;
 		try{
 			file = new File("inputfile");
-			JsonObject json = (JsonObject)parser.parse(new FileReader("input"));
+			JsonObject json = (JsonObject)parser.parse(new FileReader("/data/input"));
 			String content = json.get("content").getAsString();
 			JsonObject cont = parser.parse(content).getAsJsonObject();
 			//System.out.println(cont.nodes.length);

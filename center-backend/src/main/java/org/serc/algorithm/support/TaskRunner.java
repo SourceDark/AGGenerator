@@ -2,6 +2,8 @@ package org.serc.algorithm.support;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.serc.ApplicationContext;
@@ -12,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Bind;
 import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
+import com.google.common.collect.Maps;
 
 @Component
 public class TaskRunner {
@@ -24,6 +28,7 @@ public class TaskRunner {
     private static final String INPUT_NAME = "input";
     private static final String OUTPUT_NAME = "output";
     private static final String ERROR_NAME = "error";
+    private static final String API_NAME = "api";
     
     @Autowired
     protected DockerClient dockerClient;
@@ -56,6 +61,16 @@ public class TaskRunner {
         File dataDir = new File(ApplicationContext.getDataDir(), "tasks/" + task.getId());
         dataDir.mkdir();
         FileUtils.writeStringToFile(new File(dataDir, INPUT_NAME), task.getInput(), "UTF-8");
+        
+        Map<String, Map<String, String>> api = Maps.newHashMap();
+        Map<String, String> hostApi = Maps.newHashMap();
+        hostApi.put("center_api", ApplicationContext.centerApi);
+        hostApi.put("cve_api", ApplicationContext.cveApi);
+        api.put("host", hostApi);
+        ObjectMapper objectMapper = new ObjectMapper();
+        StringWriter inputWriter= new StringWriter();
+        objectMapper.writeValue(inputWriter, api);
+        FileUtils.write(new File(dataDir, API_NAME), inputWriter.toString(), "UTF-8");
         return dataDir;
     }
     
@@ -92,6 +107,9 @@ public class TaskRunner {
     }
     
     private void afterRun(AlgorithmTask task, File dataDir) {
+        if(ApplicationContext.debug) {
+            return;
+        }
         dockerClient.removeContainerCmd(task.getContainerId()).withRemoveVolumes(true).exec();
         FileUtils.deleteQuietly(dataDir);
     }

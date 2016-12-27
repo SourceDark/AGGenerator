@@ -57,12 +57,15 @@ public class AlgorithmTaskController {
         return new AlgorithmTaskDto(algorithmService.run(algorithm, inputWriter.toString()));
     }
     
-    @PostMapping("/tasks/{task}/analysis")
-    public AlgorithmTaskDto run(@PathVariable Algorithm algorithm, AlgorithmTask task) throws Exception {
-        if(!algorithm.getInputType().getName().equals("attack_graph")) {
-            throw new ActionForbiddenException(String.format("%s is not a generation algorithm", algorithm.getName()));
-        }
-        return new AlgorithmTaskDto(algorithmService.run(algorithm, task));
+    @PostMapping("/{algorithmTask}/analysis")
+    public AlgorithmTaskDto analysis(@PathVariable Algorithm algorithm, @PathVariable AlgorithmTask algorithmTask) throws Exception {
+        System.out.println("-----");
+        System.out.println(algorithmTask.getId());
+        System.out.println("-----");
+//        if(!algorithm.getInputType().getName().equals(task.getOutputType().getName())) {
+//            throw new ActionForbiddenException(String.format("%s is not a generation algorithm", algorithm.getName()));
+//        }
+        return new AlgorithmTaskDto(algorithmService.run(algorithm, algorithmTask));
     }
     
 }

@@ -14,7 +14,9 @@ import org.serc.algorithm.support.ResultTypeRepository;
 import org.serc.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +40,7 @@ public class AlgorithmController {
     @PostMapping("")
     public AlgorithmDto algorithm(@Valid AlgorithmForm form) {
         ResultType inputType = resultTypeRepository.findOne(form.getInputType());
-        ResultType outputType = resultTypeRepository.findOne(form.getInputType());
+        ResultType outputType = resultTypeRepository.findOne(form.getOutputType());
         if(inputType == null || outputType == null) {
             throw new ResourceNotFoundException("result type not found");
         }
@@ -48,6 +50,20 @@ public class AlgorithmController {
         algorithm.setInputType(inputType);
         algorithm.setOutputType(outputType);
         return new AlgorithmDto(algorithmService.registerAlgorithm(algorithm));
+    }
+    
+    @PutMapping("/{algorithm}")
+    public AlgorithmDto update(@PathVariable Algorithm algorithm, AlgorithmForm form) {
+        ResultType inputType = resultTypeRepository.findOne(form.getInputType());
+        ResultType outputType = resultTypeRepository.findOne(form.getOutputType());
+        if(inputType == null || outputType == null) {
+            throw new ResourceNotFoundException("result type not found");
+        }
+        algorithm.setName(form.getName());
+        algorithm.setImage(form.getImage());
+        algorithm.setInputType(inputType);
+        algorithm.setOutputType(outputType);
+        return new AlgorithmDto(algorithmService.updateAlgorithm(algorithm));
     }
 
 }
