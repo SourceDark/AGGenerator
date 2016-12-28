@@ -1,1 +1,2 @@
-<attack-graph class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph>
+<attack-graph ng-if="algorithm_id != 6" class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph>
+<attack-graph-ii ng-if="algorithm_id == 6" class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph-ii>

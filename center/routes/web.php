@@ -75,6 +75,11 @@ Route::group(['prefix' => 'html'], function () {
         Route::get('/tasks/new', function() {
             return view('agbot.algorithms.task.new');
         });
+        Route::group(['prefix' => 'visualization'], function () {
+            Route::get('/attack_graph_2', function() {
+                return view('agbot.algorithms.visualization.attackGraph2');
+            });
+        });
     });
 
     Route::get('cve/item', function () {
