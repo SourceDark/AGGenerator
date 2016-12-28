@@ -41,6 +41,10 @@
 <script src="/js/agbot/algorithms/task/default-ctrl.js"></script>
 <script src="/js/agbot/algorithms/task/bayesian-network-ctrl.js"></script>
 
+<!-- algorithm visualization -->
+<script src="/js/agbot/algorithms/visualization/attack-graph-service.js"></script>
+<script src="/js/agbot/algorithms/visualization/attack-graph-v2-directive.js"></script>
+
 <!-- less files -->
 <link rel="stylesheet/less" type="text/css" href="/css/lib/ng-json-viewer/jsonViewer.less"/>
 <link rel="stylesheet/less" type="text/css" href="/css/agbot/agbot.less"/>
