@@ -67,12 +67,14 @@ public class AlgorithmTaskController {
     }
 
     @PostMapping("")
-    public AlgorithmTaskDto run(Algorithm algorithm, String input, AlgorithmTask parentTask) throws Exception {
+    public AlgorithmTaskDto run(Algorithm algorithm, String input, 
+            @ModelAttribute("parentTask") AlgorithmTask parentTask) throws Exception {
         return new AlgorithmTaskDto(algorithmService.run(algorithm, input, parentTask));
     }
     
     @PostMapping("/generation")
-    public AlgorithmTaskDto run(Algorithm algorithm, AlgorithmGenerationTaskForm form, AlgorithmTask parentTask) throws Exception {
+    public AlgorithmTaskDto run(Algorithm algorithm, AlgorithmGenerationTaskForm form,
+            @ModelAttribute("parentTask") AlgorithmTask parentTask) throws Exception {
         if(!algorithm.getInputType().getName().equals("network")) {
             throw new ActionForbiddenException(String.format("%s is not a generation algorithm", algorithm.getName()));
         }
@@ -83,7 +85,8 @@ public class AlgorithmTaskController {
     }
     
     @PostMapping("/analysis")
-    public AlgorithmTaskDto analysis(@PathVariable Algorithm algorithm, @RequestParam("task") AlgorithmTask task, AlgorithmTask parentTask) throws Exception {
+    public AlgorithmTaskDto analysis(@PathVariable Algorithm algorithm, @RequestParam("task") AlgorithmTask task,
+            @ModelAttribute("parentTask") AlgorithmTask parentTask) throws Exception {
         return new AlgorithmTaskDto(algorithmService.run(algorithm, task, parentTask));
     }
     
