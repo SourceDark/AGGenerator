@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
 @RestController
@@ -53,9 +52,9 @@ public class AlgorithmTaskController {
     }
     
     @ModelAttribute("parentTask")
-    public AlgorithmTask algorithm(@RequestParam(required = false) Optional<Long> parentTask) {
-        if(parentTask.isPresent()) {
-            return algorithmService.getAlgorithmTask(parentTask.get());
+    public AlgorithmTask algorithm(@RequestParam(required = false) Long parentTask) {
+        if(parentTask == null) {
+            return algorithmService.getAlgorithmTask(parentTask);
         }
         return null;
     }
