@@ -4,6 +4,8 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.serc.algorithm.controller.dto.AlgorithmTaskDto;
 import org.serc.algorithm.controller.dto.AlgorithmTaskListDto;
 import org.serc.algorithm.controller.form.AlgorithmGenerationTaskForm;
@@ -73,7 +75,7 @@ public class AlgorithmTaskController {
     }
     
     @PostMapping("/generation")
-    public AlgorithmTaskDto run(Algorithm algorithm, AlgorithmGenerationTaskForm form,
+    public AlgorithmTaskDto run(Algorithm algorithm, @Valid AlgorithmGenerationTaskForm form,
             @ModelAttribute("parentTask") AlgorithmTask parentTask) throws Exception {
         if(!algorithm.getInputType().getName().equals("network")) {
             throw new ActionForbiddenException(String.format("%s is not a generation algorithm", algorithm.getName()));
