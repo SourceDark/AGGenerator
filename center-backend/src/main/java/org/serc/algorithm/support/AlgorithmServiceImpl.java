@@ -48,19 +48,20 @@ public class AlgorithmServiceImpl implements AlgorithmService {
     }
 
     @Override
-    public AlgorithmTask run(Algorithm algorithm, String input) {
+    public AlgorithmTask run(Algorithm algorithm, String input, AlgorithmTask parentTask) {
         AlgorithmTask task = new AlgorithmTask();
         task.setAlgorithm(algorithm);
         task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
         task.setInput(input);
+        task.setParentTask(parentTask);
         task = taskRepository.save(task);
         taskRunner.run(task);
         return task;
     }
     
     @Override
-    public AlgorithmTask run(Algorithm algorithm, AlgorithmTask inputTask) {
-        AlgorithmTask task = run(algorithm, inputTask.getOutput());
+    public AlgorithmTask run(Algorithm algorithm, AlgorithmTask inputTask, AlgorithmTask parentTask) {
+        AlgorithmTask task = run(algorithm, inputTask.getOutput(), parentTask);
         task.setInputTask(inputTask);
         return taskRepository.save(task);
     }
@@ -78,6 +79,20 @@ public class AlgorithmServiceImpl implements AlgorithmService {
     @Override
     public AlgorithmTask getAlgorithmTask(Long id) {
         return taskRepository.findOne(id);
+    }
+
+    @Override
+    public Algorithm findOne(String idOrName) {
+        Algorithm algorithm = algorithmRepository.findByName(idOrName);
+        if(algorithm == null) {
+            try {
+                Long id = Long.parseLong(idOrName);
+                algorithm = algorithmRepository.findOne(id);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return algorithm;
     }
 
 }

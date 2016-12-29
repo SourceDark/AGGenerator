@@ -32,8 +32,12 @@ public class AlgorithmController {
         return algorithmService.getAlgorithms().stream().map(AlgorithmDto::new).collect(Collectors.toList());
     }
     
-    @GetMapping("/{algorithm}")
-    public AlgorithmDto algorithm(Algorithm algorithm) {
+    @GetMapping("/{algorithmIdOrName}")
+    public AlgorithmDto algorithm(String algorithmIdOrName) {
+        Algorithm algorithm = algorithmService.findOne(algorithmIdOrName);
+        if(algorithm == null) {
+            throw new ResourceNotFoundException();
+        }
         return new AlgorithmDto(algorithm);
     }
     
