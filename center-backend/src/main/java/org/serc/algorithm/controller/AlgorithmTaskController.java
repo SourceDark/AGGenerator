@@ -53,7 +53,7 @@ public class AlgorithmTaskController {
     }
     
     @ModelAttribute("parentTask")
-    public AlgorithmTask algorithm(@RequestParam Optional<Long> parentTask) {
+    public AlgorithmTask algorithm(@RequestParam(required = false) Optional<Long> parentTask) {
         if(parentTask.isPresent()) {
             return algorithmService.getAlgorithmTask(parentTask.get());
         }
