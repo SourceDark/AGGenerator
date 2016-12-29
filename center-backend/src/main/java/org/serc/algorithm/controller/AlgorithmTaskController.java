@@ -87,7 +87,7 @@ public class AlgorithmTaskController {
     }
     
     @PostMapping("/analysis")
-    public AlgorithmTaskDto analysis(@PathVariable Algorithm algorithm, @RequestParam("task") AlgorithmTask task,
+    public AlgorithmTaskDto analysis(Algorithm algorithm, @RequestParam("task") AlgorithmTask task,
             @ModelAttribute("parentTask") AlgorithmTask parentTask) throws Exception {
         return new AlgorithmTaskDto(algorithmService.run(algorithm, task, parentTask));
     }
