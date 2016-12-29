@@ -48,11 +48,11 @@ public class TaskController {
     
     @PostMapping("")
     public AlgorithmTaskDto run(@Valid AlgorithmTaskForm form) {
-        Algorithm algorithm = algorithmTaskService.findOne(form.algorithm);
+        Algorithm algorithm = algorithmTaskService.findOne(form.getAlgorithm());
         AlgorithmTask parentTask = null;
-        if(form.parentTask != null) {
-            parentTask = algorithmTaskService.getAlgorithmTask(form.parentTask);
+        if(form.getParentTask() != null) {
+            parentTask = algorithmTaskService.getAlgorithmTask(form.getParentTask());
         }
-        return new AlgorithmTaskDto(algorithmTaskService.run(algorithm, form.input, parentTask));
+        return new AlgorithmTaskDto(algorithmTaskService.run(algorithm, form.getInput(), parentTask));
     }
 }
