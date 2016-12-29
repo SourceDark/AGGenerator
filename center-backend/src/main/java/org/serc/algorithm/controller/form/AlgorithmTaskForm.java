@@ -5,11 +5,35 @@ import javax.validation.constraints.NotNull;
 public class AlgorithmTaskForm {
     
     @NotNull
-    public String algorithm;
+    private String algorithm;
     
     @NotNull
-    public String input;
+    private String input;
     
-    public Long parentTask;
+    private Long parentTask;
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public String getInput() {
+        return input;
+    }
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public Long getParentTask() {
+        return parentTask;
+    }
+
+    public void setParentTask(Long parentTask) {
+        this.parentTask = parentTask;
+    }
 
 }
