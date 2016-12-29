@@ -33,7 +33,7 @@ public class AlgorithmController {
     }
     
     @GetMapping("/{algorithmIdOrName}")
-    public AlgorithmDto algorithm(String algorithmIdOrName) {
+    public AlgorithmDto algorithm(@PathVariable String algorithmIdOrName) {
         Algorithm algorithm = algorithmService.findOne(algorithmIdOrName);
         if(algorithm == null) {
             throw new ResourceNotFoundException();
