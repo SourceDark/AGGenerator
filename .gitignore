@@ -3,3 +3,7 @@
 m2
 target
 dockerfiles/ag_frontend/center
+
+.project
+.settings
+.classpath

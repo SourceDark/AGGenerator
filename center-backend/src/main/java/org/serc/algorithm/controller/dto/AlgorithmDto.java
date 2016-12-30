@@ -10,6 +10,7 @@ public class AlgorithmDto extends AbstractDto {
     private String image;
     private String inputType;
     private String outputType;
+    private String description;
     
     public AlgorithmDto() {
     }
@@ -50,6 +51,14 @@ public class AlgorithmDto extends AbstractDto {
 
     public void setOutputType(String outputType) {
         this.outputType = outputType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
