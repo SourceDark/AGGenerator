@@ -9,6 +9,7 @@
 
 <!-- js files -->
 <script src="/js/agbot/agbot.js"></script>
+<script src="/js/agbot/loading-directive.js"></script>
 <script src="/js/agbot/layouts/navbar.js"></script>
 <script src="/js/agbot/layouts/sidebar.js"></script>
 <script src="/js/agbot/d3/graph-directive.js"></script>

@@ -18,13 +18,18 @@ agbotApp.config(function($stateProvider) {
         url: '/',
         templateUrl: 'html/algorithms',
         controller: function ($scope, $http) {
+            $scope.status = 'loading';
+            $scope.empty = 'No algorithm exists.';
             $scope.algorithms = null;
             $http.get('api/algorithms')
                 .success(function(response) {
                     $scope.algorithms = response;
+                    if ($scope.algorithms.length < 1)
+                        $scope.status = 'empty';
+                    else $scope.status = 'list';
                 })
                 .error(function(response) {
-                    $scope.algorithms = 0;
+                    $scope.status = 'fail';
                 });
         }
     });
