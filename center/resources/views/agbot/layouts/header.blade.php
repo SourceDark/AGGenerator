@@ -21,7 +21,7 @@
 <script src="/js/lib/ng-json-viewer/jsonViewer.service.js"></script>
 <script src="/js/lib/ng-json-viewer/jsonViewer.directive.js"></script>
 
-<!-- -->
+<!-- Algorithms -->
 <script src="/js/agbot/algorithms/index.js"></script>
 <script src="/js/agbot/algorithms/algorithms-ctrl.js"></script>
 <script src="/js/agbot/algorithms/algorithm-ctrl.js"></script>
@@ -37,6 +37,9 @@
 <script src="/js/agbot/attack_graph/attack-graph-ctrl.js"></script>
 <script src="/js/agbot/attack_graph/attack-graph-data.js"></script>
 <script src="/js/agbot/cve/cve-ctrl.js"></script>
+
+<!-- Tasks -->
+<script src="/js/agbot/tasks/tasks-ctrl.js"></script>
 
 <!-- algorithm task -->
 <script src="/js/agbot/algorithms/task/default-ctrl.js"></script>

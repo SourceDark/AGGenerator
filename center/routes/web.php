@@ -82,6 +82,12 @@ Route::group(['prefix' => 'html'], function () {
         });
     });
 
+    Route::group(['prefix' => 'tasks'], function() {
+        Route::get('/', function() {
+            return view('agbot.tasks.tasks');
+        });
+    });
+
     Route::get('cve/item', function () {
         return view('agbot.cve.item');
     });
