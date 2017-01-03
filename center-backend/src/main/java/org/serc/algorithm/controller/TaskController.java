@@ -26,7 +26,7 @@ public class TaskController {
     @Autowired
     private AlgorithmServiceImpl algorithmTaskService;
     
-    @PostMapping("/{task}/rerun")
+    @GetMapping("/{task}/rerun")
     public AlgorithmTaskDto rerun(@PathVariable AlgorithmTask task) {
         return new AlgorithmTaskDto(algorithmTaskService.run(task.getAlgorithm(), task.getInput(), null));
     }

@@ -18,7 +18,7 @@ public class AlgorithmUtils {
     }
 
     public static String getErrorStackString(Exception e) {
-        String errorStack = "";
+        String errorStack = e.getMessage();
         for(StackTraceElement element : e.getStackTrace()){
             errorStack += element.toString();
         }

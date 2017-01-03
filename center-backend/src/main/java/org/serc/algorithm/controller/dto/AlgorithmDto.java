@@ -8,6 +8,7 @@ public class AlgorithmDto extends AbstractDto {
     
     private String name;
     private String image;
+    private Boolean imageExist = false;
     private String inputType;
     private String outputType;
     private String description;
@@ -59,6 +60,14 @@ public class AlgorithmDto extends AbstractDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getImageExist() {
+        return imageExist;
+    }
+
+    public void setImageExist(Boolean imageExist) {
+        this.imageExist = imageExist;
     }
 
 }
