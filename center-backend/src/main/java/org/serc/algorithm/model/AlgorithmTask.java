@@ -24,6 +24,9 @@ public class AlgorithmTask extends AbstractEntity {
     @ManyToOne(optional = true)
     private AlgorithmTask inputTask;
     
+    @ManyToOne(optional = true)
+    private AlgorithmTask parentTask;
+    
     @Lob String input;
     @Lob String output;
     @Lob String errorStack; // optional, then reason why status is failure
@@ -87,6 +90,12 @@ public class AlgorithmTask extends AbstractEntity {
     }
     public void setOutputType(ResultType outputType) {
         this.outputType = outputType;
+    }
+    public AlgorithmTask getParentTask() {
+        return parentTask;
+    }
+    public void setParentTask(AlgorithmTask parentTask) {
+        this.parentTask = parentTask;
     }
     @Override
     public String toString() {
