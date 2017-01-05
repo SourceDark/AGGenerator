@@ -2,6 +2,7 @@
 <script src="/js/lib/d3/d3.min.js"></script>
 <script src="/js/lib/angular/angular.min.js"></script>
 <script src="/js/lib/angular/angular-ui-router.min.js"></script>
+<script src="/js/lib/angular/angular-sanitize.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/lib/bootstrap/bootstrap.min.css"/>
 <script src="/js/lib/bootstrap/bootstrap.min.js"></script>
 <script src="/js/lib/angular/ui-bootstrap-tpls-1.3.3.min.js"></script>
@@ -20,6 +21,9 @@
 <script src="/js/lib/ng-json-viewer/jsonViewer.tpl.js"></script>
 <script src="/js/lib/ng-json-viewer/jsonViewer.service.js"></script>
 <script src="/js/lib/ng-json-viewer/jsonViewer.directive.js"></script>
+
+<script src="/js/lib/json-formatter/json-formatter.js"></script>
+<link rel="stylesheet" type="text/css" href="/js/lib/json-formatter/json-formatter.css"/>
 
 <!-- Algorithms -->
 <script src="/js/agbot/algorithms/index.js"></script>
@@ -40,6 +44,8 @@
 
 <!-- Tasks -->
 <script src="/js/agbot/tasks/tasks-ctrl.js"></script>
+<script src="/js/agbot/tasks/task/index-ctrl.js"></script>
+<script src="/js/agbot/tasks/task/info-ctrl.js"></script>
 
 <!-- algorithm task -->
 <script src="/js/agbot/algorithms/task/default-ctrl.js"></script>

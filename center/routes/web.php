@@ -82,9 +82,21 @@ Route::group(['prefix' => 'html'], function () {
         });
     });
 
+    /**
+     * Tasks
+     */
+
     Route::group(['prefix' => 'tasks'], function() {
-        Route::get('/', function() {
+        Route::get('/tasks', function() {
             return view('agbot.tasks.tasks');
+        });
+        Route::group(['prefix' => 'task'], function() {
+            Route::get('/', function () {
+                return view('agbot.tasks.task.index');
+            });
+            Route::get('/info', function () {
+                return view('agbot.tasks.task.info');
+            });
         });
     });
 
