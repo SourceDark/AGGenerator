@@ -75,13 +75,16 @@ agbotApp.config(['$stateProvider', function($stateProvider) {
 
     $scope.submit = function () {
         if ($scope.algorithm_id) {
-            $http
-                .put(['api','algorithms',$scope.algorithm_id].join('/'), $scope.algorithm)
-                .then(function (result) {
-                    $scope.algorithm = result.data;
-                    $state.go('algorithms.index');
-                });
-        }   else {
+            $http({
+                   method: 'put',
+                   url: ['api','algorithms',$scope.algorithm_id].join('/'),
+                   data: $scope.algorithm, 
+                   headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}  
+               }).success(function (result) {
+                  $scope.algorithm = result.data;
+                  $state.go('algorithms.index');
+              });
+        } else {
             $http
                 .post(['api', 'algorithms'].join('/'), $scope.algorithm)
                 .then(function (result) {

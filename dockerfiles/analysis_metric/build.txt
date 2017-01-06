@@ -1,0 +1,2 @@
+docker build -t="agbot/analysis_metric" .
+docker run -it -v /c/Users/dell/share/data:/data agbot/analysis_metric /bin/bash

@@ -67,12 +67,23 @@ vector<string> analyze_light_probe_outputs() {
 	string str, cip;
 	while (getline(nof, str)) {
 		if (str.find("Nmap scan report for localhost (") != string::npos) {
+<<<<<<< HEAD
 			string tmp = str.substr(32, str.length() - 1 - 32);
 			//scout << tmp << endl;
+=======
+            string tmp = str.substr(32, str.length() - 1 - 32);
+            stringstream ss;
+            ss << tmp;
+            ss >> cip;
+        }
+        else if (str.find("Nmap scan report for ") != string::npos) {
+			string tmp = str.substr(21, str.length() - 1);
+>>>>>>> 7eb5393fe9cd0c3b8824b86e59dccf8853438675
 			stringstream ss;
 			ss << tmp;
 			ss >> cip;
 		}
+
 		if (str.find("Host is up") != string::npos) {
 			ips.push_back(cip);	
 		}

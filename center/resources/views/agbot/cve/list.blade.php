@@ -10,7 +10,7 @@
 	    <p ng-bind="cve.description">...</p>
 	  </div>
 	</div>
-	
+
 
 	<nav aria-label="Page navigation">
 	  <ul class="pagination">

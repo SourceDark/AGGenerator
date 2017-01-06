@@ -10,6 +10,17 @@
   color: red;
 }
 
+.failure:extend(.fail) {
+}
+
+.created {
+  color: blue;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 .table {
   margin-top: 20px;
   margin-bottom: 0;
@@ -28,6 +39,11 @@
       }
     }
   }
+  &.mid {
+    td {
+      text-align: center;
+    }
+  }
 }
 
 .display {
@@ -41,4 +57,8 @@
   &.info {
     color: darkblue;
   }
+}
+
+.code {
+  font-family: "Source Code Pro";
 }

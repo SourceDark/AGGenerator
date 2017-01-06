@@ -1,1 +1,1 @@
-var agbotApp = angular.module('agbotApp', ['ui.router', 'jv.json-viewer']);
+var agbotApp = angular.module('agbotApp', ['ui.router', 'jv.json-viewer', 'ngSanitize', 'jsonFormatter']);

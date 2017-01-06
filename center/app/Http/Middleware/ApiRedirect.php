@@ -72,11 +72,12 @@ class ApiRedirect
             $opts = array(
                 'http'=>array(
                     'method'=>"PUT",
+                    'ignore_errors' => true,
                     'header'=>"Content-type: application/x-www-form-urlencoded\r\n".
                                  "Content-length:".$content_length."\r\n" .
                                  "Cookie: foo=bar\r\n" .
                                  "\r\n",
-                    'content' => $data
+                    'content' => $content
                 )
             );
             $cxContext = stream_context_create($opts);

@@ -6,10 +6,7 @@
                 <span class="glyphicon glyphicon-plus"></span> New Algorithm
             </button>
         </a>
-        <div>
-            <div class="display info" ng-if="algorithms == null"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> Loading.</div>
-            <div class="display error" ng-if="algorithms == 0"><i class="fa fa-warning" aria-hidden="true"></i> Can't connect to server.</div>
-            <div class="display info" ng-if="algorithms != null && algorithms != 0 && algorithms.length == 0">No algorithm exists.</div>
+        <div ng-loading="status" ng-loading-empty="empty">
             <table class="table" ng-if="algorithms != null  && algorithms != 0 && algorithms.length > 0">
                 <thead>
                     <tr>

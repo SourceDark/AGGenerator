@@ -7,3 +7,4 @@ dockerfiles/ag_frontend/center
 .project
 .settings
 .classpath
+vendor
