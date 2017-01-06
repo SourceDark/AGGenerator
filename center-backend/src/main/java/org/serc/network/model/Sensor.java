@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import org.serc.model.AbstractEntity;
 import org.springframework.context.annotation.Configuration;
 
+import com.google.common.collect.Lists;
+
 @Entity
 @Table(name = "sensors")
 @Configuration
@@ -19,7 +21,7 @@ public class Sensor extends AbstractEntity {
     private String ip;
     
     @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER)
-    private List<Host> hosts;
+    private List<Host> hosts = Lists.newArrayList();
     
     public String getName() {
         return name;
