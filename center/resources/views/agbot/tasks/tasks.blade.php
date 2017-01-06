@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="task in tasks.content">
-                    <td>{{task.id}}</td>
+                    <td><a ui-sref="task.info({taskId:task.id})">{{task.id}}</a></td>
                     <td><a ui-sref="algorithms.algorithm({algorithm_id:task.algorithm.id})">{{task.algorithm.name}}</a></td>
                     <td class="code">{{task.containerId}}</td>
                     <td ng-if="task.status=='running'"><a class="running" ui-sref="task.info({taskId:task.id})">Running</a></td>

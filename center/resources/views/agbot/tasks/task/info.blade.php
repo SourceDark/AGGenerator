@@ -1,3 +1,10 @@
+<!-- Algorithm -->
+<p>
+    <span class="key">Algorithm: </span>
+    <span>
+        <a ui-sref="algorithms.algorithm({algorithm_id:task.algorithm.id})">{{task.algorithm.name}}</a>
+    </span>
+</p>
 <!-- Status -->
 <p>
     <span class="key">Status: </span>
@@ -19,9 +26,7 @@
     <div class="json-container" ng-if="isInputJson">
         <json-formatter json="input" open="1"></json-formatter>
     </div>
-    <div class="json-container" ng-if="!isInputJson">
-        <p>{{input}}</p>
-    </div>
+    <pre class="json-container" ng-if="!isInputJson">{{input}}</pre>
 </div>
 <!-- Output -->
 <div ng-if="output != null">
@@ -31,9 +36,7 @@
     <div class="json-container" ng-if="isOutputJson">
         <json-formatter json="output" open="1"></json-formatter>
     </div>
-    <div class="json-container" ng-if="!isOutputJson">
-        <p>{{output}}</p>
-    </div>
+    <pre class="json-container" ng-if="!isOutputJson">{{output}}</pre>
 </div>
 <!-- ErrorStack -->
 <div ng-if="errorStack != null">
@@ -43,7 +46,5 @@
     <div class="json-container" ng-if="isErrorStackJson">
         <json-formatter json="errorStack" open="1"></json-formatter>
     </div>
-    <div class="json-container" ng-if="!isErrorStackJson">
-        <span>{{errorStack}}</span>
-    </div>
+    <pre class="json-container" ng-if="!isErrorStackJson">{{errorStack}}</pre>
 </div>
