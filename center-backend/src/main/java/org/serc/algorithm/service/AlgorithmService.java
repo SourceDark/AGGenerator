@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.serc.algorithm.model.Algorithm;
 import org.serc.algorithm.model.AlgorithmTask;
+import org.serc.algorithm.model.AlgorithmTaskInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,5 +22,7 @@ public interface AlgorithmService {
     AlgorithmTask run(Algorithm algorithm, AlgorithmTask inputTask, AlgorithmTask parentTask);
     AlgorithmTask wait(AlgorithmTask task);
     AlgorithmTask getAlgorithmTask(Long id);
+    
+    List<AlgorithmTask> runTaskGroup(List<AlgorithmTaskInfo> algorithms, String input);
     
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.serc.algorithm.model.Algorithm;
 import org.serc.algorithm.model.AlgorithmTask;
 import org.serc.algorithm.model.AlgorithmTask.Status;
+import org.serc.algorithm.model.AlgorithmTaskInfo;
 import org.serc.algorithm.service.AlgorithmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
+import com.google.common.collect.Lists;
 
 @Service
 public class AlgorithmServiceImpl implements AlgorithmService {
@@ -53,7 +55,11 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         task.setAlgorithm(algorithm);
         task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
         task.setInput(input);
-        task.setParentTask(parentTask);
+        if(parentTask.getParentTask() != null) {
+            task.setParentTask(parentTask.getParentTask());
+        } else {
+            task.setParentTask(parentTask);
+        }
         task = taskRepository.save(task);
         taskRunner.run(task);
         return task;
@@ -93,6 +99,42 @@ public class AlgorithmServiceImpl implements AlgorithmService {
             }
         }
         return algorithm;
+    }
+
+    @Override
+    public List<AlgorithmTask> runTaskGroup(List<AlgorithmTaskInfo> taskInfos, String input) {
+        // init tasks
+        List<AlgorithmTask> algorithmTasks = Lists.newArrayList();
+        for(AlgorithmTaskInfo taskInfo: taskInfos) {
+            AlgorithmTask task = new AlgorithmTask();
+            task.setAlgorithm(taskInfo.getAlgorithm());
+            task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
+            if(AlgorithmTaskInfo.InputFrom.direct.equals(taskInfo.getInputFrom())) {
+                task.setInput(taskInfo.getInput());
+            } else if (AlgorithmTaskInfo.InputFrom.source.equals(taskInfo.getInputFrom())) {
+                task.setInput(input);
+            }
+            algorithmTasks.add(task);
+        }
+        // handle task dependency
+        algorithmTasks = taskRepository.save(algorithmTasks);
+        for(int i = 0; i < taskInfos.size(); i++) {
+            AlgorithmTask targetTask = algorithmTasks.get(i);
+            AlgorithmTaskInfo taskInfo = taskInfos.get(i);
+            targetTask.setParentTask(algorithmTasks.get(0));
+            if(AlgorithmTaskInfo.InputFrom.algorithm.equals(taskInfo.getInputFrom())) {
+                AlgorithmTask sourceTask = algorithmTasks.get(taskInfo.getFromAlgorithm());
+                targetTask.setInputTask(sourceTask);
+            }
+        }
+        algorithmTasks = taskRepository.save(algorithmTasks);
+        // run tasks
+        for(AlgorithmTask task: algorithmTasks) {
+            if(task.getInput() != null) {
+                taskRunner.run(task);
+            }
+        }
+        return algorithmTasks;
     }
 
 }
