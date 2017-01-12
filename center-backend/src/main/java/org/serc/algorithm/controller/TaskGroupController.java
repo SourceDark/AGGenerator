@@ -9,7 +9,7 @@ import javax.validation.Valid;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 
-import org.serc.algorithm.controller.dto.AlgorithmTaskDto;
+import org.serc.algorithm.controller.dto.AlgorithmTaskListDto;
 import org.serc.algorithm.controller.form.AlgorithmTaskGroupForm;
 import org.serc.algorithm.controller.form.AlgorithmTaskGroupForm.TaskInfoFrom;
 import org.serc.algorithm.model.Algorithm;
@@ -62,7 +62,7 @@ public class TaskGroupController {
     }
     
     @PostMapping("")
-    public List<AlgorithmTaskDto> run(@Valid AlgorithmTaskGroupForm form) throws JsonGenerationException, JsonMappingException, IOException {
+    public List<AlgorithmTaskListDto> run(@Valid AlgorithmTaskGroupForm form) throws JsonGenerationException, JsonMappingException, IOException {
         String input = form.getInput();
         if(InputFrom.network.equals(form.getInputFrom())) {
             StringWriter inputWriter= new StringWriter();
@@ -77,7 +77,7 @@ public class TaskGroupController {
             input = sourceTask.getOutput();
         }
         return algorithmService.runTaskGroup(toAlgorithmTaskInfos(form), input).stream()
-                .map(AlgorithmTaskDto::new).collect(Collectors.toList());
+                .map(AlgorithmTaskListDto::new).collect(Collectors.toList());
     }
 
 }
