@@ -50,10 +50,10 @@ public class TaskGroupController {
             algorithmTaskInfo.setAlgorithm(algorithm);
             algorithmTaskInfo.setInputFrom(taskInfoForm.inputFrom);
             if(InputFrom.algorithm.equals(algorithmTaskInfo.getInputFrom())) {
-                if(taskInfoForm.fromAlgorithm >= form.getAlgorithms().size()) {
-                    throw new BadRequestException( "fromAlgorithm index" + taskInfoForm.fromAlgorithm + " is larger than algorithms list!");
+                if(taskInfoForm.inputAlgorithm >= form.getAlgorithms().size()) {
+                    throw new BadRequestException( "fromAlgorithm index" + taskInfoForm.inputAlgorithm + " is larger than algorithms list!");
                 }
-                algorithmTaskInfo.setFromAlgorithm(taskInfoForm.fromAlgorithm);
+                algorithmTaskInfo.setFromAlgorithm(taskInfoForm.inputAlgorithm);
             }
             algorithmTaskInfo.setInput(taskInfoForm.input);
             algorithmTaskInfos.add(algorithmTaskInfo);

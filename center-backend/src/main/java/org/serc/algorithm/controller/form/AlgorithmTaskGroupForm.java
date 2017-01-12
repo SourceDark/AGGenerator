@@ -16,6 +16,9 @@ public class AlgorithmTaskGroupForm {
     private List<String> sensors;
     private String hacls;
     
+    @NotEmpty
+    private List<TaskInfoFrom> algorithms;
+    
     public InputFrom getInputFrom() {
         return inputFrom;
     }
@@ -48,10 +51,6 @@ public class AlgorithmTaskGroupForm {
         this.hacls = hacls;
     }
 
-
-    @NotEmpty
-    private List<TaskInfoFrom> algorithms;
-
     public String getInput() {
         return input;
     }
@@ -75,7 +74,7 @@ public class AlgorithmTaskGroupForm {
         @NotNull
         public InputFrom inputFrom;
         public String input;
-        public Integer fromAlgorithm;
+        public Integer inputAlgorithm;
         public String getAlgorithm() {
             return algorithm;
         }
@@ -94,16 +93,16 @@ public class AlgorithmTaskGroupForm {
         public void setInput(String input) {
             this.input = input;
         }
-        public Integer getFromAlgorithm() {
-            return fromAlgorithm;
+        public Integer getInputAlgorithm() {
+            return inputAlgorithm;
         }
-        public void setFromAlgorithm(Integer fromAlgorithm) {
-            this.fromAlgorithm = fromAlgorithm;
+        public void setInputAlgorithm(Integer inputAlgorithm) {
+            this.inputAlgorithm = inputAlgorithm;
         }
         @Override
         public String toString() {
             return "TaskInfoFrom [algorithm=" + algorithm + ", inputFrom=" + inputFrom + ", input=" + input
-                    + ", fromAlgorithm=" + fromAlgorithm + "]";
+                    + ", fromAlgorithm=" + inputAlgorithm + "]";
         }
     }
 
