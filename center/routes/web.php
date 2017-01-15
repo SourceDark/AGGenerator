@@ -81,11 +81,6 @@ Route::group(['prefix' => 'html'], function () {
             });
         });
     });
-
-    /**
-     * Tasks
-     */
-
     Route::group(['prefix' => 'tasks'], function() {
         Route::get('/tasks', function() {
             return view('agbot.tasks.tasks');
@@ -96,6 +91,22 @@ Route::group(['prefix' => 'html'], function () {
             });
             Route::get('/info', function () {
                 return view('agbot.tasks.task.info');
+            });
+        });
+    });
+    Route::group(['prefix' => 'networks'], function() {
+        Route::get('/', function() {
+            return view('rebot.networks.networks');
+        });
+        Route::group(['prefix' => 'network'], function() {
+            Route::get('/', function() {
+                return view('rebot.networks.network.network');
+            });
+            Route::get('/info', function() {
+                return view('rebot.networks.network.info');
+            });
+            Route::get('/hosts', function() {
+                return view('rebot.networks.network.hosts');
             });
         });
     });

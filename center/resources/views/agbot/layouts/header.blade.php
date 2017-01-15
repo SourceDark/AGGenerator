@@ -25,6 +25,12 @@
 <script src="/js/lib/json-formatter/json-formatter.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/lib/json-formatter/json-formatter.css"/>
 
+<!-- Vision -->
+<script src="/js/rebot/networks/networks-ctrl.js"></script>
+<script src="/js/rebot/networks/network/network-ctrl.js"></script>
+<script src="/js/rebot/networks/network/info-ctrl.js"></script>
+<script src="/js/rebot/networks/network/hosts-ctrl.js"></script>
+
 <!-- Algorithms -->
 <script src="/js/agbot/algorithms/index.js"></script>
 <script src="/js/agbot/algorithms/algorithms-ctrl.js"></script>

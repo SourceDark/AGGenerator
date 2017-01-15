@@ -6,7 +6,7 @@
                     <div class="logo-text">REBOT</div>
                 </li>
                 <li><div class="line"></div></li>
-                <li><a href="" ui-sref="vision" ui-sref-active="active">Vision</a></li>
+                <li><a href="" ui-sref="networks" ng-class="{active: inState('network')}">Vision</a></li>
                 <li><a href="" ui-sref="algorithms.index" ng-class="{active: inState('algorithms')}">Algorithms</a></li>
                 <li><a href="" ui-sref="tasks" ng-class="{active: inState('tasks') || inState('task')}">Tasks</a></li>
                 <li><a href="" ui-sref="sensor" ui-sref-active="active">Sensor</a></li>
