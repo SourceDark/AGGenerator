@@ -1,6 +1,5 @@
 package org.serc.network.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,9 +41,9 @@ public class NetworkController {
     }
     
     @GetMapping("/{network}/scores")
-    public Map<Date, Map<String, Object>> scores(Network network) {
+    public Map<Long, Map<String, Object>> scores(Network network) {
         return networkScheduleTaskRepository.findByNetworkOrderByIdDesc(network).stream()
-                .collect(Collectors.toMap(NetworkScheduleTask::getCreatedTime, NetworkScheduleTask::scores));
+                .collect(Collectors.toMap(n -> n.getCreatedTime().getTime(), NetworkScheduleTask::scores));
     }
 
 }
