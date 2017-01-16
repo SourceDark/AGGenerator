@@ -31,6 +31,7 @@ public class NetworkScheduleService {
             StringWriter inputWriter= new StringWriter();
             objectMapper.writeValue(inputWriter, ImmutableMap.of("sensors", network.getSensors(), "hacls", network.getHacls()));
             String input = inputWriter.toString();
+            
             AlgorithmTaskInfo mulval = new AlgorithmTaskInfo();
             mulval.setAlgorithm(algorithmService.findOne("6"));
             mulval.setInputFrom(InputFrom.source);
@@ -39,10 +40,18 @@ public class NetworkScheduleService {
             attackPathCount.setAlgorithm(algorithmService.findOne("11"));
             attackPathCount.setInputFrom(InputFrom.algorithm);
             attackPathCount.setFromAlgorithm(0);
+            AlgorithmTaskInfo analysisMetric = new AlgorithmTaskInfo();
+            analysisMetric.setAlgorithm(algorithmService.findOne("9"));
+            analysisMetric.setInputFrom(InputFrom.algorithm);
+            analysisMetric.setFromAlgorithm(0);
+            AlgorithmTaskInfo weakestAdversaryMetric = new AlgorithmTaskInfo();
+            weakestAdversaryMetric.setAlgorithm(algorithmService.findOne("10"));
+            weakestAdversaryMetric.setInputFrom(InputFrom.algorithm);
+            weakestAdversaryMetric.setFromAlgorithm(0);
             List<AlgorithmTask> tasks = algorithmService.runTaskGroup(Lists.newArrayList(mulval, attackPathCount), input);
             
             NetworkScheduleTask networkScheduleTask = new NetworkScheduleTask();
-            networkScheduleTask.setAlgorithmTasks(Lists.newArrayList(tasks.get(0)));
+            networkScheduleTask.setAlgorithmTasks(Lists.newArrayList(tasks.subList(1, tasks.size())));
             networkScheduleTask.setNetwork(network);
             networkScheduleTaskRepository.save(networkScheduleTask);
         }
