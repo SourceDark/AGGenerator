@@ -48,7 +48,8 @@ public class NetworkScheduleService {
             weakestAdversaryMetric.setAlgorithm(algorithmService.findOne("10"));
             weakestAdversaryMetric.setInputFrom(InputFrom.algorithm);
             weakestAdversaryMetric.setFromAlgorithm(0);
-            List<AlgorithmTask> tasks = algorithmService.runTaskGroup(Lists.newArrayList(mulval, attackPathCount), input);
+            List<AlgorithmTask> tasks = algorithmService.runTaskGroup(Lists.newArrayList(
+                    mulval, attackPathCount, analysisMetric, weakestAdversaryMetric), input);
             
             NetworkScheduleTask networkScheduleTask = new NetworkScheduleTask();
             networkScheduleTask.setAlgorithmTasks(Lists.newArrayList(tasks.subList(1, tasks.size())));
