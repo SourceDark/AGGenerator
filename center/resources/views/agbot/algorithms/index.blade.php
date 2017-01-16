@@ -16,6 +16,7 @@
                         <td>Input Type</td>
                         <td>Output Type</td>
                         <td>Updated At</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>

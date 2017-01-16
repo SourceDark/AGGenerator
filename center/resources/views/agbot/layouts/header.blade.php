@@ -30,6 +30,7 @@
 <script src="/js/rebot/networks/network/network-ctrl.js"></script>
 <script src="/js/rebot/networks/network/info-ctrl.js"></script>
 <script src="/js/rebot/networks/network/hosts-ctrl.js"></script>
+<script src="/js/rebot/networks/network/vulnerabilities-ctrl.js"></script>
 
 <!-- Algorithms -->
 <script src="/js/agbot/algorithms/index.js"></script>
