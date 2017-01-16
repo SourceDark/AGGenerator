@@ -295,7 +295,7 @@ void analysis() {
 
 void output() {
 	ofstream ouf(output_file);
-	ouf << "{\"key\":\"attack_path_count\",\"value\":" << count << "}" << endl;
+	ouf << "[{\"key\":\"attack_path_count\",\"value\":" << count << "}]" << endl;
 	ouf.close();
 }
 
