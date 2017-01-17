@@ -1,8 +1,3 @@
-<!-- Score -->
-<p>
-    <span class="key">Score: </span>
-    <span>{{network.score}}</span>
-</p>
 <!-- Score History -->
 <div id="chart" style="width:100%;height:400px"></div>
 <!--
