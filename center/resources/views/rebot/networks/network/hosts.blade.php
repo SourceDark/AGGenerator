@@ -13,9 +13,9 @@
             </button>
         </a>
         <tr ng-repeat-start="sensor in network.sensors">
-            <td>{{sensor.name}}</td>
-            <td>{{sensor.vulnerabilities}}</td>
-            <td><i class="fa fa-times" aria-hidden="true"></i></td>
+            <td style="border-top-color: #000;">{{sensor.name}}</td>
+            <td style="border-top-color: #000;">{{sensor.vulnerabilities}}</td>
+            <td style="border-top-color: #000;"><i class="fa fa-times" aria-hidden="true"></i></td>
         </tr>
         <tr ng-repeat-end>
             <td>Hosts</td>

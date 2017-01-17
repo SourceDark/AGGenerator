@@ -25,6 +25,10 @@
 <script src="/js/lib/json-formatter/json-formatter.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/lib/json-formatter/json-formatter.css"/>
 
+
+<script src="/js/lib/highcharts/highcharts.js"></script>
+<script src="/js/lib/highcharts/highcharts-ng.js"></script>
+
 <!-- Vision -->
 <script src="/js/rebot/networks/networks-ctrl.js"></script>
 <script src="/js/rebot/networks/network/network-ctrl.js"></script>
