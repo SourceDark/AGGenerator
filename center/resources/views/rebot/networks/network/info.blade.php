@@ -1,12 +1,6 @@
-<!-- Score -->
-<p>
-    <span class="key">Score: </span>
-    <span>{{network.score}}</span>
-</p>
 <!-- Score History -->
-<p>
-    <span class="key">Score History (Last Week): </span>
-</p>
+<div id="chart" style="width:100%;height:400px"></div>
+<!--
 <table class="table mid">
     <thead>
         <tr>
@@ -21,3 +15,4 @@
         </tr>
     </tbody>
 </table>
+-->

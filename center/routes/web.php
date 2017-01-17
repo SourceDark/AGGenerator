@@ -108,6 +108,9 @@ Route::group(['prefix' => 'html'], function () {
             Route::get('/hosts', function() {
                 return view('rebot.networks.network.hosts');
             });
+            Route::get('/vulnerabilities', function() {
+                return view('rebot.networks.network.vulnerabilities');
+            });
         });
     });
 
