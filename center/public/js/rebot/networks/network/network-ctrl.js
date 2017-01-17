@@ -1,7 +1,7 @@
 agbotApp.config(function($stateProvider) {
     $stateProvider.state({
         name: 'network',
-        url: '/network/{networkId}',
+        url: '/network/{networkId:[0-9]+}',
         templateUrl: 'html/networks/network',
         controller: function ($scope, $http, $stateParams, $state) {
             $scope.loadNetwork = function (networkId) {
