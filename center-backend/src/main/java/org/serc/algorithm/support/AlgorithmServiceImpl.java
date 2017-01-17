@@ -55,10 +55,12 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         task.setAlgorithm(algorithm);
         task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
         task.setInput(input);
-        if(parentTask.getParentTask() != null) {
-            task.setParentTask(parentTask.getParentTask());
-        } else {
-            task.setParentTask(parentTask);
+        if(task.getParentTask() != null) {
+            if(parentTask.getParentTask() != null) {
+                task.setParentTask(parentTask.getParentTask());
+            } else {
+                task.setParentTask(parentTask);
+            }
         }
         task = taskRepository.save(task);
         taskRunner.run(task);
