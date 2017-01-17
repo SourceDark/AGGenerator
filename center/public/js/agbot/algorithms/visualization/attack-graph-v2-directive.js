@@ -21,7 +21,7 @@ agbotApp.directive('attackGraphIi', ['attackGraphService', function (attackGraph
             scope.ag = d3.select('#attack-graph');
             scope.svg = scope.ag.append('g');
 
-            scope.ag.call(d3.zoom().scaleExtent([0.3, 3]).on("zoom", zoomed)).on("dblclick.zoom", null);
+            scope.ag.call(d3.zoom().on("zoom", zoomed)).on("dblclick.zoom", null);
 
             function scaleTo(x, y, k) {
                 scope.svg.attr('transform', 'translate('+
@@ -42,6 +42,9 @@ agbotApp.directive('attackGraphIi', ['attackGraphService', function (attackGraph
                     );
                     scope.nodes = newGraph.nodes;
                     scope.links = newGraph.links;
+                    //
+                    // scope.nodes = scope.originalNodes;
+                    // scope.links = scope.originalLinks;
                     scope.drawGraph();
                 }
             });
