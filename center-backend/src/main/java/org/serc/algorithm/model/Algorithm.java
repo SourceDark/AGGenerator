@@ -3,6 +3,7 @@ package org.serc.algorithm.model;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.serc.model.AbstractEntity;
@@ -13,9 +14,19 @@ public class Algorithm extends AbstractEntity {
     
     private String name;
     private String image;
+    private Boolean deleted;
     @Lob String description;
     @ManyToOne ResultType inputType;
     @ManyToOne ResultType outputType;
+    
+    @PrePersist
+    @Override
+    public void init() {
+        super.init();
+        if(deleted == null) {
+            deleted = false;
+        }
+    }
     
     public String getName() {
         return name;

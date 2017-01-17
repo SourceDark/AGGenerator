@@ -46,7 +46,7 @@ public class AlgorithmServiceImpl implements AlgorithmService {
 
     @Override
     public List<Algorithm> getAlgorithms() {
-        return algorithmRepository.findAll();
+        return algorithmRepository.findByDeletedFalse();
     }
 
     @Override
