@@ -66,7 +66,7 @@ public class MulvalRunner implements CommandLineRunner {
     
     private List<String> runMulval(List<String> lines, File tmpDir) throws Exception {
         FileUtils.writeLines(new File(tmpDir, "input.P"), lines);
-        Runtime.getRuntime().exec("graph_gen.sh input.P -v", null, tmpDir).waitFor();
+        Runtime.getRuntime().exec("graph_gen.sh input.P -v  --nopdf", null, tmpDir).waitFor();
         File graphFile = new File(tmpDir, "AttackGraph.txt");
         if(graphFile.exists()) {
             return FileUtils.readLines(graphFile, "UTF-8");
