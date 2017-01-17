@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <td>Sensor</td>
+            <td>IP</td>
             <td>Vulnerabilities</td>
             <td>Operation</td>
         </tr>
@@ -12,9 +13,10 @@
                 <span class="glyphicon glyphicon-plus"></span> New Sensor
             </button>
         </a>
-        <tr ng-repeat-start="sensor in network.sensors">
+        <tr ng-repeat-start="sensor in sensors">
             <td style="border-top-color: #000;">{{sensor.name}}</td>
-            <td style="border-top-color: #000;">{{sensor.vulnerabilities}}</td>
+            <td style="border-top-color: #000;">{{sensor.ip}}</td>
+            <td style="border-top-color: #000;">{{sensorVulnerabilitiesCount(sensor)}}</td>
             <td style="border-top-color: #000;"><i class="fa fa-times" aria-hidden="true"></i></td>
         </tr>
         <tr ng-repeat-end>
@@ -30,7 +32,7 @@
                     <tbody>
                     <tr ng-repeat="host in sensor.hosts">
                         <td>{{host.name}}</td>
-                        <td>{{host.vulnerabilities}}</td>
+                        <td>{{hostVulnerabilitiesCount(host)}}</td>
                     </tr>
                     </tbody>
                 </table>
