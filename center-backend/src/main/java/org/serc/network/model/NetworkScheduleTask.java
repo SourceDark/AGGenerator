@@ -45,8 +45,26 @@ public class NetworkScheduleTask extends AbstractEntity {
     
     public Map<String, Object> scores() {
         Map<String, Object> scores = Maps.newHashMap();
+        Double actualPathCount = 0.0;
+        Double potentialPathCount = 0.0;
         for(AlgorithmTask task: getAlgorithmTasks()) {
-            if(task.getStatus().equals(Status.success)) {
+            if(!task.getStatus().equals(Status.success)) {
+                continue;
+            }
+            if(task.getAlgorithm().getId().equals(11L)) {
+                Object results = JSON.parse(task.getOutput());
+                if(!(results instanceof JSONArray)) {
+                    continue;
+                }
+                for(Object result: (JSONArray)results) {
+                    if(task.getInputTask().getAlgorithm().getId().equals(6L)) {
+                        actualPathCount = ((Integer) JSONPath.eval(result, "$.value")).doubleValue();
+                    } else {
+                        potentialPathCount = ((Integer) JSONPath.eval(result, "$.value")).doubleValue();
+                    }
+                    
+                }
+            } else {
                 Object results = JSON.parse(task.getOutput());
                 if(!(results instanceof JSONArray)) {
                     continue;
@@ -56,6 +74,15 @@ public class NetworkScheduleTask extends AbstractEntity {
                 }
             }
         }
+        System.out.println(actualPathCount);
+        System.out.println(potentialPathCount);
+        if(actualPathCount == 0.0) {
+            actualPathCount = 1.0;
+        }
+        if(potentialPathCount == 0.0) {
+            potentialPathCount = actualPathCount;
+        }
+        scores.put("attackability", 10 - (actualPathCount / potentialPathCount) * 10);
         return scores;
     }
 
