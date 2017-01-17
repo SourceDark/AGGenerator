@@ -1,4 +1,4 @@
 cd runner && mvn clean install
-cd .. && docker build -t 162.105.30.65:9998/serc/agbot-mulval:v2 .
+cd .. && docker build -t registry.cn-hangzhou.aliyuncs.com/serc/agbot:mulvall .
 
 

@@ -1,2 +1,2 @@
-docker push 162.105.30.65:9998/serc/agbot-mulval:v2
+docker push registry.cn-hangzhou.aliyuncs.com/serc/agbot:mulvall
 
