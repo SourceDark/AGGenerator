@@ -6,6 +6,7 @@ import org.serc.algorithm.model.Algorithm;
 import org.serc.algorithm.model.AlgorithmTask;
 import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.algorithm.model.AlgorithmTaskInfo;
+import org.serc.algorithm.model.ResultType;
 import org.serc.algorithm.service.AlgorithmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -141,6 +142,16 @@ public class AlgorithmServiceImpl implements AlgorithmService {
             }
         }
         return algorithmTasks;
+    }
+
+    @Override
+    public List<Algorithm> getAlgorithmsByInputType(ResultType inputType) {
+        return algorithmRepository.findByInputType(inputType);
+    }
+
+    @Override
+    public List<Algorithm> getAlgorithmsByOutputType(ResultType outputType) {
+        return algorithmRepository.findByOutputType(outputType);
     }
 
 }

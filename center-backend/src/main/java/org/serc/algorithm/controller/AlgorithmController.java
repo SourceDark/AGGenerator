@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Image;
+import com.google.common.collect.Lists;
 
 @RestController
 @RequestMapping("/algorithms")
@@ -50,11 +52,17 @@ public class AlgorithmController {
     }
     
     @GetMapping("")
-    public List<AlgorithmDto> algorithms() {
+    public List<AlgorithmDto> algorithms(@RequestParam(required = false) ResultType inputType, @RequestParam(required = false) ResultType outputType) {
+        List<Algorithm> algorithms = Lists.newArrayList();
+        if(inputType != null) {
+            algorithms = algorithmService.getAlgorithmsByInputType(inputType);
+        } else if (outputType != null) {
+            algorithms = algorithmService.getAlgorithmsByOutputType(outputType);
+        } else {
+            algorithms = algorithmService.getAlgorithms();
+        }
         List<Image> images = dockerClient.listImagesCmd().exec();
-        return algorithmService.getAlgorithms().stream().map(AlgorithmDto::new).map(a -> {
-            return setImageExist(images, a);
-        }).collect(Collectors.toList());
+        return algorithms.stream().map(AlgorithmDto::new).map(a -> setImageExist(images, a)).collect(Collectors.toList());
     }
     
     @GetMapping("/{algorithmIdOrName}")
