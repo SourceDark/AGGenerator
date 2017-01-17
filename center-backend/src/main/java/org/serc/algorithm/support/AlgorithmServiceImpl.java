@@ -55,6 +55,8 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         task.setAlgorithm(algorithm);
         task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
         task.setInput(input);
+        task.setInputType(algorithm.getInputType());
+        task.setOutputType(algorithm.getOutputType());
         if(task.getParentTask() != null) {
             if(parentTask.getParentTask() != null) {
                 task.setParentTask(parentTask.getParentTask());
@@ -110,6 +112,8 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         for(AlgorithmTaskInfo taskInfo: taskInfos) {
             AlgorithmTask task = new AlgorithmTask();
             task.setAlgorithm(taskInfo.getAlgorithm());
+            task.setInputType(taskInfo.getAlgorithm().getInputType());
+            task.setOutputType(taskInfo.getAlgorithm().getOutputType());
             task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
             if(AlgorithmTaskInfo.InputFrom.direct.equals(taskInfo.getInputFrom())) {
                 task.setInput(taskInfo.getInput());

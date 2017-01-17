@@ -105,5 +105,5 @@ public class AlgorithmController {
         }
         return new AlgorithmDto(algorithmService.updateAlgorithm(algorithm));
     }
-
+    
 }
