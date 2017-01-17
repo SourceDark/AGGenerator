@@ -35,6 +35,7 @@ public class AlgorithmController {
     
     private AlgorithmDto setImageExist(List<Image> images, AlgorithmDto algorithmDto) {
         for(Image image : images) {
+            System.out.println(image.getId());
             if(image.getId().equals(algorithmDto.getImage())) {
                 algorithmDto.setImageExist(true);
                 return algorithmDto;
