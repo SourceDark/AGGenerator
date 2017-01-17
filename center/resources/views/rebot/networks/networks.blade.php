@@ -22,10 +22,10 @@
                     <tr ng-repeat="network in networks">
                         <td>{{network.id}}</td>
                         <td><a ui-sref="network({networkId:network.id})">{{network.name}}</a></td>
-                        <td>{{network.sensors}}</td>
-                        <td>{{network.hosts}}</td>
-                        <td><a ui-sref="network.vulnerabilities({networkId:network.id})">{{network.vulnerabilities}}</a></td>
-                        <td>{{network.score}}</td>
+                        <td>{{network.sensorCount}}</td>
+                        <td>{{network.hostCount}}</td>
+                        <td><a ui-sref="network.vulnerabilities({networkId:network.id})">{{network.vulnerabilityCount}}</a></td>
+                        <td>{{average(network.scores)}}</td>
                     </tr>
                 </tbody>
             </table>
