@@ -36,15 +36,15 @@ agbotApp.directive('attackGraphIi', ['attackGraphService', function (attackGraph
 
             scope.$watchGroup(['originalNodes','originalLinks','infomation'], function() {
                 if (scope.originalNodes && scope.originalLinks) {
-                    // var newGraph = attackGraphService.simplify(
-                    //     angular.copy(scope.originalNodes),
-                    //     angular.copy(scope.originalLinks)
-                    // );
-                    // scope.nodes = newGraph.nodes;
-                    // scope.links = newGraph.links;
-
-                    scope.nodes = scope.originalNodes;
-                    scope.links = scope.originalLinks;
+                    var newGraph = attackGraphService.simplify(
+                        angular.copy(scope.originalNodes),
+                        angular.copy(scope.originalLinks)
+                    );
+                    scope.nodes = newGraph.nodes;
+                    scope.links = newGraph.links;
+                    //
+                    // scope.nodes = scope.originalNodes;
+                    // scope.links = scope.originalLinks;
                     scope.drawGraph();
                 }
             });
