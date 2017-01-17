@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.serc.model.Graph;
 import org.serc.model.Host;
-import org.serc.model.HostVulnerability;
 import org.serc.model.Input;
 import org.serc.model.Sensor;
 import org.serc.model.attackgraph.AttackGraph;
@@ -57,23 +56,7 @@ public class MulvalRunner implements CommandLineRunner {
         String name = sensor.getName() + '_' + host.getIp().trim();
         name = name.replace("-", "_");
         name = name.replace(".", "_");
-        List<String> lines = Lists.newArrayList(name);
-        for(HostVulnerability vulnerability : host.getVulnerabilities()) {
-            String cves = vulnerability.getCves();
-            if(cves == null || cves.trim().isEmpty() || cves.trim().equals("[]")) {
-                continue;
-            }
-            List<String> cveList = JSON.parseArray(cves, String.class);
-            for(String cveId : cveList) {
-                if(lines.indexOf(cveId) >= 0) {
-                    continue;
-                }
-                lines.add(cveId);
-            }
-        }
-        if(lines.size() == 1) {
-            return null;
-        }
+        List<String> lines = Lists.newArrayList(name, "CVE-2009-2446", "CVE-2004-0495");
         FileUtils.writeLines(file, lines);
         Runtime.getRuntime().exec("cve_translate.sh", null, tmpDir).waitFor();
         List<String> result = FileUtils.readLines(new File(tmpDir, "oval.P"), "UTF-8");
