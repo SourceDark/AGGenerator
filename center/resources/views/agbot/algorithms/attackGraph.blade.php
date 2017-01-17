@@ -1,2 +1,2 @@
-<attack-graph ng-if="algorithm_id != 6" class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph>
-<attack-graph-ii ng-if="algorithm_id == 6" class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph-ii>
+<attack-graph ng-if="algorithm_id != 6 &amp;&amp; algorithm_id != 12" class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph>
+<attack-graph-ii ng-if="algorithm_id == 6 || algorithm_id == 12" class="attack-graph" nodes="nodes" links="links" infomation="analysis"></attack-graph-ii>
