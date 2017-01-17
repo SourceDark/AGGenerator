@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.io.FileUtils;
 import org.serc.ApplicationContext;
 import org.serc.algorithm.model.AlgorithmTask;
@@ -30,11 +32,16 @@ public class TaskRunner {
     private static final String ERROR_NAME = "error";
     private static final String API_NAME = "api";
     
-    @Autowired
-    protected DockerClient dockerClient;
+    @Autowired DockerClient dockerClient;
+    @Autowired AlgorithmTaskRepository algorithmTaskRepository;
+    @Autowired ApplicationContext applicationContext;
+    @Autowired org.springframework.context.ApplicationContext springContext;
+    private TaskRunner self;
     
-    @Autowired
-    private AlgorithmTaskRepository algorithmTaskRepository;
+    @PostConstruct
+    private void initProxySelf(){
+        self = springContext.getBean(TaskRunner.class);
+    }
     
     @Async
     public void run(AlgorithmTask task) {
@@ -47,12 +54,13 @@ public class TaskRunner {
             runContainer(task, dataDir);
             handleResult(task, dataDir);
             algorithmTaskRepository.saveAndFlush(task);
-            afterRun(task, dataDir);
+            deleteTmpResources(task, dataDir);
         } catch (Exception e) {
             task.setStatus(Status.failure);
             task.setErrorStack(AlgorithmUtils.getErrorStackString(e));
             algorithmTaskRepository.saveAndFlush(task);
-            return;
+        } finally {
+            runNextTask(task);
         }
         
     }
@@ -106,12 +114,27 @@ public class TaskRunner {
         }
     }
     
-    private void afterRun(AlgorithmTask task, File dataDir) {
+    private void deleteTmpResources(AlgorithmTask task, File dataDir) {
         if(ApplicationContext.debug) {
             return;
         }
         dockerClient.removeContainerCmd(task.getContainerId()).withRemoveVolumes(true).exec();
         FileUtils.deleteQuietly(dataDir);
+    }
+    
+    private void runNextTask(AlgorithmTask source) {
+        for(AlgorithmTask next: algorithmTaskRepository.findByInputTaskAndStatus(source, Status.created)){
+            if(Status.success.equals(source.getStatus())) {
+                next.setInput(source.getOutput());
+                self.run(next);
+            } else {
+                next.setStatus(Status.failure);
+                next.setErrorStack("input task is failure!!!");
+                algorithmTaskRepository.save(next);
+                runNextTask(next);
+            }
+            
+        }
     }
     
 }

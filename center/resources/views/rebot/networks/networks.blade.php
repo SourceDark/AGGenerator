@@ -24,7 +24,7 @@
                         <td><a ui-sref="network({networkId:network.id})">{{network.name}}</a></td>
                         <td>{{network.sensors}}</td>
                         <td>{{network.hosts}}</td>
-                        <td>{{network.vulnerabilities}}</td>
+                        <td><a ui-sref="network.vulnerabilities({networkId:network.id})">{{network.vulnerabilities}}</a></td>
                         <td>{{network.score}}</td>
                     </tr>
                 </tbody>

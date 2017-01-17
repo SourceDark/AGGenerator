@@ -26,7 +26,7 @@ public class TaskController {
     @Autowired
     private AlgorithmServiceImpl algorithmTaskService;
     
-    @GetMapping("/{task}/rerun")
+    @PostMapping("/{task}/rerun")
     public AlgorithmTaskDto rerun(@PathVariable AlgorithmTask task) {
         return new AlgorithmTaskDto(algorithmTaskService.run(task.getAlgorithm(), task.getInput(), null));
     }
@@ -55,4 +55,5 @@ public class TaskController {
         }
         return new AlgorithmTaskDto(algorithmTaskService.run(algorithm, form.getInput(), parentTask));
     }
+    
 }
