@@ -57,6 +57,7 @@
 <script src="/js/agbot/tasks/tasks-ctrl.js"></script>
 <script src="/js/agbot/tasks/task/index-ctrl.js"></script>
 <script src="/js/agbot/tasks/task/info-ctrl.js"></script>
+<script src="/js/agbot/tasks/task/export-ctrl.js"></script>
 
 <!-- algorithm task -->
 <script src="/js/agbot/algorithms/task/default-ctrl.js"></script>

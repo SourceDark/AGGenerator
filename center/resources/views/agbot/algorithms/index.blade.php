@@ -22,7 +22,7 @@
                     <tr ng-repeat="algorithm in algorithms">
                         <td>{{algorithm.id}}</td>
                         <td><a ui-sref="algorithms.algorithm({algorithm_id:algorithm.id})">{{algorithm.name}}</a></td>
-                        <td ng-class="{success:algorithm.imageExist}">{{algorithm.image}}</td>
+                        <td>{{algorithm.image}} <i ng-if="algorithm.imageExist" class="fa fa-check-circle success" aria-hidden="true"></i></td>
                         <td>{{algorithm.inputType}}</td>
                         <td>{{algorithm.outputType}}</td>
                         <td style="vertical-align: middle;"><a ui-sref="algorithms.edit({algorithm_id:algorithm.id})" title="config"><span class="glyphicon glyphicon-cog"></span></a></td>
