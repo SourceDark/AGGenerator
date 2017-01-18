@@ -43,39 +43,57 @@ public class NetworkScheduleTask extends AbstractEntity {
         this.algorithmTasks = algorithmTasks;
     }
     
+    private Object getValue(String output, String key) {
+        Object results = JSON.parse(output);
+        if(!(results instanceof JSONArray)) {
+            return null;
+        }
+        for(Object result: (JSONArray)results) {
+            if(key == null || key.equals(JSONPath.eval(result, "$.key").toString())) {
+                return JSONPath.eval(result, "$.value");
+            }
+        }
+        return null;
+    }
+    
     public Map<String, Object> scores() {
         Map<String, Object> scores = Maps.newHashMap();
         Double actualPathCount = 0.0;
         Double potentialPathCount = 0.0;
+        Double actualShortestPathCount = 0.0;
+        Double potentialShortestPathCount = 0.0;
         for(AlgorithmTask task: getAlgorithmTasks()) {
             if(!task.getStatus().equals(Status.success)) {
                 continue;
             }
             if(task.getAlgorithm().getId().equals(11L)) {
-                Object results = JSON.parse(task.getOutput());
-                if(!(results instanceof JSONArray)) {
-                    continue;
-                }
-                for(Object result: (JSONArray)results) {
-                    if(task.getInputTask().getAlgorithm().getId().equals(6L)) {
-                        actualPathCount = ((Integer) JSONPath.eval(result, "$.value")).doubleValue();
-                    } else {
-                        potentialPathCount = ((Integer) JSONPath.eval(result, "$.value")).doubleValue();
+                if(task.getInputTask().getAlgorithm().getId().equals(6L)) {
+                    Object result = getValue(task.getOutput(), null);
+                    if(result != null) {
+                        actualPathCount = Double.parseDouble(result.toString());
                     }
-                    
+                } else {
+                    Object result = getValue(task.getOutput(), null);
+                    if(result != null) {
+                        potentialPathCount = Double.parseDouble(result.toString());
+                    }
                 }
-            } else {
-                Object results = JSON.parse(task.getOutput());
-                if(!(results instanceof JSONArray)) {
-                    continue;
+            } else if(task.getAlgorithm().getId().equals(13L)) {
+                if(task.getInputTask().getAlgorithm().getId().equals(6L)) {
+                    Object result = getValue(task.getOutput(), null);
+                    if(result != null) {
+                        actualShortestPathCount = Double.parseDouble(result.toString());
+                    }
+                } else {
+                    Object result = getValue(task.getOutput(), null);
+                    if(result != null) {
+                        potentialShortestPathCount = Double.parseDouble(result.toString());
+                    }
                 }
-                for(Object result: (JSONArray)results) {
-                    scores.put(JSONPath.eval(result, "$.key").toString(), JSONPath.eval(result, "$.value").toString());
-                }
+            } else if(task.getAlgorithm().getId().equals(9L)) {
+                scores.put("cvssAverage", getValue(task.getOutput(), "cvssAverage"));
             }
         }
-        System.out.println(actualPathCount);
-        System.out.println(potentialPathCount);
         if(actualPathCount == 0.0) {
             actualPathCount = 1.0;
         }
@@ -83,6 +101,14 @@ public class NetworkScheduleTask extends AbstractEntity {
             potentialPathCount = actualPathCount;
         }
         scores.put("attackability", 10 - (actualPathCount / potentialPathCount) * 10);
+        if(actualShortestPathCount == 0.0) {
+            actualShortestPathCount = 1.0;
+        }
+        if(potentialShortestPathCount == 0.0) {
+            potentialShortestPathCount = actualShortestPathCount;
+        }
+        scores.put("k-zero", (1 - actualShortestPathCount / potentialShortestPathCount) * 7 + 3);
+        scores.put("attack-likehood", 0);
         return scores;
     }
 

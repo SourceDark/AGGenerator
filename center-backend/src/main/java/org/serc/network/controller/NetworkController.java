@@ -14,7 +14,7 @@ import org.serc.network.model.Network;
 import org.serc.network.model.NetworkScheduleTask;
 import org.serc.network.model.Sensor;
 import org.serc.network.support.NetworkRepository;
-import org.serc.network.support.NetworkScheduleService;
+import org.serc.network.support.NetworkScheduleRunner;
 import org.serc.network.support.NetworkScheduleTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +32,7 @@ import com.google.common.collect.Sets;
 public class NetworkController {
     
     @Autowired NetworkRepository networkRepository;
-    @Autowired NetworkScheduleService networkScheduleService;
+    @Autowired NetworkScheduleRunner networkScheduleService;
     @Autowired NetworkScheduleTaskRepository networkScheduleTaskRepository;
     
     @GetMapping("")
