@@ -92,6 +92,9 @@ Route::group(['prefix' => 'html'], function () {
             Route::get('/info', function () {
                 return view('agbot.tasks.task.info');
             });
+            Route::get('/export', function () {
+                return view('agbot.tasks.task.export');
+            });
         });
     });
     Route::group(['prefix' => 'networks'], function() {

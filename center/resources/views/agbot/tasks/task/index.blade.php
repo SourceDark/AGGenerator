@@ -4,6 +4,7 @@
 
         <div class="tag-list">
             <div class="tag" ui-sref="task.info" ui-sref-active="active">Info</div>
+            <div class="tag" ui-sref="task.export" ui-sref-active="active">Export</div>
         </div>
         <ui-view>
 
