@@ -70,24 +70,24 @@ public class NetworkScheduleTask extends AbstractEntity {
                 if(task.getInputTask().getAlgorithm().getId().equals(6L)) {
                     Object result = getValue(task.getOutput(), null);
                     if(result != null) {
-                        actualPathCount = ((Integer) result).doubleValue();
+                        actualPathCount = Double.parseDouble(result.toString());
                     }
                 } else {
                     Object result = getValue(task.getOutput(), null);
                     if(result != null) {
-                        potentialPathCount = ((Integer) result).doubleValue();
+                        potentialPathCount = Double.parseDouble(result.toString());
                     }
                 }
             } else if(task.getAlgorithm().getId().equals(13L)) {
                 if(task.getInputTask().getAlgorithm().getId().equals(6L)) {
                     Object result = getValue(task.getOutput(), null);
                     if(result != null) {
-                        actualShortestPathCount = ((Integer) result).doubleValue();
+                        actualShortestPathCount = Double.parseDouble(result.toString());
                     }
                 } else {
                     Object result = getValue(task.getOutput(), null);
                     if(result != null) {
-                        potentialShortestPathCount = ((Integer) result).doubleValue();
+                        potentialShortestPathCount = Double.parseDouble(result.toString());
                     }
                 }
             } else if(task.getAlgorithm().getId().equals(9L)) {
