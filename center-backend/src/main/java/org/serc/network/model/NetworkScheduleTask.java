@@ -92,6 +92,8 @@ public class NetworkScheduleTask extends AbstractEntity {
                 }
             } else if(task.getAlgorithm().getId().equals(9L)) {
                 scores.put("cvssAverage", getValue(task.getOutput(), "cvssAverage"));
+            }else if(task.getAlgorithm().getId().equals(14L)) {
+                scores.put("attack-likehood", getValue(task.getOutput(), null));
             }
         }
         if(actualPathCount == 0.0) {
@@ -108,7 +110,10 @@ public class NetworkScheduleTask extends AbstractEntity {
             potentialShortestPathCount = actualShortestPathCount;
         }
         scores.put("k-zero", (1 - actualShortestPathCount / potentialShortestPathCount) * 7 + 3);
-        scores.put("attack-likehood", 0);
+        
+        if(scores.get("attack-likehood") == null) {
+            scores.put("attack-likehood", 0);
+        }
         return scores;
     }
 

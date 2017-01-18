@@ -35,13 +35,15 @@ public class NetworkScheduleRunner {
             List<AlgorithmTask> tasks = algorithmService.runTaskGroup(Lists.newArrayList(
                     new AlgorithmTaskInfo(algorithmService.findOne("6"), InputFrom.source, input),
                     new AlgorithmTaskInfo(algorithmService.findOne("12"), InputFrom.source, input),
+                    new AlgorithmTaskInfo(algorithmService.findOne("1"), InputFrom.source, input),
                     new AlgorithmTaskInfo(algorithmService.findOne("9"), InputFrom.algorithm, 0), 
                     new AlgorithmTaskInfo(algorithmService.findOne("10"), InputFrom.algorithm, 0),
                     new AlgorithmTaskInfo(algorithmService.findOne("13"), InputFrom.algorithm, 0),
                     new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 0),
                     new AlgorithmTaskInfo(algorithmService.findOne("10"), InputFrom.algorithm, 1),
                     new AlgorithmTaskInfo(algorithmService.findOne("13"), InputFrom.algorithm, 1),
-                    new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 1)
+                    new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 1),
+                    new AlgorithmTaskInfo(algorithmService.findOne("14"), InputFrom.algorithm, 2)
                     ), input);
             NetworkScheduleTask networkScheduleTask = new NetworkScheduleTask();
             networkScheduleTask.setAlgorithmTasks(Lists.newArrayList(tasks.subList(1, tasks.size())));
