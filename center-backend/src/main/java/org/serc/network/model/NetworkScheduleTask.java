@@ -93,7 +93,7 @@ public class NetworkScheduleTask extends AbstractEntity {
             } else if(task.getAlgorithm().getId().equals(9L)) {
                 scores.put("cvssAverage", getValue(task.getOutput(), "cvssAverage"));
             }else if(task.getAlgorithm().getId().equals(14L)) {
-                scores.put("attack-likehood", getValue(task.getOutput(), null));
+                scores.put("attack-likehood", (Double.parseDouble(getValue(task.getOutput(), null).toString()) * 10));
             }
         }
         if(actualPathCount == 0.0) {
