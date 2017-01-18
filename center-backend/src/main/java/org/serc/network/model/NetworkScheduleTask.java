@@ -108,7 +108,9 @@ public class NetworkScheduleTask extends AbstractEntity {
         if(potentialShortestPathCount == 0.0) {
             potentialShortestPathCount = actualShortestPathCount;
         }
-        scores.put("k-zero", 10 - (actualShortestPathCount / potentialShortestPathCount) * 10);
+        System.out.println(actualShortestPathCount);
+        System.out.println(potentialShortestPathCount);
+        scores.put("k-zero", (1 - actualShortestPathCount / potentialShortestPathCount) * 5 + 5);
         scores.put("attack-likehood", 0);
         return scores;
     }
