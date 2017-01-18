@@ -2,11 +2,20 @@ package org.serc.algorithm.controller.dto;
 
 import java.util.Date;
 
+import org.springframework.beans.BeanUtils;
+
 public class AbstractDto {
     
     protected Long id;
     protected Date createdTime;
     protected Date updatedTime;
+    
+    public AbstractDto() {}
+    
+    public AbstractDto(Object object) {
+        BeanUtils.copyProperties(object, this);
+    }
+    
     public Long getId() {
         return id;
     }

@@ -8,3 +8,6 @@ dockerfiles/ag_frontend/center
 .settings
 .classpath
 vendor
+blur-center/.tmp/
+blur-center/bower_components
+blur-center/mode_modules

@@ -51,6 +51,7 @@ public class TaskRunner {
             File dataDir = initData(task);
             String containerId = initContainer(task, dataDir);
             task.setContainerId(containerId);
+            algorithmTaskRepository.saveAndFlush(task);
             runContainer(task, dataDir);
             handleResult(task, dataDir);
             algorithmTaskRepository.saveAndFlush(task);

@@ -9,6 +9,8 @@ public class AlgorithmTaskListDto extends AbstractDto {
     private Status status;
     private String containerId;
     private SimpleDto algorithm;
+    private String inputType;
+    private String outputType;
     
     public AlgorithmTaskListDto() {
         super();
@@ -17,6 +19,8 @@ public class AlgorithmTaskListDto extends AbstractDto {
         super();
         BeanUtils.copyProperties(task, this);
         algorithm = new SimpleDto(task.getAlgorithm());
+        inputType = task.getInputType().getName();
+        outputType = task.getOutputType().getName();
     }
     
     public Status getStatus() {
@@ -36,6 +40,18 @@ public class AlgorithmTaskListDto extends AbstractDto {
     }
     public void setAlgorithm(SimpleDto algorithm) {
         this.algorithm = algorithm;
+    }
+    public String getInputType() {
+        return inputType;
+    }
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
+    }
+    public String getOutputType() {
+        return outputType;
+    }
+    public void setOutputType(String outputType) {
+        this.outputType = outputType;
     }
 
 }

@@ -27,13 +27,14 @@ public class AlgorithmTask extends AbstractEntity {
     @ManyToOne(optional = true)
     private AlgorithmTask parentTask;
     
+    String containerId;
     @Lob String input;
     @Lob String output;
     @Lob String errorStack; // optional, then reason why status is failure
     @Enumerated Status status;
     @ManyToOne(optional = true) ResultType inputType;
     @ManyToOne(optional = true) ResultType outputType;
-    String containerId;
+    
     
     public Algorithm getAlgorithm() {
         return algorithm;

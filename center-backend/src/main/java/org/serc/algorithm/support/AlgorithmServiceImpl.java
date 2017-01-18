@@ -6,6 +6,7 @@ import org.serc.algorithm.model.Algorithm;
 import org.serc.algorithm.model.AlgorithmTask;
 import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.algorithm.model.AlgorithmTaskInfo;
+import org.serc.algorithm.model.ResultType;
 import org.serc.algorithm.service.AlgorithmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,7 @@ public class AlgorithmServiceImpl implements AlgorithmService {
 
     @Override
     public List<Algorithm> getAlgorithms() {
-        return algorithmRepository.findAll();
+        return algorithmRepository.findByDeletedFalse();
     }
 
     @Override
@@ -55,10 +56,14 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         task.setAlgorithm(algorithm);
         task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
         task.setInput(input);
-        if(parentTask.getParentTask() != null) {
-            task.setParentTask(parentTask.getParentTask());
-        } else {
-            task.setParentTask(parentTask);
+        task.setInputType(algorithm.getInputType());
+        task.setOutputType(algorithm.getOutputType());
+        if(task.getParentTask() != null) {
+            if(parentTask.getParentTask() != null) {
+                task.setParentTask(parentTask.getParentTask());
+            } else {
+                task.setParentTask(parentTask);
+            }
         }
         task = taskRepository.save(task);
         taskRunner.run(task);
@@ -108,6 +113,8 @@ public class AlgorithmServiceImpl implements AlgorithmService {
         for(AlgorithmTaskInfo taskInfo: taskInfos) {
             AlgorithmTask task = new AlgorithmTask();
             task.setAlgorithm(taskInfo.getAlgorithm());
+            task.setInputType(taskInfo.getAlgorithm().getInputType());
+            task.setOutputType(taskInfo.getAlgorithm().getOutputType());
             task.setStatus(org.serc.algorithm.model.AlgorithmTask.Status.created);
             if(AlgorithmTaskInfo.InputFrom.direct.equals(taskInfo.getInputFrom())) {
                 task.setInput(taskInfo.getInput());
@@ -135,6 +142,16 @@ public class AlgorithmServiceImpl implements AlgorithmService {
             }
         }
         return algorithmTasks;
+    }
+
+    @Override
+    public List<Algorithm> getAlgorithmsByInputType(ResultType inputType) {
+        return algorithmRepository.findByInputType(inputType);
+    }
+
+    @Override
+    public List<Algorithm> getAlgorithmsByOutputType(ResultType outputType) {
+        return algorithmRepository.findByOutputType(outputType);
     }
 
 }

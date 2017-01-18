@@ -2,27 +2,32 @@ package org.serc.network.controller.dto;
 
 import java.util.Map;
 
+import org.serc.algorithm.controller.dto.AbstractDto;
 import org.serc.network.model.Host;
 import org.serc.network.model.HostVulnerability;
 import org.serc.network.model.Network;
+import org.serc.network.model.NetworkScheduleTask;
 import org.serc.network.model.Sensor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.google.common.collect.Maps;
 
-public class NetworkListDto {
+public class NetworkListDto extends AbstractDto {
     
     private String name;
     private Integer sensorCount = 0;
     private Integer hostCount = 0;
     private Integer vulnerabilityCount = 0;
-    private final Map<String, Object> scores = Maps.newHashMap();
+    private Map<String, Object> scores;
     
     public NetworkListDto() {}
     
     public NetworkListDto(Network network) {
-        this.name = network.getName();
+        this(network, null);
+    }
+    
+    public NetworkListDto(Network network, NetworkScheduleTask networkScheduleTask) {
+        super(network);
         this.sensorCount = network.getSensors().size();
         for(Sensor sensor: network.getSensors()) {
             hostCount += sensor.getHosts().size();
@@ -34,6 +39,9 @@ public class NetworkListDto {
                     }
                 }
             }
+        }
+        if(networkScheduleTask != null) {
+            scores = networkScheduleTask.scores();
         }
     }
     

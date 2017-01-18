@@ -11,6 +11,20 @@ public class AlgorithmTaskInfo {
     private String input;
     private Integer fromAlgorithm;
     
+    public AlgorithmTaskInfo() { }
+    
+    public AlgorithmTaskInfo(Algorithm algorithm, InputFrom inputFrom, String input) {
+        this.algorithm = algorithm;
+        this.inputFrom = inputFrom;
+        this.input = input;
+    }
+    
+    public AlgorithmTaskInfo(Algorithm algorithm, InputFrom inputFrom, Integer fromAlgorithm) {
+        this.algorithm = algorithm;
+        this.inputFrom = inputFrom;
+        this.fromAlgorithm = fromAlgorithm;
+    }
+    
     public Algorithm getAlgorithm() {
         return algorithm;
     }
