@@ -89,9 +89,13 @@ class Node : public GraphNode {
 public:
 	int id;
 	string nodeType;
+	int count;
 	//
-	Node():GraphNode() {}
+	Node():GraphNode() {
+		count = -1;
+	}
 	Node(const Value& dnode):GraphNode() {
+		count = -1;
 		id = stoi<int>(string(dnode["id"].GetString()).c_str());
 		nodeType = dnode["nodeType"].GetString();
 	}
@@ -265,37 +269,40 @@ void input() {
 	cout << endl;
 }
 
-int count = 0;
-void search(Node *node, vector<Node *> &path) {
-	//cout << node -> id << endl;
-	if (node -> nodeType == "privilege") {
-		PrivilegeNode *pnode = (PrivilegeNode *) node;
-		if (pnode -> goal) {
-			count ++;
-			return;	
+int search(Node *node, vector<Node *> &path) {
+	if (node -> count == -1) {
+		node -> count = 0;
+		if (node -> nodeType == "privilege") {
+			PrivilegeNode *pnode = (PrivilegeNode *) node;
+			if (pnode -> goal) {
+				return 1;	
+			}
+		}
+		int sum = 0;
+		for (Edge *edge = node -> link; edge != NULL; edge = edge -> next) if (edge -> dst -> status == 0) {
+			//cout << edge -> src -> id << ' ' << edge -> dst -> id << endl;
+			path.push_back(edge -> dst); edge -> dst -> status = 1;
+			node -> count += search(edge -> dst, path);
+			path.pop_back(); edge -> dst -> status = 0;
 		}
 	}
-	for (Edge *edge = node -> link; edge != NULL; edge = edge -> next) if (edge -> dst -> status == 0) {
-		//cout << edge -> src -> id << ' ' << edge -> dst -> id << endl;
-		path.push_back(edge -> dst); edge -> dst -> status = 1;
-		search(edge -> dst, path);
-		path.pop_back(); edge -> dst -> status = 0;
-	}
+	return node -> count;
 }
 
+int ans = 0;
 void analysis() {
 	for (vector<Node*>::iterator it = attackers.begin(); it != attackers.end(); it ++) {
 		Node *node = *it; 
 		vector<Node *> path(1, node);
 		node -> status = 1;
-		search(node, path);
+		ans += search(node, path);
 		node -> status = 0;
 	}
 }
 
 void output() {
 	ofstream ouf(output_file);
-	ouf << "[{\"key\":\"attack_path_count\",\"value\":" << count << "}]" << endl;
+	ouf << "[{\"key\":\"attack_path_count\",\"value\":" << ans << "}]" << endl;
 	ouf.close();
 }
 
