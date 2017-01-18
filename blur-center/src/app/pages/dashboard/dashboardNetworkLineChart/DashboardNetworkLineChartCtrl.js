@@ -9,41 +9,38 @@
         .controller('DashboardNetworkLineChartCtrl', DashboardNetworkLineChartCtrl);
 
     /** @ngInject */
-    function DashboardNetworkLineChartCtrl($scope,$filter) {
+    function DashboardNetworkLineChartCtrl($scope,$filter,$http,$timeout) {
+        $timeout(function () {
+            $http
+                .get('http://162.105.30.71:9016/networks/'+$scope.id)
+                .then(function (result) {
+                    console.log(result);
+                    $scope.networkName = result.data.name;
+                    $http
+                        .get('http://162.105.30.71:9016/networks/'+$scope.id+'/scores')
+                        .then(function (result) {
+                            console.log(result);
+                            $scope.lineData = [];
+                            for (var key in result.data) {
+                                result.data[key].y = new $filter('date')(parseInt(key),'yyyy-MM-dd HH:mm:ss');
+                                $scope.lineData.push(result.data[key]);
+                            }
+                            $scope.series = [];
+                            $scope.radarData = [];
+                            for (var key in $scope.lineData[0])
+                                if (key != 'y') {
+                                    $scope.series.push(key);
+                                    $scope.radarData.push($scope.lineData[$scope.lineData.length - 1][key]);
+                                }
 
-        $scope.series = ["cvssMin","DepthMetric","weakestAdversary","connectivityMetric","cycleMetric","attackability","cvssAverage","cvssMax"];
-
-        if ($scope.id == 1) {
-            $scope.networkName = 'serc-1730';
-            $scope.dataTime = [1484555250000,1484555303000,1484555491000,1484642965000];
-            $scope.data = [
-                [4.3,4.3,4.3,4.3],
-                [9.4,9.4,9.4,9.4],
-                [3.43,3.43,3.43,5.57],
-                [10.0,10.0,10.0,10.0],
-                [8.0,8.0,8.0,8.0],
-                [0,0,0,4.1772151898734],
-                [5.1,5.1,5.1,5.1],
-                [7.5,7.5,7.5,7.5]
-            ]
-        }   else {
-            $scope.networkName = 'beidasoft';
-            $scope.dataTime = [1484642966000,1484555303000,1484555491000,1484555250000];
-            $scope.data = [
-                [3.5,3.5,3.5,3.5],
-                [5.6,5.6,5.6,5.6],
-                [5.57,3.35,3.35,3.35],
-                [10.0,10.0,10.0,10.0],
-                [5.6,5.6,5.6,5.6],
-                [0,0,0,0],
-                [4.6666665,4.6666665,4.6666665,4.6666665],
-                [6.5,6.5,6.5,6.5]
-            ]
-        }
-        $scope.labels = $scope.dataTime.map(function (t) {
-            return new $filter('date')(t,'yyyy-MM-dd HH:mm:ss');
-        });
-
+                            console.log($scope.series);
+                        }, function (result) {
+                            console.error('error');
+                        });
+                }, function (result) {
+                    console.error('error');
+                });
+        }, 1000);
     }
 
 })();
