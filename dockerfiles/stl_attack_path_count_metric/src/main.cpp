@@ -89,7 +89,7 @@ class Node : public GraphNode {
 public:
 	int id;
 	string nodeType;
-	int count;
+	long long count;
 	//
 	Node():GraphNode() {
 		count = -1;
@@ -269,7 +269,7 @@ void input() {
 	cout << endl;
 }
 
-int search(Node *node, vector<Node *> &path) {
+long long search(Node *node, vector<Node *> &path) {
 	if (node -> count == -1) {
 		node -> count = 0;
 		if (node -> nodeType == "privilege") {
@@ -289,7 +289,7 @@ int search(Node *node, vector<Node *> &path) {
 	return node -> count;
 }
 
-int ans = 0;
+long long ans = 0;
 void analysis() {
 	for (vector<Node*>::iterator it = attackers.begin(); it != attackers.end(); it ++) {
 		Node *node = *it; 
