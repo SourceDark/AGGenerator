@@ -1,6 +1,7 @@
 agbotApp.config(function($stateProvider) {
     var algorithms = {
-        '3': 'bayesianNetworkCtrl'
+        '3': 'bayesianNetworkCtrl',
+        '14': 'bayesianNetworkCtrl'
     };
     $stateProvider.state({
         name: 'algorithms.newAlgorithmTask',
