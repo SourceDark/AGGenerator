@@ -32,13 +32,13 @@
                             $scope.lineData.sort(mySort);
                             $scope.series = [];
                             $scope.radarData = [];
-                            for (var key in $scope.lineData[0])
+                            for (var key in $scope.lineData[0]){
                                 if (key != 'y' && key != 't') {
                                     $scope.series.push(key);
-                                    $scope.radarData.push($scope.lineData[$scope.lineData.length - 1][key]);
+                                    $scope.radarData.push(parseFloat($scope.lineData[$scope.lineData.length - 1][key]));
                                 }
-
-                            console.log($scope.lineData);
+                            }
+                            $scope.radarData = [$scope.radarData];
                         }, function (result) {
                             console.error('error');
                         });
