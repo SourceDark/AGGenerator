@@ -38,7 +38,8 @@
     $http.get('http://162.105.30.71:9016/networks/'+$scope.id).then(function (result) {
           $scope.charts[0].stats = result.data.sensorCount;
           $scope.charts[1].stats = result.data.hostCount;
-          $scope.charts[2].stats = result.data.vulnerabilityCount;
+          $scope.charts[2].stats = result.data.dangerVulnerabilityCount;
+          $scope.charts[3].stats = result.data.vulnerabilityCount;
       }, function (result) {
           console.error('error');
     });
