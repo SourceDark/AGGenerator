@@ -8,15 +8,14 @@ import org.serc.network.model.HostVulnerability;
 import org.serc.network.model.Network;
 import org.serc.network.model.NetworkScheduleTask;
 import org.serc.network.model.Sensor;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
+import org.serc.network.support.NetworkUtils;
 
 public class NetworkListDto extends AbstractDto {
     
     private String name;
     private Integer sensorCount = 0;
     private Integer hostCount = 0;
+    private Integer dangerVulnerabilityCount = 0;
     private Integer vulnerabilityCount = 0;
     private Map<String, Object> scores;
     
@@ -29,13 +28,16 @@ public class NetworkListDto extends AbstractDto {
     public NetworkListDto(Network network, NetworkScheduleTask networkScheduleTask) {
         super(network);
         this.sensorCount = network.getSensors().size();
+        NetworkUtils.setCveEntries(network, NetworkUtils.getCves(network));
         for(Sensor sensor: network.getSensors()) {
             hostCount += sensor.getHosts().size();
             for(Host host: sensor.getHosts()) {
                 for(HostVulnerability hostVulnerability: host.getVulnerabilities()) {
-                    Object cves = JSON.parse(hostVulnerability.getCves());
-                    if(cves instanceof JSONArray) {
-                        vulnerabilityCount += ((JSONArray) cves).size();
+                    vulnerabilityCount += hostVulnerability.getCveList().size();
+                    for(CveEntry cveEntry: hostVulnerability.getCveList()) {
+                        if(cveEntry != null && cveEntry.getCvssScore() > 5) {
+                            dangerVulnerabilityCount++;
+                        }
                     }
                 }
             }
@@ -72,6 +74,14 @@ public class NetworkListDto extends AbstractDto {
 
     public Map<String, Object> getScores() {
         return scores;
+    }
+
+    public Integer getDangerVulnerabilityCount() {
+        return dangerVulnerabilityCount;
+    }
+
+    public void setDangerVulnerabilityCount(Integer dangerVulnerabilityCount) {
+        this.dangerVulnerabilityCount = dangerVulnerabilityCount;
     }
 
 }

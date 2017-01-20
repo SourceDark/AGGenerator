@@ -12,6 +12,9 @@
   function dashboardPieChart() {
     return {
       restrict: 'E',
+      scope: {
+          id   : '=networkId'
+      },
       controller: 'DashboardPieChartCtrl',
       templateUrl: 'app/pages/dashboard/dashboardPieChart/dashboardPieChart.html'
     };

@@ -9,35 +9,40 @@
       .controller('DashboardPieChartCtrl', DashboardPieChartCtrl);
 
   /** @ngInject */
-  function DashboardPieChartCtrl($scope, $timeout, baConfig, baUtil) {
+  function DashboardPieChartCtrl($scope, $timeout, baConfig, baUtil, $http) {
     var pieColor = baUtil.hexToRGB(baConfig.colors.defaultText, 0.2);
-    $scope.charts = [{
-      color: pieColor,
-      description: 'New Visits',
-      stats: '57,820',
-      icon: 'person',
-    }, {
-      color: pieColor,
-      description: 'Purchases',
-      stats: '$ 89,745',
-      icon: 'money',
-    }, {
-      color: pieColor,
-      description: 'Active Users',
-      stats: '178,391',
-      icon: 'face',
-    }, {
-      color: pieColor,
-      description: 'Returned',
-      stats: '32,592',
-      icon: 'refresh',
-    }
+    $scope.charts = [
+      {
+        color: pieColor,
+        description: '探针数',
+        stats: 0,
+        icon: 'socicon',
+        iconText: '_'
+      }, {
+        color: pieColor,
+        description: '主机数',
+        stats: 0,
+        icon: 'fa fa-server',
+      }, {
+        color: pieColor,
+        description: '高危漏洞数',
+        stats: 0,
+        icon: 'fa fa-bolt',
+      }, {
+        color: pieColor,
+        description: '漏洞数',
+        stats: 0,
+        icon: 'fa fa-bug',
+      }
     ];
-
-    function getRandomArbitrary(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
+    $http.get('http://162.105.30.71:9016/networks/'+$scope.id).then(function (result) {
+          $scope.charts[0].stats = result.data.sensorCount;
+          $scope.charts[1].stats = result.data.hostCount;
+          $scope.charts[2].stats = result.data.vulnerabilityCount;
+      }, function (result) {
+          console.error('error');
+    });
+    
     function loadPieCharts() {
       $('.chart').each(function () {
         var chart = $(this);
@@ -55,21 +60,7 @@
           lineCap: 'round',
         });
       });
-
-      $('.refresh-data').on('click', function () {
-        updatePieCharts();
-      });
     }
 
-    function updatePieCharts() {
-      $('.pie-charts .chart').each(function(index, chart) {
-        $(chart).data('easyPieChart').update(getRandomArbitrary(55, 90));
-      });
-    }
-
-    $timeout(function () {
-      loadPieCharts();
-      updatePieCharts();
-    }, 1000);
   }
 })();

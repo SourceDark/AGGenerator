@@ -6,15 +6,30 @@
   'use strict';
 
   angular.module('BlurAdmin.pages.dashboard', [])
-      .config(routeConfig);
+      .config(routeConfig)
+      .controller('dashboardCtrl', function($scope,$state) {
+        if($state.current.name === 'serc1730') {
+          $scope.networkId = 1;
+        } else {
+          $scope.networkId = 2;
+        }
+      });
 
   /** @ngInject */
   function routeConfig($stateProvider) {
     $stateProvider
-        .state('dashboard', {
-          url: '/dashboard',
+        .state('serc1730', {
+          url: '/serc1730',
           templateUrl: 'app/pages/dashboard/dashboard.html',
-          title: 'Dashboard',
+          title: '实验室',
+          sidebarMeta: {
+            icon: 'ion-android-home',
+            order: 0,
+          },
+        }).state('beidasoft', {
+          url: '/beidasoft',
+          templateUrl: 'app/pages/dashboard/dashboard.html',
+          title: '北大软件',
           sidebarMeta: {
             icon: 'ion-android-home',
             order: 0,
