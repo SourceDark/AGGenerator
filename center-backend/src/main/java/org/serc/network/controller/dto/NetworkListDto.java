@@ -35,7 +35,7 @@ public class NetworkListDto extends AbstractDto {
                 for(HostVulnerability hostVulnerability: host.getVulnerabilities()) {
                     vulnerabilityCount += hostVulnerability.getCveList().size();
                     for(CveEntry cveEntry: hostVulnerability.getCveList()) {
-                        if(cveEntry != null && cveEntry.getCvssScore() > 5) {
+                        if(cveEntry != null && cveEntry.getCvssScore() >= 7) {
                             dangerVulnerabilityCount++;
                         }
                     }

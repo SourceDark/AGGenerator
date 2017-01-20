@@ -10,4 +10,4 @@ dockerfiles/ag_frontend/center
 vendor
 blur-center/.tmp/
 blur-center/bower_components
-blur-center/mode_modules
+blur-center/node_modules
