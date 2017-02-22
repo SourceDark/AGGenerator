@@ -1,50 +1,75 @@
 <div class="row">
-	<div class="col-md-12">
-    <div ba-panel ba-panel-title="漏洞管理" ba-panel-class="with-scroll">
-        <div class="col-md-4">
-            <div class="horizontal-scroll">
-              <h4>危险资产TOP10</h4>
-              <table class="table table-hover">
-                <thead>
-                <tr class="black-muted-bg">
-                  <th>资产</th>
-                  <th class="align-right">漏洞数</th>
-                  <th class="table-arr">危险值</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="host in top10Hosts" class="no-top-border">
-                  <td class="align-right">{{host.ip}}</td>
-                  <td class="align-right">{{host.vulnerabilityCount}}</td>
-                  <td class="align-right">{{host.cvssScoreTotoal | number: 2}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="horizontal-scroll">
-              <h4>危险漏洞TOP10</h4>
-              <table class="table table-hover">
-                <thead>
-                <tr class="black-muted-bg">
-                  <th>id</th>
-                  <th class="align-right">所在资产</th>
-                  <th class="table-arr">危险值</th>
-                  <th class="align-right">描述</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="vulnerability in top10Vulnerabilities" class="no-top-border">
-                  <td><a target="_blank" href="http://162.105.30.71:9014/#/cve/{{vulnerability.id}}">{{vulnerability.id}}</a></td>
-                  <td class="align-right">{{vulnerability.host.ip}}</td>
-                  <td class="align-right">{{vulnerability.cvssScore | number: 2}}</td>
-                  <td class="align-right">{{vulnerability.description | limitTo: 60}}{{vulnerability.description.length > 70 ? '...' : ''}}</td>
-                </tr>
-                </tbody>
-              </table>
+    <div class="col-md-12">
+        <div ba-panel ba-panel-title="资产管理" ba-panel-class="with-scroll">
+            <div class= "row">
+                <div class="col-md-6">
+                    <div class="horizontal-scroll">
+                      <h4>危险资产TOP10</h4>
+                      <table class="table table-hover">
+                        <thead>
+                        <tr class="black-muted-bg">
+                          <th>资产</th>
+                          <th>漏洞数</th>
+                          <th>危险值</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="host in top10Hosts" class="no-top-border">
+                          <td>{{host.ip}}</td>
+                          <td>{{host.vulnerabilityCount}}</td>
+                          <td>{{host.cvssScoreTotoal | number: 2}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                <div class="chartjs-canvas-holder-first-row col-md-6">
+                    <h4 class="text-center">资产漏洞情况</h4>
+                    <br><br>
+                    <canvas id="pie" class="chart chart-pie"
+                           chart-options="options" chart-data="hostVulnerabilityPieData" chart-labels="hostVulnerabilityPieLabels">
+                    </canvas>
+                </div>
             </div>
         </div>
     </div>
-  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div ba-panel ba-panel-title="漏洞管理" ba-panel-class="with-scroll">
+            <div class= "row">
+                <div class="col-md-6">
+                    <div class="horizontal-scroll">
+                      <h4>危险漏洞TOP10</h4>
+                      <table class="table table-hover">
+                        <thead>
+                        <tr class="black-muted-bg">
+                          <th>id</th>
+                          <th>所在资产</th>
+                          <th>危险值</th>
+                          <th>描述</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vulnerability in top10Vulnerabilities" class="no-top-border">
+                          <td><a target="_blank" href="http://162.105.30.71:9014/#/cve/{{vulnerability.id}}">{{vulnerability.id}}</a></td>
+                          <td>{{vulnerability.host.ip}}</td>
+                          <td>{{vulnerability.cvssScore | number: 2}}</td>
+                          <td>{{vulnerability.description | limitTo: 30}}{{vulnerability.description.length > 30 ? '...' : ''}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                <div class="chartjs-canvas-holder-first-row col-md-6">
+                    <h4 class="text-center">高危漏洞比</h4>
+                    <br><br>
+                    <canvas id="pie" class="chart chart-pie"
+                           chart-options="options" chart-data="vulnerabilityCvssPieData" chart-labels="vulnerabilityCvssPieLabels">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
