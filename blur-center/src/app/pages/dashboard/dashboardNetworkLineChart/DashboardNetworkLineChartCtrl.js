@@ -9,18 +9,18 @@
         .controller('DashboardNetworkLineChartCtrl', DashboardNetworkLineChartCtrl);
 
     /** @ngInject */
-    function DashboardNetworkLineChartCtrl($scope,$filter,$http,$timeout) {
+    function DashboardNetworkLineChartCtrl($scope,$filter,$http,$timeout, apiHost) {
         function mySort(a, b) {
             return a.t > b.t;
         }
         $timeout(function () {
             $http
-                .get('http://162.105.30.71:9016/networks/'+$scope.id)
+                .get(apiHost + '/networks/'+$scope.id)
                 .then(function (result) {
                     console.log(result);
                     $scope.networkName = result.data.name;
                     $http
-                        .get('http://162.105.30.71:9016/networks/'+$scope.id+'/scores')
+                        .get(apiHost + '/networks/'+$scope.id+'/scores')
                         .then(function (result) {
                             console.log(result);
                             $scope.lineData = [];

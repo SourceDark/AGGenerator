@@ -9,7 +9,7 @@
       .controller('DashboardPieChartCtrl', DashboardPieChartCtrl);
 
   /** @ngInject */
-  function DashboardPieChartCtrl($scope, $timeout, baConfig, baUtil, $http) {
+  function DashboardPieChartCtrl($scope, $timeout, baConfig, baUtil, $http, apiHost) {
     var pieColor = baUtil.hexToRGB(baConfig.colors.defaultText, 0.2);
     $scope.charts = [
       {
@@ -35,7 +35,7 @@
         icon: 'fa fa-bug',
       }
     ];
-    $http.get('http://162.105.30.71:9016/networks/'+$scope.id).then(function (result) {
+    $http.get(apiHost + '/networks/'+$scope.id).then(function (result) {
           $scope.charts[0].stats = result.data.sensorCount;
           $scope.charts[1].stats = result.data.hostCount;
           $scope.charts[2].stats = result.data.dangerVulnerabilityCount;

@@ -9,7 +9,7 @@
         .controller('DashboardSensorsChartCtrl', DashboardSensorsChartCtrl);
 
     /** @ngInject */
-    function DashboardSensorsChartCtrl($scope,$filter,$http,$timeout, baConfig) {
+    function DashboardSensorsChartCtrl($scope,$filter,$http,$timeout, baConfig, apiHost) {
         var layoutColors = baConfig.colors;
         $scope.options = {
           elements: {
@@ -34,7 +34,7 @@
         $scope.vulnerabilityCvssPieLabels = ['普通漏洞', '高危漏洞', '中等漏洞']
         $scope.vulnerabilityCvssPieData = [1,1,1];
         $timeout(function () {
-            $http.get('http://162.105.30.71:9016/networks/'+$scope.id+'/sensors').then(function (result) {
+            $http.get(apiHost + '/networks/'+$scope.id+'/sensors').then(function (result) {
                 $scope.sensors = result.data;
                 $scope.sensors.forEach(function(sensor) {
                     sensor.hosts.forEach(function(host){
