@@ -1,4 +1,26 @@
-<div ui-view="">
-    asset page
-    <a ui-sref="asset.information">查看详情</a>
+<div ui-view="" ng-controller="assetCtrl">
+    <div class="row">
+    <div class="col-md-12">
+        <div ba-panel ba-panel-title="{{sensor}}" ba-panel-class="with-scroll" ng-repeat="sensor in sensorNames">
+            <div class="horizontal-scroll">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr class="black-muted-bg">
+                        <th class="">ip</th>
+                        <th class="" style="padding-left: 8px">评分</th>
+                        <th class="" style="padding-left: 8px">漏洞数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="host in hosts[sensor]" class="no-top-border" ui-sref="asset.information({sensorName:sensor, ip:host.ip})">
+                        <td class="">{{host.ip}}</td>
+                        <td class="">{{host.score}}</td>
+                        <td class="">{{host.vulnerabilityCount}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
