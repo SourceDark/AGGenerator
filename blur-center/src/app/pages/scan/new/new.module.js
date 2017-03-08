@@ -5,8 +5,18 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.scan.new', [])
-        .config(routeConfig);
+    angular.module('BlurAdmin.pages.scan.new', ['ui.select'])
+        .config(routeConfig)
+        .controller('newScanCtrl', function ($scope, $http) {
+            $scope.newTask = {
+                sensor: null,
+                ip: ''
+            };
+
+            $scope.sensors = [
+                {name: 'xr-test', id: 0}, {name: 'xr-test-2', id: 1}
+            ];
+        });
 
     /** @ngInject */
     function routeConfig($stateProvider) {
