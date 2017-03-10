@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.serc.algorithm.model.AlgorithmTask;
-import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.model.AbstractEntity;
 
 import com.alibaba.fastjson.JSON;
@@ -20,13 +19,17 @@ import com.google.common.collect.Maps;
 @Entity
 public class NetworkScheduleTask extends AbstractEntity {
     
+    public enum Status {
+        running, success, failure, created;
+    }
+    
     @ManyToOne
     private Network network;
     
     @OneToMany
     @JoinColumn(name = "network_schedule")
     private List<AlgorithmTask> algorithmTasks;
-
+    
     public Network getNetwork() {
         return network;
     }

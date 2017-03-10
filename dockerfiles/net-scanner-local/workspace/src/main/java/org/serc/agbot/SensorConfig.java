@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 @Component
 public class SensorConfig {
     
-    @Value("${data.dir}")
+    @Value("${dataDir}")
     private String dataDir;
     
     @Value("${dockerHost}")

@@ -19,6 +19,7 @@ public class Sensor extends AbstractEntity {
     
     private String name;
     private String ip;
+    private String dockerApi;
     
     @OneToMany(mappedBy = "sensor", fetch = FetchType.EAGER)
     private List<Host> hosts = Lists.newArrayList();
@@ -40,5 +41,11 @@ public class Sensor extends AbstractEntity {
     }
     public void setHosts(List<Host> hosts) {
         this.hosts = hosts;
+    }
+    public String getDockerApi() {
+        return dockerApi;
+    }
+    public void setDockerApi(String dockerApi) {
+        this.dockerApi = dockerApi;
     }
 }
