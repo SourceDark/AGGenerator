@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
 
-@RestController
+@RestController("ServerSensorController")
 @RequestMapping("/server/{network}/sensors")
 public class SensorController {
     
