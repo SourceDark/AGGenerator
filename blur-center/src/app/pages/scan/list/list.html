@@ -1,0 +1,35 @@
+<div ui-view="" ng-controller="scanListCtrl">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="扫描任务    <a ui-sref='scan.new' style='color: #209e91;font-size: 0.8em;'>+新建扫描任务</a>" ba-panel-class="with-scroll">
+                <div class="horizontal-scroll">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th class="">编号</th>
+                            <th class="" style="padding-left: 8px">开始时间</th>
+                            <th class="" style="padding-left: 8px">结束时间</th>
+                            <th class="" style="padding-left: 8px">耗时</th>
+                            <th class="" style="padding-left: 8px">资产数量</th>
+                            <th class="" style="padding-left: 8px">漏洞数量</th>
+                            <th class="" style="padding-left: 8px">状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="task in tasks" class="no-top-border">
+                            <td class="" ng-bind="task.id"></td>
+                            <td class="">{{task.createdTime | date:'yyyy-MM-dd'}}</td>
+                            <td class="">{{(task.endTime | date:'yyyy-MM-dd') || '正在进行'}}</td>
+                            <td class="">{{(showLong(task.createdTime, task.endTime)) || '-'}}</td>
+                            <td class="">{{task.hostCount}}</td>
+                            <td class="">{{task.vulnerabilitiesCount}}</td>
+                            <td class="">{{task.status}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
