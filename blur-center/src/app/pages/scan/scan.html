@@ -19,11 +19,11 @@
                         <tbody>
                         <tr ng-repeat="task in tasks" class="no-top-border">
                             <td class="" ng-bind="task.id"></td>
-                            <td class="">{{task.start | date:'yyyy-MM-dd'}}</td>
-                            <td class="">{{(task.end | date:'yyyy-MM-dd') || '正在进行'}}</td>
-                            <td class="">{{(task.end | date:'yyyy-MM-dd') || '-'}}</td>
-                            <td class="">{{task.assetCount}}</td>
-                            <td class="">{{task.vulnerabilityCount}}</td>
+                            <td class="">{{task.createdTime | date:'yyyy-MM-dd'}}</td>
+                            <td class="">{{(task.endTime | date:'yyyy-MM-dd') || '正在进行'}}</td>
+                            <td class="">{{(showLong(task.createdTime, task.endTime)) || '-'}}</td>
+                            <td class="">{{task.hostCount}}</td>
+                            <td class="">{{task.vulnerabilitiesCount}}</td>
                             <td class="">{{task.status}}</td>
                         </tr>
                         </tbody>

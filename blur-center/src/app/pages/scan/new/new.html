@@ -18,10 +18,10 @@
                     </ui-select>
                 </div>
                 <div class="form-group">
-                    <label>IP地址</label>
-                    <input type="email" class="form-control" ng-model="newTask.ip" placeholder="*.*.*.*">
+                    <label>IP地址(多个IP地址用逗号分隔)</label>
+                    <input type="text" class="form-control" ng-model="newTask.ip" placeholder="*.*.*.*">
                 </div>
-                <button type="submit" class="btn btn-danger">提交</button>
+                <button type="submit" class="btn btn-danger" ng-click="submit()">提交</button>
                 <button type="submit" class="btn btn-danger" ui-sref="scan">取消</button>
             </form>
         </div>
