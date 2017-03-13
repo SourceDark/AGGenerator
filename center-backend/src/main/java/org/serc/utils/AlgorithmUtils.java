@@ -25,6 +25,14 @@ public class AlgorithmUtils {
         return errorStack;
     }
     
+    public static String getErrorStackString(Error e) {
+        String errorStack = e.getMessage();
+        for(StackTraceElement element : e.getStackTrace()){
+            errorStack += element.toString();
+        }
+        return errorStack;
+    }
+    
     public static String getLog(String containerId) {
         StringBufferLogReader loggingCallback = new StringBufferLogReader();
         dockerClient.logContainerCmd(containerId).withStdErr(true).withStdOut(true).exec(loggingCallback);

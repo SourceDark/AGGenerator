@@ -23,7 +23,7 @@ import com.github.dockerjava.core.command.WaitContainerResultCallback;
 public class NetworkScannerSubTaskRunner {
     
     @Autowired ApplicationContext applicationContext;
-    @Autowired NetworkScannerSubTaskRepository  networkScannerTaskRepository;
+    @Autowired NetworkScannerSubTaskRepository  networkScannerSubTaskRepository;
     @Autowired SensorService sensorService;
     private static final String image = "registry.cn-hangzhou.aliyuncs.com/serc/agbot:net-scanner-local";
     private static final String containerDataDir = "/data";
@@ -32,19 +32,23 @@ public class NetworkScannerSubTaskRunner {
     public void run(NetworkScannerSubTask task) {
         try {
             task.setStatus(Status.running);
-            networkScannerTaskRepository.saveAndFlush(task);
-            
+            networkScannerSubTaskRepository.saveAndFlush(task);
             DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
                     .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
             task.setContainerId(initContainer(dockerClient, task));
-            networkScannerTaskRepository.saveAndFlush(task);
+            networkScannerSubTaskRepository.saveAndFlush(task);
             runContainer(dockerClient, task);
             handleResult(dockerClient, task);
-            networkScannerTaskRepository.saveAndFlush(task);
+            task.setStatus(Status.success);
+            networkScannerSubTaskRepository.saveAndFlush(task);
         } catch (Exception e) {
             task.setStatus(Status.failure);
             task.setErrorStack(AlgorithmUtils.getErrorStackString(e));
-            networkScannerTaskRepository.saveAndFlush(task);
+            networkScannerSubTaskRepository.saveAndFlush(task);
+        }catch (Error e) {
+            task.setStatus(Status.failure);
+            task.setErrorStack(AlgorithmUtils.getErrorStackString(e));
+            networkScannerSubTaskRepository.saveAndFlush(task);
         } finally {
             task.getTask().getSubTasks().stream()
                 .filter(st -> Status.created.equals(st.getStatus()))

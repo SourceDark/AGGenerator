@@ -30,7 +30,7 @@ public abstract class AbstractScanner {
         System.out.println(id);
         dockerClient.startContainerCmd(id).exec();
         System.out.println(dockerClient.waitContainerCmd(id).exec(new WaitContainerResultCallback()).awaitStatusCode());
-        dockerClient.removeContainerCmd(id).withRemoveVolumes(true).exec();
+        //dockerClient.removeContainerCmd(id).withRemoveVolumes(true).exec();
         return getOutput(dataDir);
     }
     
