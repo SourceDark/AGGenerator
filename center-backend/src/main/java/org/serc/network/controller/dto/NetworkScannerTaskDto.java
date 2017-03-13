@@ -29,8 +29,8 @@ public class NetworkScannerTaskDto extends AbstractDto {
         Collections.sort(task.getSubTasks());
         startTime = task.getSubTasks().get(0).getStartTime();
         hostCount = task.getSubTasks().size();
-        NetworkScannerSubTask lastSubTask = task.getSubTasks().stream().filter(sb -> sb.getStartTime() != null).findFirst().get();
-        if(Status.running.equals(lastSubTask.getStatus())) {
+        NetworkScannerSubTask lastSubTask = task.getSubTasks().stream().filter(sb -> sb.getStartTime() != null).findFirst().orElse(null);
+        if(lastSubTask == null || Status.running.equals(lastSubTask.getStatus())) {
             status = Status.running;
         } else {
             endTime = lastSubTask.getEndTime();

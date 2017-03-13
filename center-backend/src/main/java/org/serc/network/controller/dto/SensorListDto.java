@@ -13,6 +13,7 @@ public class SensorListDto {
     }
     public SensorListDto(Sensor sensor) {
         BeanUtils.copyProperties(sensor, this);
+        api = sensor.getDockerApi();
     }
     public String getName() {
         return name;
