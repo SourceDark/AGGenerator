@@ -40,8 +40,8 @@ public class NetworkScannerTaskDto extends AbstractDto {
                 status = Status.success;
                 vulnerabilitiesCount = 0;
                 task.getSubTasks().stream().filter(sb -> Status.success.equals(sb.getStatus()))
-                    .map(sb -> task.getSensor().getHosts().stream().filter(host -> host.getIp().trim().equals(sb.getIp())).findFirst().get())
-                    .forEach(h -> vulnerabilitiesCount += h.getCveCount());
+                    .map(sb -> task.getSensor().getHosts().stream().filter(host -> host.getIp().trim().equals(sb.getIp())).findFirst().orElse(null))
+                    .filter(h -> h != null).forEach(h -> vulnerabilitiesCount += h.getCveCount());
             }
         }
     }

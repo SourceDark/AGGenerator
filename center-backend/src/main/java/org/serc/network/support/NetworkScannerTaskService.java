@@ -8,6 +8,7 @@ import org.serc.network.model.Network;
 import org.serc.network.model.NetworkScannerSubTask;
 import org.serc.network.model.NetworkScannerTask;
 import org.serc.network.model.Sensor;
+import org.serc.network.runner.NetworkScannerSubTaskRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

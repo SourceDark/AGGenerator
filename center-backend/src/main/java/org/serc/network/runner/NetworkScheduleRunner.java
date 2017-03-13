@@ -1,4 +1,4 @@
-package org.serc.network.support;
+package org.serc.network.runner;
 
 import java.io.StringWriter;
 import java.util.List;
@@ -9,6 +9,8 @@ import org.serc.algorithm.model.AlgorithmTaskInfo.InputFrom;
 import org.serc.algorithm.service.AlgorithmService;
 import org.serc.network.model.Network;
 import org.serc.network.model.NetworkScheduleTask;
+import org.serc.network.support.NetworkRepository;
+import org.serc.network.support.NetworkScheduleTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

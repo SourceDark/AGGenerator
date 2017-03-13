@@ -1,4 +1,4 @@
-package org.serc.network.support;
+package org.serc.network.runner;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,8 @@ import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.io.FileUtils;
 import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.network.model.NetworkScannerSubTask;
+import org.serc.network.support.NetworkScannerSubTaskRepository;
+import org.serc.network.support.SensorService;
 import org.serc.utils.AlgorithmUtils;
 import org.serc.utils.DockerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
 
 @Component
@@ -30,17 +34,15 @@ public class NetworkScannerSubTaskRunner {
     @Async
     public void run(NetworkScannerSubTask task) {
         try {
-//            task.setStatus(Status.running);
-//            networkScannerSubTaskRepository.saveAndFlush(task);
-//            DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
-//                    .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
-//            task.setContainerId(initContainer(dockerClient, task));
-//            networkScannerSubTaskRepository.saveAndFlush(task);
-//            runContainer(dockerClient, task);
-//            handleResult(dockerClient, task);
+            task.setStatus(Status.running);
+            networkScannerSubTaskRepository.saveAndFlush(task);
+            DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
+                    .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
+            task.setContainerId(initContainer(dockerClient, task));
+            networkScannerSubTaskRepository.saveAndFlush(task);
+            runContainer(dockerClient, task);
+            handleResult(dockerClient, task);
             task.setStatus(Status.success);
-            task.setStartTime(new Date());
-            task.setEndTime(new Date());
             networkScannerSubTaskRepository.saveAndFlush(task);
         } catch (Exception e) {
             task.setStatus(Status.failure);
@@ -66,8 +68,10 @@ public class NetworkScannerSubTaskRunner {
     }
     
     private void runContainer(DockerClient dockerClient, NetworkScannerSubTask task) {
+        task.setStartTime(new Date());
         dockerClient.startContainerCmd(task.getContainerId()).exec();
         dockerClient.waitContainerCmd(task.getContainerId()).exec(new WaitContainerResultCallback()).awaitStatusCode();
+        task.setEndTime(new Date());
     }
     
     private void handleResult(DockerClient dockerClient, NetworkScannerSubTask task) throws IOException, ArchiveException {
