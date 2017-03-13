@@ -15,8 +15,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
 
 @Component
@@ -31,14 +29,14 @@ public class NetworkScannerSubTaskRunner {
     @Async
     public void run(NetworkScannerSubTask task) {
         try {
-            task.setStatus(Status.running);
-            networkScannerSubTaskRepository.saveAndFlush(task);
-            DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
-                    .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
-            task.setContainerId(initContainer(dockerClient, task));
-            networkScannerSubTaskRepository.saveAndFlush(task);
-            runContainer(dockerClient, task);
-            handleResult(dockerClient, task);
+//            task.setStatus(Status.running);
+//            networkScannerSubTaskRepository.saveAndFlush(task);
+//            DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
+//                    .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
+//            task.setContainerId(initContainer(dockerClient, task));
+//            networkScannerSubTaskRepository.saveAndFlush(task);
+//            runContainer(dockerClient, task);
+//            handleResult(dockerClient, task);
             task.setStatus(Status.success);
             networkScannerSubTaskRepository.saveAndFlush(task);
         } catch (Exception e) {
