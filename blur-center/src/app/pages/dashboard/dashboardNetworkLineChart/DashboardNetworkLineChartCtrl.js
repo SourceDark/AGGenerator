@@ -9,7 +9,7 @@
         .controller('DashboardNetworkLineChartCtrl', DashboardNetworkLineChartCtrl);
 
     /** @ngInject */
-    function DashboardNetworkLineChartCtrl($scope,$filter,$http,$timeout) {
+    function DashboardNetworkLineChartCtrl($scope,$filter,$http,$timeout, apiHost) {
         function mySort(a, b) {
             return a.t > b.t;
         }

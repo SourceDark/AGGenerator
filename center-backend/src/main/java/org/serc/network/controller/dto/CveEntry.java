@@ -2,7 +2,7 @@ package org.serc.network.controller.dto;
 
 import java.util.Date;
 
-public class CveEntry {
+public class CveEntry implements Comparable<CveEntry> {
     
     private String id;
     private Date publishTime;
@@ -17,6 +17,7 @@ public class CveEntry {
     private String cvssConfidentialityImpact;
     private String cvssIntegrityImpact;
     private String cvssAvailabilityImpact;
+    private HostListDto host;
     
     public String getId() {
         return id;
@@ -95,6 +96,16 @@ public class CveEntry {
     }
     public void setCvssAvailabilityImpact(String cvssAvailabilityImpact) {
         this.cvssAvailabilityImpact = cvssAvailabilityImpact;
+    }
+    @Override
+    public int compareTo(CveEntry o) {
+        return o.getCvssScore() == cvssScore ? 0 :o.getCvssScore() > cvssScore ? 1 : -1;
+    }
+    public HostListDto getHost() {
+        return host;
+    }
+    public void setHost(HostListDto host) {
+        this.host = host;
     }
     
 }

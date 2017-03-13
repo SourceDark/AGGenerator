@@ -9,7 +9,7 @@
       .controller('DashboardPieChartCtrl', DashboardPieChartCtrl);
 
   /** @ngInject */
-  function DashboardPieChartCtrl($scope, $timeout, baConfig, baUtil, $http) {
+  function DashboardPieChartCtrl($scope, $timeout, baConfig, baUtil, $http, apiHost) {
     var pieColor = baUtil.hexToRGB(baConfig.colors.defaultText, 0.2);
     $scope.charts = [
       {

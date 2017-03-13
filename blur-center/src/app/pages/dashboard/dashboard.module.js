@@ -7,6 +7,7 @@
 
   angular.module('BlurAdmin.pages.dashboard', [])
       .config(routeConfig)
+      .constant('apiHost', 'http://162.105.30.200:9016')
       .controller('dashboardCtrl', function($scope,$state) {
           $scope.networkId = 1;
       });

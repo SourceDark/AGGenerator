@@ -41,10 +41,35 @@ public class NetworkUtils {
         return cvesString;
     }
     
-    public static List<CveEntry> getCves(Network network) {
-        String cvesString = getCvesString(network);
+    public static String getCvesString(Host host) {
+        Set<String> cves = Sets.newHashSet();
+        for(HostVulnerability hostVulnerability: host.getVulnerabilities()) {
+            Object cvesJson = JSON.parse(hostVulnerability.getCves());
+            if(cvesJson instanceof JSONArray) {
+                for(Object cveObject: (JSONArray)cvesJson) {
+                    cves.add(cveObject.toString());
+                    
+                }
+            }
+        }
+        String cvesString = "";
+        for(String cveString: cves) {
+            cvesString += cveString + ",";
+        }
+        return cvesString;
+    }
+    
+    public static List<CveEntry> getCves(String cvesString) {
         HttpRequest request = HttpRequest.get("http://"+ ApplicationContext.cveApi, ImmutableMap.of("filter", cvesString), false);
         return JSON.parseArray(request.body("utf-8"), CveEntry.class);
+    }
+    
+    public static List<CveEntry> getCves(Network network) {
+        return getCves(getCvesString(network));
+    }
+    
+    public static List<CveEntry> getCves(Host host) {
+        return getCves(getCvesString(host));
     }
     
     public static CveEntry getCveEntry(List<CveEntry> cveEntries, String id) {
@@ -63,6 +88,17 @@ public class NetworkUtils {
                     } 
                 }
             }
+        }
+    }
+    
+    public static void setCveEntries(Host host, List<CveEntry> cveEntries) {
+        for(HostVulnerability hostVulnerability: host.getVulnerabilities()) {
+            Object cvesJson = JSON.parse(hostVulnerability.getCves());
+            if(cvesJson instanceof JSONArray) {
+                List<CveEntry> cveList = ((JSONArray)cvesJson).stream().map(c -> getCveEntry(cveEntries, c.toString()))
+                        .collect(Collectors.toList());
+                hostVulnerability.setCveList(cveList);
+            } 
         }
     }
 
