@@ -38,7 +38,7 @@ public class Host extends AbstractEntity {
     }
 
     public String getIp() {
-        return ip;
+        return ip.trim();
     }
 
     public void setIp(String ip) {
@@ -55,5 +55,13 @@ public class Host extends AbstractEntity {
     
     public String getName() {
         return String.format("%s_%s", sensor.getName(), getIp()).replace(".", "_").replace("-", "_");
+    }
+    
+    public Integer getCveCount() {
+        Integer count = 0;
+        for(HostVulnerability vulnerability: vulnerabilities) {
+            count += vulnerability.getCveCount();
+        }
+        return count;
     }
 }

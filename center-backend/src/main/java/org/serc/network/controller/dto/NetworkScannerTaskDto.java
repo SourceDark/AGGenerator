@@ -15,7 +15,7 @@ public class NetworkScannerTaskDto extends AbstractDto {
     private Date startTime;
     private Date endTime;
     private Integer hostCount;
-    private Integer vulnerabilitiesCount;
+    private Integer vulnerabilitiesCount = 0;
     private Status status;
     
     public NetworkScannerTaskDto() {
@@ -38,6 +38,10 @@ public class NetworkScannerTaskDto extends AbstractDto {
                 status = Status.failure;
             } else {
                 status = Status.success;
+                vulnerabilitiesCount = 0;
+                task.getSubTasks().stream().filter(sb -> Status.success.equals(sb.getStatus()))
+                    .map(sb -> task.getSensor().getHosts().stream().filter(host -> host.getIp().trim().equals(sb.getIp())).findFirst().get())
+                    .forEach(h -> vulnerabilitiesCount += h.getCveCount());
             }
         }
     }
