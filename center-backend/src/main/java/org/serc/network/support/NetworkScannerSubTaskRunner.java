@@ -2,6 +2,7 @@ package org.serc.network.support;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.io.FileUtils;
@@ -38,6 +39,8 @@ public class NetworkScannerSubTaskRunner {
 //            runContainer(dockerClient, task);
 //            handleResult(dockerClient, task);
             task.setStatus(Status.success);
+            task.setStartTime(new Date());
+            task.setEndTime(new Date());
             networkScannerSubTaskRepository.saveAndFlush(task);
         } catch (Exception e) {
             task.setStatus(Status.failure);
