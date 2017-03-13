@@ -23,9 +23,9 @@ public class NetworkScannerTaskDto extends AbstractDto {
     }
     
     public NetworkScannerTaskDto(NetworkScannerTask task) {
-        super();
+        super(task);
+        id = task.getId();
         sensor = task.getSensor().getName();
-        ip = task.getIp();
         Collections.sort(task.getSubTasks());
         startTime = task.getSubTasks().get(0).getStartTime();
         hostCount = task.getSubTasks().size();
