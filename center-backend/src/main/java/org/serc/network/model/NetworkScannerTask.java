@@ -1,18 +1,21 @@
 package org.serc.network.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import java.util.List;
 
-import org.serc.algorithm.model.AlgorithmTask.Status;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import org.serc.model.AbstractEntity;
 
 @Entity
 public class NetworkScannerTask extends AbstractEntity {
     
     @ManyToOne Sensor sensor;
-    @Enumerated Status status;
     private String ip;
+    
+    @OneToMany(mappedBy = "task")
+    private List<NetworkScannerSubTask> subTasks;
 
     public Sensor getSensor() {
         return sensor;
@@ -30,12 +33,12 @@ public class NetworkScannerTask extends AbstractEntity {
         this.ip = ip;
     }
 
-    public Status getStatus() {
-        return status;
+    public List<NetworkScannerSubTask> getSubTasks() {
+        return subTasks;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setSubTasks(List<NetworkScannerSubTask> subTasks) {
+        this.subTasks = subTasks;
     }
 
 }
