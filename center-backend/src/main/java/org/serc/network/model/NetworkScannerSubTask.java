@@ -2,18 +2,13 @@ package org.serc.network.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.serc.algorithm.model.AlgorithmTask.Status;
+import org.serc.model.AbstractEntity;
 
 @Entity
-public class NetworkScannerSubTask {
-    
-    @Id
-    @GeneratedValue
-    private Long id;
+public class NetworkScannerSubTask extends AbstractEntity {
     
     @ManyToOne NetworkScannerTask task;
     @Enumerated Status status;
@@ -51,14 +46,6 @@ public class NetworkScannerSubTask {
 
     public void setErrorStack(String errorStack) {
         this.errorStack = errorStack;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public NetworkScannerTask getTask() {

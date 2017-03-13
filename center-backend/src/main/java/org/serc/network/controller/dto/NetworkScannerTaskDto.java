@@ -3,9 +3,10 @@ package org.serc.network.controller.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.serc.algorithm.controller.dto.AbstractDto;
 import org.serc.network.model.NetworkScannerTask;
 
-public class NetworkScannerTaskDto {
+public class NetworkScannerTaskDto extends AbstractDto {
     
     private String sensor;
     private String ip;

@@ -1,12 +1,12 @@
 package org.serc.network.controller.dto;
 
+import org.serc.algorithm.controller.dto.AbstractDto;
 import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.network.model.NetworkScannerSubTask;
 import org.springframework.beans.BeanUtils;
 
-public class NetworkScannerSubTaskDto {
+public class NetworkScannerSubTaskDto extends AbstractDto {
     
-    private Long id;
     private Status status;
     private String ip;
     private String containerId;
@@ -17,12 +17,6 @@ public class NetworkScannerSubTaskDto {
     public NetworkScannerSubTaskDto(NetworkScannerSubTask subTask) {
         super();
         BeanUtils.copyProperties(subTask, this);
-    }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
     public Status getStatus() {
         return status;
