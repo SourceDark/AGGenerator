@@ -18,6 +18,7 @@ public class NetworkScannerTaskService {
     
     @Autowired NetworkScannerTaskRepository networkScannerTaskRepository;
     @Autowired NetworkScannerSubTaskRepository networkScannerSubTaskRepository;
+    @Autowired NetworkScannerSubTaskRunner networkScannerSubTaskRunner;
     
     public NetworkScannerTask create(Sensor sensor, String ip){
         assert StringUtils.isNotBlank(ip);
@@ -36,6 +37,7 @@ public class NetworkScannerTaskService {
         }
         networkScannerSubTaskRepository.save(subTasks);
         networkScannerTask.setSubTasks(subTasks);
+        networkScannerSubTaskRunner.run(subTasks.get(0));
         return networkScannerTask;
     }
     

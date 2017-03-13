@@ -20,7 +20,7 @@ import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
 
 @Component
-public class NetworkCannerSubTaskRunner {
+public class NetworkScannerSubTaskRunner {
     
     @Autowired ApplicationContext applicationContext;
     @Autowired NetworkScannerSubTaskRepository  networkScannerTaskRepository;
@@ -48,7 +48,7 @@ public class NetworkCannerSubTaskRunner {
         } finally {
             task.getTask().getSubTasks().stream()
                 .filter(st -> Status.created.equals(st.getStatus()))
-                .findFirst().ifPresent(st -> applicationContext.getBean(NetworkCannerSubTaskRunner.class).run(st));
+                .findFirst().ifPresent(st -> applicationContext.getBean(NetworkScannerSubTaskRunner.class).run(st));
         }
     }
     
