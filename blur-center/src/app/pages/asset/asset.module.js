@@ -6,7 +6,8 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.asset', [
-        'BlurAdmin.pages.asset.information'
+        'BlurAdmin.pages.asset.information',
+        'BlurAdmin.pages.asset.manage'
     ])
         .config(routeConfig)
         .controller('assetCtrl', function($scope,$state,$http) {

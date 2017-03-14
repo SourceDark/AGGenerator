@@ -1,5 +1,6 @@
 <div ui-view="" ng-controller="assetCtrl">
-    <div class="row">
+    <button type="button" class="btn btn-primary btn-raised" ui-sref=".manage">资产管理</button>
+    <div class="row" style="margin-top: 8px;">
     <div class="col-md-12">
         <div ba-panel ba-panel-title="{{sensor}}" ba-panel-class="with-scroll" ng-repeat="sensor in sensorNames">
             <div class="horizontal-scroll">
