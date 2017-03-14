@@ -1,4 +1,29 @@
-<div>
-    new scan job page
-    <a ui-sref="scan">返回扫描任务列表</a>
+<div ng-controller="newScanCtrl">
+    <div class="row">
+        <div class="col-md-12" ba-panel ba-panel-title="新建扫描任务" ba-panel-class="with-scroll">
+            <form>
+                <div class="form-group">
+                    <label>选择探针</label>
+                    <ui-select ng-model="newTask.sensor"
+                               class="btn-group bootstrap-select form-control"
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="false">
+                        <ui-select-match placeholder="">
+                            <span> {{$select.selected.name}}</span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="sensor in sensors | filter: $select.search">
+                            <span ng-bind-html="sensor.name"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="form-group">
+                    <label>IP地址(多个IP地址用逗号分隔)</label>
+                    <input type="text" class="form-control" ng-model="newTask.ip" placeholder="*.*.*.*">
+                </div>
+                <button type="submit" class="btn btn-danger" ng-click="submit()">提交</button>
+                <button type="submit" class="btn btn-danger" ui-sref="scan">取消</button>
+            </form>
+        </div>
+    </div>
 </div>
