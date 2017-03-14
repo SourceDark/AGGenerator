@@ -10,7 +10,6 @@
         .controller('assetManageCtrl', function ($scope, $stateParams, $http) {
             $scope.data = topoData;
             $scope.$watch('host', function () {
-                console.log('change!');
             })
         })
         .directive('topologyGraph', ['$http', '$q', function ($http, $q) {
@@ -44,7 +43,7 @@
                     scope.links = [];
                     scope.data.forEach(function (host) {
                        host.father = 0;
-                       console.log(host);
+                       // console.log(host);
                        if (host.gateway && scope.ipPool[host.gateway]) {
                            host.father = scope.ipPool[host.gateway].id;
                            scope.idPool[host.father].child.push(host.id);
