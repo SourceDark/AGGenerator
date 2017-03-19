@@ -1,0 +1,27 @@
+<div style="position: relative;">
+    <svg id="topology_graph">
+        <defs>
+            <g id="router">
+                <circle r="15" fill="#4caf50"></circle>
+            </g>
+            <g id="host">
+                <circle r="15" fill="#66ccff"></circle>
+            </g>
+        </defs>
+    </svg>
+    <div class="selection">
+        <div ng-if="selection">
+            <h3>Selection Detail</h3>
+            <p>MAC地址: <span ng-bind="selection.mac || '无'"></span></p>
+            <p>外部链接: <span ng-bind="selection.outer_interface || '无'"></span></p>
+            <p>内部链接: <span ng-bind="selection.inner_interface"></span></p>
+            <p>网关: <span ng-bind="selection.gateway"></span></p>
+            <h3 ng-if="selection.services.length">Services</h3>
+            <p ng-repeat="service in selection.services" ng-class="{'closed': 'del'}[service.status]">{{service.name}}@{{service.protocol}}:{{service.port}}</p>
+        </div>
+        <div ng-if="!selection">
+            <h3>Selection Detail</h3>
+            <p>Select an element in the visualization.</p>
+        </div>
+    </div>
+</div>

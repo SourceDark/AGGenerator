@@ -10,13 +10,16 @@
 
     'BlurAdmin.pages.dashboard',
     'BlurAdmin.pages.ui',
-    'BlurAdmin.pages.charts'
+    'BlurAdmin.pages.charts',
+    'BlurAdmin.pages.vulnerability',
+    'BlurAdmin.pages.asset',
+    'BlurAdmin.pages.scan'
   ])
       .config(routeConfig);
 
   /** @ngInject */
   function routeConfig($urlRouterProvider, baSidebarServiceProvider) {
-    $urlRouterProvider.otherwise('/serc1730');
+    $urlRouterProvider.otherwise('/dashboard');
   }
 
 })();

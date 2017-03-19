@@ -1,9 +1,9 @@
 <div class="row pie-charts">
-  <div class="pie-chart-item-container" ng-repeat="chart in charts">
+  <div class="pie-chart-item-container" ng-repeat="chart in charts" style="width: 33%">
     <div ba-panel>
       <div class="pie-chart-item">
         <div class="description">
-          <div ng-bind="chart.description"></div>
+          <div ng-bind="chart.description" title="{{chart.info}}" style="cursor: help;"></div>
           <div class="description-stats" ng-bind="chart.stats"></div>
         </div>
         <i class="chart-icon {{ ::chart.icon }}" ng-bind="chart.iconText">_</i>

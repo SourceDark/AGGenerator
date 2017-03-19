@@ -1,0 +1,64 @@
+<div ng-controller="assetInformationCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="基本信息" ba-panel-class="with-scroll">
+                <div class="horizontal-scroll">
+                    <table class="table table-hover table-condensed">
+                        <tbody>
+                        <tr>
+                            <td style="width: 100px;text-align: left;">主机IP：</td>
+                            <td class="">{{host.ip}}</td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align: left;">安全评分：</td>
+                            <td class="">{{host.score | number:1}}</td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="text-align: left;">漏洞数量：</td>
+                            <td class="">{{host.vulnerabilityCount}}</td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="text-align: left;">探针名称：</td>
+                            <td class="">{{host.sensorName}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="漏洞列表" ba-panel-class="with-scroll">
+                <div class="horizontal-scroll">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th class="">id</th>
+                            <th class="" style="padding-left: 8px">更新时间</th>
+                            <th class="" style="padding-left: 8px">描述</th>
+                            <th class="" style="padding-left: 8px">评分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vul in host.vulnerabilities | unique:'id'" class="no-top-border" ui-sref="vulnerability.detail({id: vul.id, vulnerability: vul})" style="cursor: pointer;">
+                            <td class="">{{vul.id}}</td>
+                            <td class="">{{vul.publishTime | date:'yyyy-MM-dd'}}</td>
+                            <td class="" title="{{vul.description}}" style="cursor: help;">{{vul.description | cut:true:150:' ...'}}</td>
+                            <td class="">{{vul.cvssScore}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-raised" ui-sref="asset">返回资产列表</button>
+</div>
