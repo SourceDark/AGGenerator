@@ -14,21 +14,36 @@
             $scope.networkId = 1;
             $scope.apiUrl = 'http://162.105.30.200:9016';
 
+            $scope.sensorCondition = {};
+            $scope.valueCondition = 1;
+
+            $scope.valueComparator = function (expected, actual) {
+                return actual >= expected;
+            };
+
             $http
                 .get([$scope.apiUrl, 'server', $scope.networkId, 'hosts'].join('/'))
                 .then(function (result) {
-                    $scope.sensorNames = $.unique(result.data.map(function (host) {
+                    $scope.assets = result.data;
+                    $scope.sensors = $.unique(result.data.map(function (host) {
                         return host.sensorName;
                     }));
-                    $scope.hosts = {};
-                    $scope.sensorNames.forEach(function (sensor) {
-                        $scope.hosts[ sensor ] = result.data.filter(function (host) {
-                            return host.sensorName == sensor;
-                        })
-                    });
+                    $scope.values = $.unique(result.data.map(function (host) {
+                        if (!host.value) host.value = 1;
+                        return host.value;
+                    }));
                 }, function (result) {
                     console.error('获取资产信息失败');
                 });
+
+            $scope.setSensorCondition = function (sensor) {
+                if (!sensor)
+                    $scope.sensorCondition = {};
+                else
+                    $scope.sensorCondition = {
+                        sensorName: sensor
+                    };
+            }
         });
 
     /** @ngInject */

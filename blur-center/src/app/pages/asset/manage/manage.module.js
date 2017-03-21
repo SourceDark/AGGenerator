@@ -58,24 +58,63 @@
                     // init over
 
                     // set postion
+                    scope.root.level = 0;
+                    scope.maxLevel = 0;
+                    setLevel(scope.root, 0);
 
-                    scope.root.level = 1;
-                    deal(scope.root, 0);
-
-                    function deal(host, offset) {
-                        host.y = host.level * scope.x_gap;
-                        host.height = 0;
+                    function setLevel(host) {
+                        if (scope.maxLevel < host.level)
+                            scope.maxLevel = host.level;
                         host.child.forEach(function (chdId) {
                             var chdHost = scope.idPool[chdId];
                             chdHost.level = host.level + 1;
-                            deal(chdHost, host.height + offset);
-                            host.height += chdHost.height + scope.y_gap;
+                            setLevel(chdHost);
                         });
-                        if (host.child.length) host.height -= scope.y_gap;
-                        host.x = host.height / 2 + offset;
-                        host.y += scope.r;
-                        host.x += scope.r;
                     }
+
+                    // Math.atan(x)
+                    function check(host, r) {
+                        var self_half_radian = host.level ? Math.atan(16 / (r * host.level)) : 0;
+                        var chd_half_radian = Math.atan(16 / (r * (host.level + 1)));
+                        var chd_radian = 0;
+                        // if (host.level < 1)
+                        host.child.forEach(function (chdId) {
+                            var chdHost = scope.idPool[chdId];
+                            chdHost.level = host.level + 1;
+                            chd_radian += check(chdHost, r);
+                        });
+                        if (host.child.length) chd_radian += chd_half_radian * (host.child.length - 1);
+                        return Math.max(self_half_radian * 2, chd_radian);
+                    }
+
+                    var left = 50, right = 50000, tpRadian;
+                    while (left + 1 <= right) {
+                        var mid = (left + right) / 2;
+                        tpRadian = check(scope.root, mid);
+                        console.log(tpRadian + ' ' + mid);
+                        if (tpRadian <= Math.PI * 2) right = mid;
+                        else left = mid;
+                    }
+
+                    function setPosition(host, r, offset) {
+                        var self_half_radian = host.level ? Math.atan(16 / (r * host.level)) : 0;
+                        var chd_half_radian = Math.atan(16 / (r * (host.level + 1)));
+                        var chd_radian = 0;
+                        host.child.forEach(function (chdId) {
+                            var chdHost = scope.idPool[chdId];
+                            chdHost.level = host.level + 1;
+                            chd_radian += setPosition(chdHost, r, chd_radian + offset) + chd_half_radian;
+                        });
+                        if (host.child.length) chd_radian -= chd_half_radian;
+                        var this_radian = Math.max(self_half_radian, chd_radian / 2);
+                        host.x = Math.sin(this_radian + offset) * host.level * r;
+                        host.y = Math.cos(this_radian + offset) * host.level * r;
+                        console.log(host.inner_interface + ' ' + host.x + ' ' + host.y + ' ' + this_radian + ' ' + offset);
+                        return Math.max(self_half_radian * 2, chd_radian);
+                    }
+
+                    console.log(left);
+                    setPosition(scope.root, left, 0);
                     // set over
 
                     var height = $('#topology_graph').height();
@@ -101,10 +140,22 @@
                         .data(scope.links)
                         .enter()
                         .append("line")
+                        .attr('class', 'link')
                         .attr("x1", function(d) { return d.source.x; })
                         .attr("y1", function(d) { return d.source.y; })
                         .attr("x2", function(d) { return d.target.x; })
-                        .attr("y2", function(d) { return d.target.y; });
+                        .attr("y2", function(d) { return d.target.y; })
+                        .on('click', function(d,i) {
+                            var flag = !d3.select(this).classed('selected');
+                            scope.node.classed('selected', false);
+                            scope.link.classed('selected', false);
+                            scope.selection = null;
+                            if (flag) {
+                                d3.select(this).classed('selected', true);
+                                scope.selection = d;
+                            }
+                            scope.$apply();
+                        });
 
                     scope.node = scope.svg
                         .append("g")
@@ -120,37 +171,60 @@
                         .on('click', function(d,i) {
                             var flag = !d3.select(this).classed('selected');
                             scope.node.classed('selected', false);
+                            scope.link.classed('selected', false);
                             scope.selection = null;
                             if (flag) {
                                 d3.select(this).classed('selected', true);
                                 scope.selection = d;
                             }
                             scope.$apply();
+                        })
+                        .attr('fill', function (d) {
+                            return (d.outer_interface ? 'green' : 'blue');
                         });
 
                     scope.node
                         .append('use')
                         .attr('xlink:href', function (d) {
-                            return '#' + (d.outer_interface ? 'router' : 'host');
-                        });
+                            return '#node';
+                        })
+                        .attr('class', 'ori');
 
-                    var gHeight = 0;
-                    var gWidth  = 0;
+                    scope.node
+                        .append('use')
+                        .attr('xlink:href', function (d) {
+                            return '#node_selected';
+                        })
+                        .attr('class', 'active');
+
+                    scope.node
+                        .append('text')
+                        .attr('xlink:href', function (d) {
+                            return '#node_selected';
+                        })
+                        .attr('class', 'active');
+
+
+                    var max_x = -99999, max_y = -99999, min_x = 99999, min_y = 9999;
                     scope.data.forEach(function (host) {
-                        if (host.y > gHeight) gHeight = host.y;
-                        if (host.x > gWidth) gWidth = host.x;
+                        if (max_x < host.x) max_x = host.x;
+                        if (max_y < host.y) max_y = host.y;
+                        if (min_x > host.x) min_x = host.x;
+                        if (min_y > host.y) min_y = host.y;
                     });
 
-                    gHeight += scope.r;
-                    gWidth += scope.r;
+                    var gHeight = max_x - min_x + 64;
+                    var gWidth  = max_y - min_y + 64;
+
+                    console.log(gHeight + ' ' + gWidth);
 
                     width -= 200;
                     var ratio = height / (gHeight + 10);
                     if (ratio > width / (gWidth + 10))
                         ratio = width / (gWidth + 10);
                     if (ratio > 1) ratio = 1;
-                    scope.graphOffsetTop = (height - gHeight*ratio)/2;
-                    scope.graphOffsetLeft = (width - gWidth*ratio)/2;
+                    scope.graphOffsetTop = -(min_y-16)*ratio + (height - gHeight*ratio) / 2;
+                    scope.graphOffsetLeft = -(min_x-16)*ratio + (width - gWidth*ratio) / 2;
                     scope.graphRatio = ratio;
                     scaleTo(0, 0, 1);
                 }

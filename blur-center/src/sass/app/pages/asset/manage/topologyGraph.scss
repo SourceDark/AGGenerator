@@ -7,31 +7,34 @@
 #topology_graph {
   width: 100%;
   height: 600px;
-  line {
-    stroke-width: 1px;
-    stroke: #5d5d5d;
-  }
   .node {
-    stroke-width: 1px;
-    stroke: #5d5d5d;
     cursor: pointer;
   }
-  .selected {
-    stroke: #ff484f;
+
+  .active {
+    display: none;
+  }
+
+  .selected .active, .node:hover .active {
+    display: block;
+  }
+
+  .node text {
+    stroke-width: 0;
+    fill: #999;
+    text-anchor: middle;
+  }
+
+  .link {
+    stroke: #999;
     stroke-width: 2px;
+    stroke-opacity: 0.25;
+    cursor: pointer;
   }
-  .node_background {
-    height: 44px;
-    width: 178px;
-    fill: #66ccff;
-    stroke-width: 1px;
-    stroke: #5d5d5d;
-  }
-  .outer_interface {
-    font-size: 0.7em;
-  }
-  .inner_interface {
-    font-size: 0.7em;
+
+  .links .selected, .link:hover {
+    stroke-width: 4 !important;
+    stroke-opacity: 0.75;
   }
 }
 

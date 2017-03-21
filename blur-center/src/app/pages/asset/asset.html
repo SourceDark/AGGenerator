@@ -1,22 +1,60 @@
 <div ui-view="" ng-controller="assetCtrl">
-    <button type="button" class="btn btn-primary btn-raised" ui-sref=".manage">资产管理</button>
+    <div class="row">
+        <div class="col-sm-3 col-xs-4 pull-right">
+            <button type="button" class="btn btn-primary pull-right" ui-sref=".manage">资产管理</button>
+        </div>
+        <div class="col-sm-3 col-xs-4">
+            <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body>
+                <button type="button" class="btn btn-primary btn-block" uib-dropdown-toggle>
+                    探针： {{sensorCondition.sensorName || "全部"}} <span class="caret"></span>
+                </button>
+                <ul uib-dropdown-menu>
+                    <li><a ng-click="setSensorCondition()">全部</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li ng-repeat="sensor in sensors"><a ng-click="setSensorCondition(sensor)">{{sensor}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-3 col-xs-4">
+            <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body>
+                <button type="button" class="btn btn-primary btn-block" uib-dropdown-toggle>
+                    资产价值<span style="font-family: 'Microsoft Yahei';">≥</span> {{valueCondition || 1}} <span class="caret"></span>
+                </button>
+                <ul uib-dropdown-menu>
+                    <li ng-repeat="value in values track by $index"><a ng-click="setValueCondition(value)">{{value}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="row" style="margin-top: 8px;">
     <div class="col-md-12">
-        <div ba-panel ba-panel-title="{{sensor}}" ba-panel-class="with-scroll" ng-repeat="sensor in sensorNames">
+        <div ba-panel ba-panel-title="资产列表" ba-panel-class="with-scroll">
             <div class="horizontal-scroll">
                 <table class="table table-hover table-condensed">
                     <thead>
                     <tr class="black-muted-bg">
-                        <th class="" style="text-align: left;padding-left: 8px">ip</th>
-                        <th class="" style="padding-left: 8px">评分</th>
+                        <th class="" style="text-align: left;padding-left: 8px">资产名称</th>
+                        <th class="" style="padding-left: 8px">所属探针</th>
+                        <th class="" style="padding-left: 8px">内网IP</th>
+                        <th class="" style="padding-left: 8px">资产价值</th>
                         <th class="" style="padding-left: 8px">漏洞数量</th>
+                        <th class="" style="padding-left: 8px">威胁分数</th>
+                        <th class="" style="padding-left: 8px">更新时间</th>
+                        <th class="" style="padding-left: 8px">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="host in hosts[sensor]" class="no-top-border" ui-sref="asset.information({sensorName:sensor, ip:host.ip})" style="cursor: pointer">
-                        <td class="" style="text-align: left;">{{host.ip}}</td>
-                        <td class="">{{host.score | number:1}}</td>
-                        <td class="">{{host.vulnerabilityCount}}</td>
+                    <tr ng-repeat="host in assets | filter:sensorCondition | filter:{value:valueCondition}:valueComparator" class="no-top-border" ui-sref="asset.information({sensorName:host.sensorName, ip:host.ip})" style="cursor: pointer">
+                        <td class="" style="text-align: left;">{{host.name || "-"}}</td>
+                        <td class="">{{host.sensorName}}</td>
+                        <td class="">{{host.ip}}</td>
+                        <td class="" style="text-align: left;">{{host.value || "-"}}</td>
+                        <td class="" style="text-align: left;">{{host.vulnerabilityCount}}</td>
+                        <td class="" style="text-align: left;">{{host.score | number:1}}</td>
+                        <td class="" style="text-align: left;">{{(host.updated | date:'yyyy-MM-dd') || "-"}}</td>
+                        <td class="" style="text-align: left;">
+                            <i class="ion-gear-a" title="编辑" style="margin-right: 8px;"></i><i class="ion-refresh" title="更新"></i>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
