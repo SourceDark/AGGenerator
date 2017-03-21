@@ -12,6 +12,7 @@ public class ApplicationContext {
     
     public static String dataDir;
     public static String hostDataDir;
+    public static String hostTmpDir;
     public static String dockerHost;
     public static String dockerPort;
     
@@ -35,6 +36,11 @@ public class ApplicationContext {
     @Value("${host.data.dir}")
     public void setHostDataDir(String dataDir) {
         ApplicationContext.hostDataDir = dataDir;
+    }
+    
+    @Value("${host.tmp.dir:/tmp}")
+    public void setHostTmpDir(String tmpDir) {
+        ApplicationContext.hostTmpDir = tmpDir;
     }
     
     @Value("${docker.host}")
