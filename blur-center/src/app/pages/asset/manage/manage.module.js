@@ -237,7 +237,10 @@
             .state('asset.manage', {
                 url: '/manage',
                 templateUrl: 'app/pages/asset/manage/manage.html',
-                title: '资产管理'
+                title: '资产管理',
+                sidebarMeta: {
+                    order: 2,
+                }
             });
     }
 
