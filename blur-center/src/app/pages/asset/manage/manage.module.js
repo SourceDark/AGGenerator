@@ -199,10 +199,10 @@
 
                     scope.node
                         .append('text')
-                        .attr('xlink:href', function (d) {
-                            return '#node_selected';
+                        .text(function (d) {
+                            return d.inner_interface;
                         })
-                        .attr('class', 'active');
+                        .attr('y', -18);
 
 
                     var max_x = -99999, max_y = -99999, min_x = 99999, min_y = 9999;
