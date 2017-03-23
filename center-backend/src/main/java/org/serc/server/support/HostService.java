@@ -36,6 +36,7 @@ public class HostService {
             host.setValue(hostWithVul.getValue());
             host.setVulnerabilityCount(hostWithVul.getCveCount());
             host.setScore(hostWithVul.getScore());
+            host.setName(hostWithVul.getName());
         }
         List<Host> gateWays = hosts.stream().filter(h -> h.isGateWay()).collect(Collectors.toList());
         
