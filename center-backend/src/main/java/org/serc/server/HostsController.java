@@ -31,7 +31,7 @@ public class HostsController {
         NetworkUtils.setCveEntries(network, NetworkUtils.getCves(network));
         for(Sensor sensor: network.getSensors()) {
             for(Host host: sensor.getHosts()) {
-                HostListDto hostDto = new HostListDto(host.getIp(), sensor.getName());
+                HostListDto hostDto = new HostListDto(host);
                 hosts.add(hostDto);
                 for(HostVulnerability hostVulnerability: host.getVulnerabilities()) {
                     for(CveEntry vulnerability: hostVulnerability.getCveList()) {

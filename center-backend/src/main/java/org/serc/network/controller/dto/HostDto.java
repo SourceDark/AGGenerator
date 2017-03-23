@@ -2,12 +2,14 @@ package org.serc.network.controller.dto;
 
 import java.util.List;
 
+import org.serc.network.model.Host;
+
 public class HostDto extends HostListDto {
     
     private List<CveEntry> vulnerabilities;
 
-    public HostDto(String ip, String sensorName) {
-        super(ip, sensorName);
+    public HostDto(Host host) {
+        super(host);
     }
 
     public List<CveEntry> getVulnerabilities() {

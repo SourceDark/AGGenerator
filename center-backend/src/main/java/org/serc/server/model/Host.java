@@ -123,7 +123,7 @@ public class Host {
         this.subHosts = subHosts;
     }
     public Boolean isGateWay() {
-        return !getOuter_interface().isEmpty();
+        return !getOuter_interface().trim().isEmpty();
     }
     @JsonIgnore
     public Double getTotalLoss() {

@@ -31,6 +31,9 @@ public class Host extends AbstractEntity {
     @Column(name = "`value`")
     private Integer value;
     
+    @Column(name = "nickName")
+    private String nickName;
+    
     @OneToMany(mappedBy = "host", fetch = FetchType.EAGER)
     private List<HostVulnerability> vulnerabilities;
 
@@ -91,5 +94,17 @@ public class Host extends AbstractEntity {
 
     public void setValue(Integer value) {
         this.value = value;
+    }
+
+    public String getNickName() {
+        return nickName == null ? getName() : nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
     }
 }
