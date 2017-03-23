@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.joda.time.DateTime;
 import org.serc.algorithm.model.AlgorithmTask;
 import org.serc.model.AbstractEntity;
 
@@ -60,9 +61,18 @@ public class NetworkScheduleTask extends AbstractEntity {
     }
     
     public Map<String, Object> scores() {
+        
         Map<String, Object> scores = Maps.newHashMap();
-        scores.put("attack-likehood", 4.3);
-        scores.put("attackability", 10.0 / 3);
+        if(getCreatedTime().before(DateTime.parse("2017-01-17T01:20").toDate())) {
+            scores.put("attack-likehood", 0d);
+        } else {
+            scores.put("attack-likehood", 4.3);
+        }
+        if(getCreatedTime().before(DateTime.parse("2017-01-13T01:20").toDate())) {
+            scores.put("attackability", 0d);
+        } else {
+            scores.put("attackability", 10.0 / 3);
+        }
         scores.put("cvssAverage", 5.1);
         scores.put("k-zero", 3);
         return scores;
