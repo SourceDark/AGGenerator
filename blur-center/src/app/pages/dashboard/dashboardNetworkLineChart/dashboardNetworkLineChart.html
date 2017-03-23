@@ -1,10 +1,4 @@
 <div class="row">
-    <div class="col-md-12">
-        <h4>攻击可能性分数：评估目标结点遭受攻击的可能性</h4>
-        <h4>K零日分数：攻入任意目标结点至少需要的零日漏洞数量</h4>
-        <h4>攻击性分数：实际攻击路径与潜在攻击路径的比值分数</h4>
-        <h4>CVSS分数：漏洞评分的平均值</h4>
-    </div>
 	<div class="col-md-12">
         <div ba-panel ba-panel-title="风险评估" ba-panel-class="with-scroll">
             <div class="col-md-8">
@@ -23,6 +17,12 @@
                 <br><br><br>
                 <canvas class="chart chart-radar" chart-data="radarData" chart-labels="series"
                         chart-options="{scale:{ticks: {beginAtZero: true}}}" height="400"></canvas>
+            </div>
+            <div class="col-md-12">
+                <h4>攻击可能性分数：评估目标结点遭受攻击的可能性</h4>
+                <h4>K零日分数：攻入任意目标结点至少需要的零日漏洞数量</h4>
+                <h4>攻击性分数：实际攻击路径与潜在攻击路径的比值分数</h4>
+                <h4>CVSS分数：漏洞评分的平均值</h4>
             </div>
         </div>
     </div>
