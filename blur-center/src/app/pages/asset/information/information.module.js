@@ -7,7 +7,7 @@
 
     angular.module('BlurAdmin.pages.asset.information', [])
         .config(routeConfig)
-        .controller('assetInformationCtrl', function ($scope, $stateParams, $http) {
+        .controller('assetInformationCtrl', function ($scope, $stateParams, $http, $window) {
             console.log($stateParams);
             $http
                 .get([$scope.apiUrl, 'server', $scope.networkId, 'sensors', $stateParams.sensorName, 'hosts', $stateParams.ip].join('/'))
@@ -16,6 +16,10 @@
                 }, function (result) {
                     console.error('获取资产信息失败');
                 });
+
+            $scope.goBack = function () {
+                $window.history.back();
+            };
 
         }).filter('cut', function () {
         return function (value, wordwise, max, tail) {

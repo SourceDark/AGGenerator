@@ -16,20 +16,26 @@
             $scope.valueCondition = 1;
 
             $scope.valueComparator = function (expected, actual) {
-                return actual >= expected;
+                return actual <= expected;
             };
 
             $http
-                .get([$scope.apiUrl, 'server', $scope.networkId, 'hosts'].join('/'))
+                .get([$scope.apiUrl, 'server', $scope.networkId, 'hosts', 'network'].join('/'))
                 .then(function (result) {
                     $scope.assets = result.data;
                     $scope.sensors = $.unique(result.data.map(function (host) {
                         return host.sensorName;
                     }));
-                    $scope.values = $.unique(result.data.map(function (host) {
+                    $scope.values = $.unique([1].concat(result.data.map(function (host) {
                         if (!host.value) host.value = 1;
                         return host.value;
-                    }));
+                    })));
+                    $scope.assets.forEach(function (host) {
+                        var safeScore = host.score * (host.outer_interface == "" ? 10 : 1);
+                        host.safeLevel = 1;
+                        if (safeScore > 10) host.safeLevel = 2;
+                        if (safeScore > 60) host.safeLevel = 3;
+                    });
                 }, function (result) {
                     console.error('获取资产信息失败');
                 });
@@ -41,6 +47,10 @@
                     $scope.sensorCondition = {
                         sensorName: sensor
                     };
+            }
+
+            $scope.setValueCondition = function (value) {
+                $scope.valueCondition = value;
             }
         });
 

@@ -25,6 +25,10 @@
     text-anchor: middle;
   }
 
+  .selected text {
+    fill: #ff5b65;
+  }
+
   .link {
     stroke: #999;
     stroke-width: 2px;

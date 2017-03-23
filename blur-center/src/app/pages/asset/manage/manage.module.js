@@ -8,7 +8,13 @@
     angular.module('BlurAdmin.pages.asset.manage', [])
         .config(routeConfig)
         .controller('assetManageCtrl', function ($scope, $stateParams, $http) {
-            $scope.data = topoData;
+            $http
+                .get([$scope.apiUrl, 'server', $scope.networkId, 'hosts', 'network'].join('/'))
+                .then(function (result) {
+                    $scope.data = result.data;
+                }, function (result) {
+                    console.error('获取资产信息失败');
+                });
             $scope.$watch('host', function () {
             })
         })
@@ -44,7 +50,7 @@
                     scope.data.forEach(function (host) {
                        host.father = 0;
                        // console.log(host);
-                       if (host.gateway && scope.ipPool[host.gateway]) {
+                       if (host.gateway && scope.ipPool[host.gateway] && host.outer_interface != 'external_root') {
                            host.father = scope.ipPool[host.gateway].id;
                            scope.idPool[host.father].child.push(host.id);
                            scope.links.push({
@@ -52,9 +58,10 @@
                                source: scope.idPool[host.father]
                            });
                        }
-                       if (host.father == 0)
+                       if (host.outer_interface == 'external_root')
                            scope.root = scope.idPool[host.id];
                     });
+
                     // init over
 
                     // set postion
@@ -144,18 +151,18 @@
                         .attr("x1", function(d) { return d.source.x; })
                         .attr("y1", function(d) { return d.source.y; })
                         .attr("x2", function(d) { return d.target.x; })
-                        .attr("y2", function(d) { return d.target.y; })
-                        .on('click', function(d,i) {
-                            var flag = !d3.select(this).classed('selected');
-                            scope.node.classed('selected', false);
-                            scope.link.classed('selected', false);
-                            scope.selection = null;
-                            if (flag) {
-                                d3.select(this).classed('selected', true);
-                                scope.selection = d;
-                            }
-                            scope.$apply();
-                        });
+                        .attr("y2", function(d) { return d.target.y; });
+                        // .on('click', function(d,i) {
+                        //     var flag = !d3.select(this).classed('selected');
+                        //     scope.node.classed('selected', false);
+                        //     scope.link.classed('selected', false);
+                        //     scope.selection = null;
+                        //     if (flag) {
+                        //         d3.select(this).classed('selected', true);
+                        //         scope.selection = d;
+                        //     }
+                        //     scope.$apply();
+                        // });
 
                     scope.node = scope.svg
                         .append("g")
@@ -171,7 +178,7 @@
                         .on('click', function(d,i) {
                             var flag = !d3.select(this).classed('selected');
                             scope.node.classed('selected', false);
-                            scope.link.classed('selected', false);
+                            // scope.link.classed('selected', false);
                             scope.selection = null;
                             if (flag) {
                                 d3.select(this).classed('selected', true);
@@ -183,26 +190,33 @@
                             return (d.outer_interface ? 'green' : 'blue');
                         });
 
-                    scope.node
-                        .append('use')
-                        .attr('xlink:href', function (d) {
-                            return '#node';
-                        })
-                        .attr('class', 'ori');
+                    // scope.node
+                    //     .append('use')
+                    //     .attr('xlink:href', function (d) {
+                    //         return '#node';
+                    //     })
+                    //     .attr('class', 'ori');
+                    //
+                    // scope.node
+                    //     .append('use')
+                    //     .attr('xlink:href', function (d) {
+                    //         return '#node_selected';
+                    //     })
+                    //     .attr('class', 'active');
 
                     scope.node
                         .append('use')
                         .attr('xlink:href', function (d) {
-                            return '#node_selected';
+                            return '#' + (d.outer_interface ? 'router': 'desktop');
                         })
-                        .attr('class', 'active');
+                        .attr('class', 'ori');
 
                     scope.node
                         .append('text')
                         .text(function (d) {
                             return d.inner_interface;
                         })
-                        .attr('y', -18);
+                        .attr('y', 25);
 
 
                     var max_x = -99999, max_y = -99999, min_x = 99999, min_y = 9999;
