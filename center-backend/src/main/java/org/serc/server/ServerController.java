@@ -15,6 +15,7 @@ import org.serc.network.model.NetworkScheduleTask;
 import org.serc.network.model.Sensor;
 import org.serc.network.support.NetworkScheduleTaskRepository;
 import org.serc.network.support.NetworkUtils;
+import org.serc.server.support.HostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,14 @@ import com.google.common.collect.Lists;
 public class ServerController {
     
     @Autowired NetworkScheduleTaskRepository networkScheduleTaskRepository;
+    @Autowired HostService hostService;
     
     @GetMapping("/overview")
     public NetworkListDto network(Network network) {
-        return new NetworkListDto(network);
+        NetworkListDto networkListDto = new NetworkListDto(network);
+        List<org.serc.server.model.Host> hosts = hostService.hosts();
+        networkListDto.setHostCount(hosts.size());
+        return networkListDto;
     }
     
     @GetMapping("/scores")
