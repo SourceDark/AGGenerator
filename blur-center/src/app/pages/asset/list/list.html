@@ -1,4 +1,4 @@
-<div ui-view="" ng-controller="assetListCtrl">
+<div ui-view="" ng-controller="assetListCtrl" id="asset-list">
     <div class="row">
         <div class="col-sm-3 col-xs-4">
             <div class="btn-group btn-block" uib-dropdown dropdown-append-to-body>
@@ -37,20 +37,20 @@
                         <th class="" style="padding-left: 8px">漏洞数量</th>
                         <th class="" style="padding-left: 8px">威胁分数</th>
                         <th class="" style="padding-left: 8px">更新时间</th>
-                        <th class="" style="padding-left: 8px">操作</th>
+                        <!--<th class="" style="padding-left: 8px">操作</th>-->
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="host in assets | filter:sensorCondition | filter:{value:valueCondition}:valueComparator" class="no-top-border" ui-sref="asset.information({sensorName:host.sensorName, ip:host.ip})" style="cursor: pointer">
+                    <tr ng-repeat="host in assets | filter:sensorCondition | filter:{value:valueCondition}:valueComparator" class="no-top-border" ui-sref="asset.information({sensorName:host.sensorName, ip:host.inner_interface})" style="cursor: pointer">
                         <td class="" style="text-align: left;">{{host.name || "-"}}</td>
                         <td class="">{{host.sensorName}}</td>
-                        <td class="">{{host.ip}}</td>
+                        <td class="">{{host.inner_interface}}</td>
                         <td class="" style="text-align: left;">{{host.value || "-"}}</td>
-                        <td class="" style="text-align: left;">{{host.vulnerabilityCount}}</td>
-                        <td class="" style="text-align: left;">{{host.score | number:1}}</td>
+                        <td class="" style="text-align: left;">{{host.vulnerabilityCount || "-"}}</td>
+                        <td class="" style="text-align: left;" ng-class="{1: 'good', 2: 'normal', 3: 'bad'}[host.safeLevel]">{{host.score | number:1}}</td>
                         <td class="" style="text-align: left;">{{(host.updated | date:'yyyy-MM-dd') || "-"}}</td>
-                        <td class="" style="text-align: left;">
-                            <i class="ion-gear-a" title="编辑" style="margin-right: 8px;"></i><i class="ion-refresh" title="更新"></i>
+                        <!--<td class="" style="text-align: left;">-->
+                            <!--<i class="ion-gear-a" title="编辑" style="margin-right: 8px;"></i><i class="ion-refresh" title="更新"></i>-->
                         </td>
                     </tr>
                     </tbody>

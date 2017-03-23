@@ -30,7 +30,7 @@ angular.module('BlurAdmin.pages.asset.manage')
                 $scope.data.forEach(function (host) {
                     host.father = 0;
                     // console.log(host);
-                    if (host.gateway && $scope.ipPool[host.gateway]) {
+                    if (host.gateway && $scope.ipPool[host.gateway] && host.outer_interface != 'external_root') {
                         host.father = $scope.ipPool[host.gateway].id;
                         $scope.idPool[host.father].child.push($scope.idPool[host.id]);
                         $scope.idPool[host.father].isRouter = true;
@@ -39,15 +39,37 @@ angular.module('BlurAdmin.pages.asset.manage')
                             source: $scope.idPool[host.father]
                         });
                     }
-                    if (host.father == 0)
+                    if (host.outer_interface == 'external_root')
                         $scope.root = [$scope.idPool[host.id]];
                 });
 
+                function count(host) {
+                    if (host.child.length) {
+                        host.importantAsset = 0;
+                        host.vulnerabilities = 0;
+                        host.nodeCount = 0;
+                        host.child.forEach(function (chd) {
+                            count(chd);
+                            host.importantAsset += chd.importantAsset;
+                            host.vulnerabilities += chd.vulnerabilities;
+                            host.nodeCount += chd.nodeCount;
+                        });
+                    }   else {
+                        host.importantAsset = (host.value >= 8 ? 1 : 0);
+                        host.vulnerabilities = host.vulnerabilityCount;
+                        host.nodeCount = 1;
+                    }
+                }
+                count($scope.root[0]);
 
                 $scope.data.forEach(function (host) {
                     if (host.father && host.isRouter)
                         $scope.idPool[host.father].router_child = true;
                     host.expend = false;
+                    var safeScore = host.score * (host.child.length ? 1 : 10);
+                    host.safeLevel = 1;
+                    if (safeScore > 10) host.safeLevel = 2;
+                    if (safeScore > 60) host.safeLevel = 3;
                 });
                 // init over
                 // $scope.clicked = function () {
@@ -65,6 +87,12 @@ angular.module('BlurAdmin.pages.asset.manage')
                     host.expend = !host.expend;
                 };
 
+                scope.getText = function(value) {
+                    if (value == 1) return '优';
+                    if (value == 2) return '良';
+                    return '差';
+                };
+
                 function render() {
                     var template = '<div class="node" ng-class="{true: \'no-child\'}[!node.router_child] "ng-repeat="node in ' + attrs.assetNode + ' | filter:{isRouter:true}">\
                         <div class="node-main">\
@@ -72,17 +100,17 @@ angular.module('BlurAdmin.pages.asset.manage')
                                 <div class="node-card-header">{{node.inner_interface}}</div>\
                                 <div class="node-card-content">\
                                     <div class="node-card-content-left">\
-                                        <p>123个结点</p>\
-                                        <p>66个漏洞</p>\
-                                        <p>4个重要资产</p>\
+                                        <p>{{node.nodeCount}}个结点</p>\
+                                        <p>{{node.vulnerabilities}}个漏洞</p>\
+                                        <p>{{node.importantAsset}}个重要资产</p>\
                                     </div>\
                                     <div class="node-card-content-right">\
-                                        <p class="score">50</p>\
-                                        <p>安全状况：凑合</p>\
+                                        <p class="score" ng-class="{1: \'good\', 2: \'normal\', 3: \'bad\'}[node.safeLevel]">{{node.score | number: 0}}</p>\
+                                        <p>安全状况：{{getText(node.safeLevel)}}</p>\
                                     </div>\
                                 </div>\
                                 <div class="node-card-footer">\
-                                    <div class="node-card-footer-btn"><i class="ion-document-text"></i></div>\
+                                    <div class="node-card-footer-btn" ui-sref="asset.information({sensorName:node.sensorName, ip:node.inner_interface})"><i class="ion-document-text"></i></div>\
                                     <div class="node-card-footer-btn"><i class="ion-edit"></i></div>\
                                     <div class="node-card-footer-btn"><i class="ion-more"></i></div>\
                                 </div>\
@@ -93,12 +121,12 @@ angular.module('BlurAdmin.pages.asset.manage')
                                         <div class="host-card-content">\
                                             <div class="host-card-content-header">{{host.inner_interface}}</div> \
                                             <div class="host-card-content-body">\
-                                                <p>12个漏洞</p>\
-                                                <p>资产价值：10</p>\
-                                                <p>威胁评分：9.5</p>\
+                                                <p>{{host.vulnerabilityCount || "0"}}个漏洞</p>\
+                                                <p style="font-weight: bor">资产价值：{{host.value || "0"}}</p>\
+                                                <p ng-class="{1: \'good\', 2: \'normal\', 3: \'bad\'}[host.safeLevel]">威胁评分：{{host.score | number:1}}</p>\
                                             </div>\
                                             <div class="host-card-content-footer">\
-                                                <div class="host-card-content-footer-btn"><i class="ion-document-text"></i></div>\
+                                                <div class="host-card-content-footer-btn" ui-sref="asset.information({sensorName:host.sensorName, ip:host.inner_interface})"><i class="ion-document-text"></i></div>\
                                                 <div class="host-card-content-footer-btn"><i class="ion-edit"></i></div>\
                                             </div>\
                                         </div>\
@@ -108,10 +136,10 @@ angular.module('BlurAdmin.pages.asset.manage')
                                     <div class="child-content-header">{{node.inner_interface}}</div>\
                                     <table>\
                                         <tbody>\
-                                            <tr ng-repeat="host in node.child | filter:{isRouter:false} | limitTo: 5">\
+                                            <tr ng-repeat="host in node.child | filter:{isRouter:false} | limitTo: 5" ng-class="{1: \'good\', 2: \'normal\', 3: \'bad\'}[host.safeLevel]">\
                                                 <td>{{host.inner_interface}}</td>\
-                                                <td>13个漏洞</td>\
-                                                <td>威胁评分9.9</td>\
+                                                <td>{{host.vulnerabilityCount || "0"}}个漏洞</td>\
+                                                <td>威胁评分{{host.score | number:1}}</td>\
                                             </tr>\
                                         </tbody>\
                                     </table>\

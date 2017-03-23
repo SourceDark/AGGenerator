@@ -14,7 +14,7 @@
     </div>
     <div class="row" style="margin-top: 8px;">
         <div class="col-md-12">
-            <div ba-panel ba-panel-title="网络拓扑图" ba-panel-class="" id="topology">
+            <div ng-if="data" ba-panel ba-panel-title="网络拓扑图" ba-panel-class="" id="topology">
                 <topology-graph ng-if="!show_tree" graph-data="data"></topology-graph>
                 <asset-tree ng-if="show_tree" asset-tree="data"></asset-tree>
             </div>
