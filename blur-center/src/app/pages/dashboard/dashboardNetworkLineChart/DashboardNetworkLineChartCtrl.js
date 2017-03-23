@@ -20,9 +20,14 @@
                     console.log(result);
                     $scope.lineData = [];
                     for (var key in result.data) {
-                        result.data[key].y = new $filter('date')(parseInt(key),'yyyy-MM-dd HH:mm:ss');
-                        result.data[key].t = parseInt(key);
-                        $scope.lineData.push(result.data[key]);
+                        var data = {};
+                        data.y = new $filter('date')(parseInt(key),'yyyy-MM-dd HH:mm:ss');
+                        data.t = parseInt(key);
+                        data['攻击可能性分数'] = result.data[key]['attack-likehood'];
+                        data['攻击性分数'] = result.data[key]['attackability'];
+                        data['K零日分数'] = result.data[key]['k-zero'];
+                        data['CVSS分数'] = result.data[key]['cvssAverage'];
+                        $scope.lineData.push(data);
                     }
                     $scope.lineData.sort(mySort);
                     $scope.series = [];
