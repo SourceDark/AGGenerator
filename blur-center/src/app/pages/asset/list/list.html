@@ -41,7 +41,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="host in assets | filter:sensorCondition | filter:{value:valueCondition}:valueComparator" class="no-top-border" ui-sref="asset.information({sensorName:host.sensorName, ip:host.inner_interface})" style="cursor: pointer">
+                    <tr ng-repeat="host in assets | filter:sensorCondition | filter:{value:valueCondition}:valueComparator | orderBy:'-score'" class="no-top-border" ui-sref="asset.information({sensorName:host.sensorName, ip:host.inner_interface})" style="cursor: pointer">
                         <td class="" style="text-align: left;">{{host.name || "-"}}</td>
                         <td class="">{{host.sensorName}}</td>
                         <td class="">{{host.inner_interface}}</td>
