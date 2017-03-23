@@ -63,12 +63,12 @@ public class NetworkScheduleTask extends AbstractEntity {
     public Map<String, Object> scores() {
         
         Map<String, Object> scores = Maps.newHashMap();
-        if(getCreatedTime().before(DateTime.parse("2017-01-17T01:20").toDate())) {
+        if(getCreatedTime().before(DateTime.parse("2017-03-20T01:20").toDate())) {
             scores.put("attack-likehood", 0d);
         } else {
             scores.put("attack-likehood", 4.3);
         }
-        if(getCreatedTime().before(DateTime.parse("2017-01-13T01:20").toDate())) {
+        if(getCreatedTime().before(DateTime.parse("2017-03-18T01:20").toDate())) {
             scores.put("attackability", 0d);
         } else {
             scores.put("attackability", 10.0 / 3);
