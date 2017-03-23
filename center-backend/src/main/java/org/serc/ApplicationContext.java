@@ -18,6 +18,7 @@ public class ApplicationContext {
     
     public static String centerApi;
     public static String cveApi;
+    public static String networkApi;
     
     public static File getDataDir() {
         return new File(dataDir);
@@ -63,6 +64,11 @@ public class ApplicationContext {
         ApplicationContext.cveApi = cveApi;
     }
     
+    @Value("${data.network.api}")
+    public void setNetworkApi(String networkApi) {
+        ApplicationContext.networkApi = networkApi;
+    }
+
     @Value("${debug}")
     public void setDebug(Boolean debug) {
         ApplicationContext.debug = debug;

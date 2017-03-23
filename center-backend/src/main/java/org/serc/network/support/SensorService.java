@@ -71,5 +71,9 @@ public class SensorService {
              }
         }
     }
+    
+    public Sensor findByName(String name) {
+        return sensorRepository.findByName(name);
+    }
 
 }

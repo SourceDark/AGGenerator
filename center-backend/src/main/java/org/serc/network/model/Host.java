@@ -10,7 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import jersey.repackaged.com.google.common.collect.Lists;
+
 import org.serc.model.AbstractEntity;
+import org.serc.network.controller.dto.CveEntry;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,6 +27,9 @@ public class Host extends AbstractEntity {
     
     @Column(name = "host_ip")
     private String ip;
+    
+    @Column(name = "`value`")
+    private Integer value;
     
     @OneToMany(mappedBy = "host", fetch = FetchType.EAGER)
     private List<HostVulnerability> vulnerabilities;
@@ -63,5 +69,27 @@ public class Host extends AbstractEntity {
             count += vulnerability.getCveCount();
         }
         return count;
+    }
+    
+    public Double getScore() {
+        List<Double>  possibilities = Lists.newArrayList();
+        for(HostVulnerability vulnerability: vulnerabilities) {
+            for(CveEntry cveEntry: vulnerability.getCveList()) {
+                possibilities.add(cveEntry.getCvssScore() / 10);
+            }
+        }
+        Double totalPossibility = 1d;
+        for(Double possiblity: possibilities) {
+            totalPossibility *= possiblity;
+        }
+        return getValue() * (1 - totalPossibility);
+    }
+
+    public Integer getValue() {
+        return value == null ? 3 : value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
     }
 }
