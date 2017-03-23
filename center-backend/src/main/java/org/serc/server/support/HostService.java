@@ -25,6 +25,7 @@ public class HostService {
         List<Host> hosts =  JSON.parseArray(request.body("utf-8"), Host.class);
         Sensor sensor = sensorService.findByName("xr-test");
         for(Host host: hosts) {
+            host.setSensorName("xr-test");
             org.serc.network.model.Host hostWithVul = sensor.getHosts().stream()
                     .filter(h -> h.getIp().trim().equals(host.getInner_interface()))
                     .findFirst().orElse(null);
