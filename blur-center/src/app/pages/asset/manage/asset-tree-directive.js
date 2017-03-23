@@ -117,7 +117,7 @@ angular.module('BlurAdmin.pages.asset.manage')
                             </div>\
                             <div class="child-content">\
                                 <div ng-if="node.expend" class="host-cards">\
-                                    <div ng-repeat="host in node.child | filter:{isRouter:false}" class="host-card">\
+                                    <div ng-repeat="host in node.child | filter:{isRouter:false} | orderBy:\'-score\'" class="host-card">\
                                         <div class="host-card-content">\
                                             <div class="host-card-content-header">{{host.inner_interface}}</div> \
                                             <div class="host-card-content-body">\
@@ -136,7 +136,7 @@ angular.module('BlurAdmin.pages.asset.manage')
                                     <div class="child-content-header">{{node.inner_interface}}</div>\
                                     <table>\
                                         <tbody>\
-                                            <tr ng-repeat="host in node.child | filter:{isRouter:false} | limitTo: 5" ng-class="{1: \'good\', 2: \'normal\', 3: \'bad\'}[host.safeLevel]">\
+                                            <tr ng-repeat="host in node.child | filter:{isRouter:false} | orderBy:\'-score\' | limitTo: 5 " ng-class="{1: \'good\', 2: \'normal\', 3: \'bad\'}[host.safeLevel]">\
                                                 <td>{{host.inner_interface}}</td>\
                                                 <td>{{host.vulnerabilityCount || "0"}}个漏洞</td>\
                                                 <td>威胁评分{{host.score | number:1}}</td>\
