@@ -1,0 +1,18 @@
+<div ng-controller="graphCtrl">
+    <!--<div class="row">-->
+        <!--<div class="col-sm-3 col-xs-4">-->
+            <!--<div class="btn-group btn-block">-->
+                <!--<button type="button" class="btn btn-primary btn-block btn-raised" ui-sref="attackGraph.path">-->
+                    <!--路径分析-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="row" style="margin-top: 8px;">
+        <div class="col-md-12">
+            <div ng-if="data" ba-panel ba-panel-title="攻击图分析" ba-panel-class="" id="attack_graph_container">
+                <attack-graph graph-data="data" path-data="pathData"></attack-graph>
+            </div>
+        </div>
+    </div>
+</div>

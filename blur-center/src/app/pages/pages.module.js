@@ -13,7 +13,8 @@
     'BlurAdmin.pages.charts',
     'BlurAdmin.pages.vulnerability',
     'BlurAdmin.pages.asset',
-    'BlurAdmin.pages.scan'
+    'BlurAdmin.pages.scan',
+    'BlurAdmin.pages.attackGraph'
   ])
       .config(routeConfig);
 

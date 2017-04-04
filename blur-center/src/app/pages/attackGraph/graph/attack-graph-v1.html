@@ -1,0 +1,65 @@
+<div style="position: relative;">
+    <svg id="attack_graph">
+        <defs>
+            <g id="node">
+                <circle r="22" fill="white"></circle>
+                <circle r="22" style="opacity: 0.5;"></circle>
+                <circle r="12"></circle>
+            </g>
+            <g id="node_selected">
+                <circle r="32" style="opacity: 0.2;" fill="black"></circle>
+                <circle r="22" fill="white"></circle>
+                <circle r="22"></circle>
+                <circle r="12" fill="white"></circle>
+                <circle r="12" style="opacity: 0.5;"></circle>
+            </g>
+            <marker id="arrow" markerUnits="strokeWidth" markerWidth="6" markerHeight="6" viewBox="0 0 6 6" refX="13" refY="3" orient="auto">
+                <path d="M1,1 L5,3 L1,5" stroke="#bbb" stroke-width="1" fill="none"></path>
+            </marker>
+            <marker id="arrow_selected" markerUnits="strokeWidth" markerWidth="6" markerHeight="6" viewBox="0 0 6 6" refX="13" refY="3" orient="auto">
+                <path d="M1,1 L5,3 L1,5" stroke="black" stroke-width="1" fill="none" stroke-opacity="0.75"></path>
+            </marker>
+        </defs>
+        <g transform="translate(25 25)scale(0.5)">
+            <g class="sample" transform="translate(0 0)scale(0.7)" fill="purple">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
+                <text x="36" y="12">攻击者</text>
+            </g>
+            <g class="sample" transform="translate(0 36)scale(0.7)" fill="red">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
+                <text x="36" y="12">攻击目标</text>
+            </g>
+            <g class="sample" transform="translate(0 72)scale(0.7)" fill="green">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
+                <text x="36" y="12">先决条件</text>
+            </g>
+            <g class="sample" transform="translate(0 108)scale(0.7)" fill="orange">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
+                <text x="36" y="12">权限</text>
+            </g>
+            <g class="sample" transform="translate(0 144)scale(0.7)" fill="blue">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
+                <text x="36" y="12">规则</text>
+            </g>
+        </g>
+    </svg>
+    <div class="selection">
+        <div ng-if="paths">
+            <h3>Attack Path</h3>
+            <div class="path_id" ng-click="showPath(-1)" ng-class="{true: 'active'}[selectedPathId==-1]">All Paths</div>
+            <div class="paths">
+                <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>
+            </div>
+        </div>
+        <div ng-if="selection">
+            <h3>Selection Detail</h3>
+            <p>ID: <span ng-bind="selection.id"></span></p>
+            <p>Type: <span ng-bind="selection.type"></span></p>
+            <p>Info: <span ng-bind="selection.info"></span></p>
+        </div>
+        <div ng-if="!selection">
+            <h3>Selection Detail</h3>
+            <p>Select an element in the visualization.</p>
+        </div>
+    </div>
+</div>
