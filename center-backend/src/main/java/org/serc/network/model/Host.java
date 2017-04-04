@@ -23,6 +23,7 @@ public class Host extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "sensor_id")
+    @JsonIgnore
     private Sensor sensor;
     
     @Column(name = "host_ip")
