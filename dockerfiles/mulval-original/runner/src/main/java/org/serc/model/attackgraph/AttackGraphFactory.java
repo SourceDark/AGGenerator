@@ -88,7 +88,6 @@ public class AttackGraphFactory {
         Matcher matcher = pat.matcher(hacls);
         while (matcher.find()) {
             String target = matcher.group(1);
-            System.out.println(target);
             goals.add(new ExecCode(target.trim()));
         }
         return goals;
