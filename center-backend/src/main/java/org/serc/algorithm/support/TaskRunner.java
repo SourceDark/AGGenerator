@@ -3,6 +3,7 @@ package org.serc.algorithm.support;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -54,6 +55,7 @@ public class TaskRunner {
             algorithmTaskRepository.saveAndFlush(task);
             runContainer(task, dataDir);
             handleResult(task, dataDir);
+            task.setUpdatedTime(new Date());
             algorithmTaskRepository.saveAndFlush(task);
             deleteTmpResources(task, dataDir);
         } catch (Exception e) {
