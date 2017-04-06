@@ -21,14 +21,20 @@ public class MulvalRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("1111");
         String input = FileUtils.readFileToString(new File(BASE_DIR, "input"), "UTF-8");
         List<String> output = FileUtils.readLines(new File(BASE_DIR, "output"), "UTF-8");
+        System.out.println("2222");
         Graph graph = Mulval2Json.run(output, input);
+        System.out.println("3333");
         AttackGraph attackGraph = AttackGraphFactory.toAttackGraph(graph, input);
+        System.out.println("4444");
         ObjectMapper objectMapper = new ObjectMapper();
         StringWriter inputWriter= new StringWriter();
         objectMapper.writeValue(inputWriter, attackGraph);
+        System.out.println("5555");
         FileUtils.write(new File(BASE_DIR, "/output"), inputWriter.toString(), "UTF-8");
+        System.out.println("6666");
     }
     
 }
