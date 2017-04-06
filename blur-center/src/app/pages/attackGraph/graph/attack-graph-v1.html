@@ -45,21 +45,21 @@
     </svg>
     <div class="selection">
         <div ng-if="paths">
-            <h3>Attack Path</h3>
+            <h3>攻击路径</h3>
             <div class="path_id" ng-click="showPath(-1)" ng-class="{true: 'active'}[selectedPathId==-1]">All Paths</div>
             <div class="paths">
-                <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>
+                <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">路径 #{{$index+1}}<span>{{path.length}} 个节点</span></div>
             </div>
         </div>
         <div ng-if="selection">
-            <h3>Selection Detail</h3>
+            <h3>节点信息</h3>
             <p>ID: <span ng-bind="selection.id"></span></p>
-            <p>Type: <span ng-bind="selection.type"></span></p>
-            <p>Info: <span ng-bind="selection.info"></span></p>
+            <p>类型: <span ng-bind="selection.type"></span></p>
+            <p>信息: <span ng-bind="selection.info"></span></p>
         </div>
         <div ng-if="!selection">
-            <h3>Selection Detail</h3>
-            <p>Select an element in the visualization.</p>
+            <h3>节点信息</h3>
+            <p>请在攻击图中选择对应的节点</p>
         </div>
     </div>
 </div>

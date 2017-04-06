@@ -12,7 +12,7 @@
     ])
         .config(routeConfig)
         .controller('assetCtrl', function($scope) {
-            $scope.networkId = 1;
+            $scope.networkId = 2;
             $scope.apiUrl = 'http://162.105.30.200:9016';
         });
 

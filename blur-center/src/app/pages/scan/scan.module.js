@@ -19,7 +19,7 @@
         }])
         .config(routeConfig)
         .controller('scanCtrl', function($scope,$state,$http) {
-            $scope.networkId = 1;
+            $scope.networkId = 2;
             $scope.apiUrl = 'http://162.105.30.200:9016';
 
             $state.go('scan.list');
