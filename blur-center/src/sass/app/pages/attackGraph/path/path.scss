@@ -1,0 +1,89 @@
+#path {
+  #paths_container {
+    .panel-body {
+      padding: 0 0 0 200px;
+      width: 100%;
+      height: 600px;
+      position: relative;
+      .selection {
+        position: absolute;
+        height: 100%;
+        width: 200px;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        background: #d5d5d5;
+
+        .path_id {
+          cursor: pointer;
+          color: #24323e;
+          background: #bdc3c7;
+          text-align: left;
+          margin-top: 1px;
+          padding: .5em;
+          font-size: 1.2em;
+          span {
+            float: right;
+          }
+        }
+        .active {
+          background: #9c9c9c;
+        }
+        .path_id:hover {
+          background: #9c9c9c;
+        }
+
+        .paths {
+          overflow-y: auto;
+        }
+      }
+      .board {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        .main {
+          vertical-align: top;
+          text-align: center;
+          position: relative;
+          .title {
+            padding: 5px;
+            border: 1px solid #000;
+            background: orange;
+            color: #000;
+          }
+          .special {
+            background: lightcoral;
+          }
+        }
+        .cond {
+          vertical-align: top;
+          position: relative;
+          padding-left: 50px;
+          .conditions {
+            border: 1px solid #555;
+            padding: 3px 5px;
+            border-radius: 5px;
+            background: lightgreen;
+            color: #555;
+            &:before {
+              position: absolute;
+              left: 0;
+              top: 14px;
+              content: " ";
+              border-top: 1px solid #555;
+              width: 50px;
+              height: 1px;
+            }
+            div {
+              margin: 2px 0;
+            }
+          }
+        }
+        .down-icon {
+          margin-top: 4px;
+          //margin: auto;
+        }
+      }
+    }
+  }
+}
