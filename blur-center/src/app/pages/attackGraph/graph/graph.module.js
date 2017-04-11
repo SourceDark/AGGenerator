@@ -16,7 +16,10 @@
             .state('attackGraph.graph', {
                 url: '/graph',
                 templateUrl: 'app/pages/attackGraph/graph/graph.html',
-                title: '攻击图'
+                title: '攻击图',
+                sidebarMeta: {
+                    order: 1,
+                }
             });
     }
 

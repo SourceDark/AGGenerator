@@ -4,7 +4,7 @@
             <div ng-if="data" ba-panel ba-panel-title="攻击图路径分析" ba-panel-class="" id="paths_container">
                 <div class="selection">
                     <div class="paths">
-                        <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>
+                        <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">路径 #{{$index+1}}<span>{{path.length}} 个节点</span></div>
                     </div>
                 </div>
                 <div class="board">

@@ -2,7 +2,7 @@
  * Created by Nettle on 2017/4/4.
  */
 
-angular.module('BlurAdmin.pages.attackGraph.graph')
+angular.module('BlurAdmin.pages.attackGraphDirective', [])
     .directive('attackGraph', ['$http', '$q', function ($http, $q) {
         return {
             restrict: 'E',
@@ -10,9 +10,10 @@ angular.module('BlurAdmin.pages.attackGraph.graph')
             transclude: true,
             scope: {
                 data: '=graphData',
-                paths: '=pathData'
+                paths: '=pathData',
+                keyNodes: '=keyNodeData'
             },
-            templateUrl: 'app/pages/attackGraph/graph/attack-graph-v1.html',
+            templateUrl: 'app/pages/attackGraphDirective/attack-graph-v1.html',
             link: function (scope, element, attrs) {
 
                 scope.gap = 120;
@@ -22,6 +23,7 @@ angular.module('BlurAdmin.pages.attackGraph.graph')
                 scope.data.nodes.forEach(function (node) {
                     scope.idPool[ node.id ] = node;
                 });
+
                 // scope.data.edges.forEach(function (edge) {
                 //     edge.source = scope.idPool[ edge.source ];
                 //     edge.target = scope.idPool[ edge.target ];
@@ -152,6 +154,18 @@ angular.module('BlurAdmin.pages.attackGraph.graph')
                     })
                     .attr('y', 45);
 
+                if (scope.keyNodes) {
+                    scope.keyNodes = scope.keyNodes.sort();
+                    scope.keyNodes.forEach(function (id) {
+                        scope.idPool[ id ].important = true;
+                    });
+                    scope.node
+                        .classed('important', function (d) {
+                            return !!d.important;
+                        });
+                }
+
+                // set graph
                 var gHeight = (scope.maxLevel - 1) * scope.gap + scope.r * 2;
                 var gWidth  = scope.maxWidth + scope.r * 2;
 
@@ -182,7 +196,18 @@ angular.module('BlurAdmin.pages.attackGraph.graph')
                             return d.source.inPath && d.target.inPath && (d.source.level > d.target.level)
                         }).classed('selected', true);
                     }
-                }
+                };
+
+                scope.showNode = function (id) {
+                    scope.node.classed('selected', false);
+                    scope.selection = null;
+                    if (id != -1) {
+                        scope.node.filter(function (node) {
+                            return node.id == id;
+                        }).classed('selected', true);
+                        scope.selection = scope.idPool[ id ];
+                    }
+                };
             }
         }
     }]);
