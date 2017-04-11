@@ -22,10 +22,10 @@ angular.module('BlurAdmin.pages.attackGraph.graph')
                 scope.data.nodes.forEach(function (node) {
                     scope.idPool[ node.id ] = node;
                 });
-                scope.data.edges.forEach(function (edge) {
-                    edge.source = scope.idPool[ edge.source ];
-                    edge.target = scope.idPool[ edge.target ];
-                });
+                // scope.data.edges.forEach(function (edge) {
+                //     edge.source = scope.idPool[ edge.source ];
+                //     edge.target = scope.idPool[ edge.target ];
+                // });
 
                 //
                 scope.idx = [];

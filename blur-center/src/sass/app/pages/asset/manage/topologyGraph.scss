@@ -41,38 +41,39 @@
     stroke-opacity: 0.75;
   }
 }
-
-.selection {
-  position: absolute;
-  height: 100%;
-  width: 200px;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  background: #d5d5d5;
-  h3 {
-    background: #bdc3c7;
-    color: #24323e;
-    padding: .5em;
-    cursor: default;
-    display: block;
-    font-size: 1.17em;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    font-weight: bold;
-  }
-  p {
-    padding-left: .5em;
-    padding-right: 1em;
-    word-break:break-word;
-    span {
-      font-style: italic;
-      padding: 8px;
+#topology {
+  .selection {
+    position: absolute;
+    height: 100%;
+    width: 200px;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    background: #d5d5d5;
+    h3 {
+      background: #bdc3c7;
+      color: #24323e;
+      padding: .5em;
+      cursor: default;
+      display: block;
+      font-size: 1.17em;
+      -webkit-margin-before: 1em;
+      -webkit-margin-after: 1em;
+      -webkit-margin-start: 0px;
+      -webkit-margin-end: 0px;
+      font-weight: bold;
     }
-  }
-  .del {
-    text-decoration:line-through;
+    p {
+      padding-left: .5em;
+      padding-right: 1em;
+      word-break: break-word;
+      span {
+        font-style: italic;
+        padding: 8px;
+      }
+    }
+    .del {
+      text-decoration: line-through;
+    }
   }
 }

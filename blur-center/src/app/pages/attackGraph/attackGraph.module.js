@@ -21,6 +21,21 @@
         .controller('attackGraphCtrl', function($scope,$state,$http) {
             $scope.networkId = 1;
             $scope.apiUrl = 'http://162.105.30.200:9016';
+
+            $scope.data = JSON.parse(attack_graph_test_data.input);
+            $scope.paths = JSON.parse(attack_graph_test_data.output);
+
+            $scope.idPool = {};
+            $scope.data.nodes.forEach(function (node) {
+                $scope.idPool[ node.id ] = node;
+            });
+            $scope.data.edges.forEach(function (edge) {
+                edge.target = $scope.idPool[ edge.target ];
+                edge.source = $scope.idPool[ edge.source ];
+            });
+
+            console.log($scope.data);
+            console.log($scope.paths);
         });
 
     /** @ngInject */

@@ -1,3 +1,46 @@
-<div ng-controller="pathCtrl">
-    pathes
+<div ng-controller="pathCtrl" id="path">
+    <div class="row" style="margin-top: 8px;">
+        <div class="col-md-12">
+            <div ng-if="data" ba-panel ba-panel-title="攻击图路径分析" ba-panel-class="" id="paths_container">
+                <div class="selection">
+                    <div class="paths">
+                        <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>
+                    </div>
+                </div>
+                <div class="board">
+                    <div class="loading" ng-if="loading">路径数据载入中...</div>
+                    <table ng-if="!loading">
+                        <tr ng-repeat-start="node in seq | filter:{type:'OR'}" class="node">
+                            <td class="main">
+                                <div class="title" ng-class="{true: 'special'}[node.attacker]">{{node.info}}</div>
+                            </td>
+                            <td class="cond">
+                                <div class="conditions" ng-if="!node.attacker">
+                                    <div ng-repeat="and_node in node.conditions | filter:{inPath:true}">
+                                        <div ng-repeat="leaf_node in and_node.conditions | filter:{inPath:true} | filter:{type:'LEAF'}">
+                                            {{leaf_node.info}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end="" style="height: 20px;">
+                            <td style="text-align: center;">
+                                <div class="down-icon">
+                                    <i class="ion-chevron-down"></i>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="node">
+                            <td class="main">
+                                <div class="title special">完成攻击</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary btn-raised" ui-sref="attackGraph.graph">返回</button>
 </div>
