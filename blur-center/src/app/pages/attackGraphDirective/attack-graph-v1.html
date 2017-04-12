@@ -46,11 +46,6 @@
     <div class="selection">
         <div ng-if="paths">
             <h3>攻击路径</h3>
-<<<<<<< HEAD:blur-center/src/app/pages/attackGraph/graph/attack-graph-v1.html
-            <div class="path_id" ng-click="showPath(-1)" ng-class="{true: 'active'}[selectedPathId==-1]">All Paths</div>
-            <div class="paths">
-                <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">路径 #{{$index+1}}<span>{{path.length}} 个节点</span></div>
-=======
             <div class="path_id" ng-click="showPath(-1)">显示所有</div>
             <div class="paths">
                 <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)">路径 #{{$index+1}}<span>{{path.length}} 个节点</span></div>
@@ -61,26 +56,16 @@
             <div class="path_id" ng-click="showNode(-1)">显示所有</div>
             <div class="paths">
                 <div class="path_id" ng-repeat="node in keyNodes" ng-click="showNode(node)">节点 #{{node}}</div>
->>>>>>> 8f61aa8a804312789cd7acdd9da2998165ada448:blur-center/src/app/pages/attackGraphDirective/attack-graph-v1.html
             </div>
         </div>
         <div ng-if="selection">
             <h3>节点信息</h3>
-<<<<<<< HEAD:blur-center/src/app/pages/attackGraph/graph/attack-graph-v1.html
-            <p>ID: <span ng-bind="selection.id"></span></p>
-            <p>类型: <span ng-bind="selection.type"></span></p>
-=======
             <p>编号: <span ng-bind="selection.id"></span></p>
->>>>>>> 8f61aa8a804312789cd7acdd9da2998165ada448:blur-center/src/app/pages/attackGraphDirective/attack-graph-v1.html
             <p>信息: <span ng-bind="selection.info"></span></p>
         </div>
         <div ng-if="!selection">
             <h3>节点信息</h3>
-<<<<<<< HEAD:blur-center/src/app/pages/attackGraph/graph/attack-graph-v1.html
-            <p>请在攻击图中选择对应的节点</p>
-=======
             <p style="font-size: 13px;">请在攻击图中选择对应的节点</p>
->>>>>>> 8f61aa8a804312789cd7acdd9da2998165ada448:blur-center/src/app/pages/attackGraphDirective/attack-graph-v1.html
         </div>
     </div>
 </div>
