@@ -16,7 +16,7 @@
 
             $scope.data = JSON.parse(attack_graph_test_data.input);
             $scope.paths = JSON.parse(attack_graph_test_data.output);
-            $scope.keyNodes = [3,12];
+            $scope.keyNodes = [13,15,17];
 
             $scope.idPool = {};
             $scope.data.nodes.forEach(function (node) {
