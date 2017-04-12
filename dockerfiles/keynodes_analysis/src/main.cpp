@@ -196,6 +196,30 @@ void analysis() {
 	ofstream ouf(output_file);
 	while (bfs(2 * n + 1, 2 * n + 2)) improve(2 * n + 1, 2 * n + 2);
 	cout << "Minimum Cut Size: " << ans << endl;
+	
+	ouf << '[';
+	queue<int> Q;
+	Q.push(2 * n + 1);
+	vector<bool> bo(2 * n + 3, false);
+	while (!Q.empty()) {
+		int i = Q.front(); Q.pop();
+		for (edge *p = link[i]; p != NULL; p = p -> next) {
+			int j = p -> v;
+			if (p -> rst > 0 && !bo[j]) {
+				bo[j] = true;
+				Q.push(j);
+			}
+		}
+	}
+	bool first = true;
+	for (int i = 0; i < n; i++) if (bo[i] && !bo[i + n]) {
+		if (!first) {
+			ouf << ',';
+		}
+		first = false;
+		ouf << (i + 1);
+	}
+	ouf << ']';
 	ouf.close();
 }
 
