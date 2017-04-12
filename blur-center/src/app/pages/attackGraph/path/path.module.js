@@ -51,7 +51,10 @@
             .state('attackGraph.path', {
                 url: '/path',
                 templateUrl: 'app/pages/attackGraph/path/path.html',
-                title: '路径分析'
+                title: '路径列表',
+                sidebarMeta: {
+                    order: 2,
+                }
             });
     }
 

@@ -1,0 +1,32 @@
+<div id="impVul" ng-controller="impVulCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="重要漏洞" ba-panel-class="with-scroll">
+                <div class="horizontal-scroll">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th class="">id</th>
+                            <th class="" style="padding-left: 8px">出现次数</th>
+                            <th class="" style="padding-left: 8px">利用路径数量</th>
+                            <th class="" style="padding-left: 8px">威胁重要资产</th>
+                            <th class="" style="padding-left: 8px">总威胁分数</th>
+                            <th class="" style="padding-left: 8px">修复方案</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vul in impVul" class="no-top-border"style="cursor: pointer;">
+                            <td class="">{{vul.id}}</td>
+                            <td class="">{{vul.times}}</td>
+                            <td class="">{{vul.paths}}</td>
+                            <td class="">{{vul.asset}}</td>
+                            <td class="">{{vul.score}}</td>
+                            <td class=""><a ui-sref="vulnerability.detail({id: vul.id, vulnerability: vul})" >详情</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

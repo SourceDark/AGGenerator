@@ -1,4 +1,4 @@
-<div style="position: relative;">
+<div style="position: relative;" id="attack_graph_directive">
     <svg id="attack_graph">
         <defs>
             <g id="node">
@@ -23,43 +23,49 @@
         <g transform="translate(25 25)scale(0.5)">
             <g class="sample" transform="translate(0 0)scale(0.7)" fill="purple">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
-                <text x="36" y="12">攻击者</text>
+                <text x="36" y="13">攻击者</text>
             </g>
             <g class="sample" transform="translate(0 36)scale(0.7)" fill="red">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
-                <text x="36" y="12">攻击目标</text>
+                <text x="36" y="13">攻击目标</text>
             </g>
             <g class="sample" transform="translate(0 72)scale(0.7)" fill="green">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
-                <text x="36" y="12">先决条件</text>
+                <text x="36" y="13">先决条件</text>
             </g>
             <g class="sample" transform="translate(0 108)scale(0.7)" fill="orange">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
-                <text x="36" y="12">权限</text>
+                <text x="36" y="13">权限</text>
             </g>
             <g class="sample" transform="translate(0 144)scale(0.7)" fill="blue">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#node"></use>
-                <text x="36" y="12">规则</text>
+                <text x="36" y="13">规则</text>
             </g>
         </g>
     </svg>
     <div class="selection">
         <div ng-if="paths">
-            <h3>Attack Path</h3>
-            <div class="path_id" ng-click="showPath(-1)" ng-class="{true: 'active'}[selectedPathId==-1]">All Paths</div>
+            <h3>攻击路径</h3>
+            <div class="path_id" ng-click="showPath(-1)">显示所有</div>
             <div class="paths">
-                <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)" ng-class="{true: 'active'}[$index==selectedPathId]">Path #{{$index+1}}<span>{{path.length}} nodes</span></div>
+                <div class="path_id" ng-repeat="path in paths" ng-click="showPath($index)">路径 #{{$index+1}}<span>{{path.length}} 个节点</span></div>
+            </div>
+        </div>
+        <div ng-if="keyNodes">
+            <h3>关键节点</h3>
+            <div class="path_id" ng-click="showNode(-1)">显示所有</div>
+            <div class="paths">
+                <div class="path_id" ng-repeat="node in keyNodes" ng-click="showNode(node)">节点 #{{node}}</div>
             </div>
         </div>
         <div ng-if="selection">
-            <h3>Selection Detail</h3>
-            <p>ID: <span ng-bind="selection.id"></span></p>
-            <p>Type: <span ng-bind="selection.type"></span></p>
-            <p>Info: <span ng-bind="selection.info"></span></p>
+            <h3>节点信息</h3>
+            <p>编号: <span ng-bind="selection.id"></span></p>
+            <p>信息: <span ng-bind="selection.info"></span></p>
         </div>
         <div ng-if="!selection">
-            <h3>Selection Detail</h3>
-            <p>Select an element in the visualization.</p>
+            <h3>节点信息</h3>
+            <p style="font-size: 13px;">请在攻击图中选择对应的节点</p>
         </div>
     </div>
 </div>
