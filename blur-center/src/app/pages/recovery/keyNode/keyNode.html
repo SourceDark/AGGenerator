@@ -1,8 +1,8 @@
-<div ng-controller="graphCtrl">
+<div id="keyNode" ng-controller="kyeNodeCtrl">
     <div class="row">
         <div class="col-md-12">
             <div ng-if="data" ba-panel ba-panel-title="攻击图分析" ba-panel-class="" id="attack_graph_container">
-                <attack-graph graph-data="data" path-data="paths"></attack-graph>
+                <attack-graph graph-data="data" key-node-data="keyNodes"></attack-graph>
             </div>
         </div>
     </div>

@@ -11,10 +11,13 @@
     'BlurAdmin.pages.dashboard',
     'BlurAdmin.pages.ui',
     'BlurAdmin.pages.charts',
+    'BlurAdmin.pages.attackGraphDirective',
+
     'BlurAdmin.pages.vulnerability',
     'BlurAdmin.pages.asset',
     'BlurAdmin.pages.scan',
-    'BlurAdmin.pages.attackGraph'
+    'BlurAdmin.pages.attackGraph',
+    'BlurAdmin.pages.recovery'
   ])
       .config(routeConfig);
 
