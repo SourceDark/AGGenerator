@@ -3,10 +3,10 @@ package org.serc.network.support;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.network.model.Network;
 import org.serc.network.model.NetworkScannerSubTask;
 import org.serc.network.model.NetworkScannerTask;
+import org.serc.network.model.NetworkScheduleTask.Status;
 import org.serc.network.model.Sensor;
 import org.serc.network.runner.NetworkScannerSubTaskRunner;
 import org.springframework.beans.factory.annotation.Autowired;
