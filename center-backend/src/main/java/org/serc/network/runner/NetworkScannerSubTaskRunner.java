@@ -73,7 +73,7 @@ public class NetworkScannerSubTaskRunner {
         return state != null && state.getRunning();
     }
     
-    @Scheduled(cron = "* */1 * * * * *")
+    @Scheduled(cron = "* */1 * * * *")
     public void run() throws Exception {
         List<NetworkScannerSubTask> subTasks = networkScannerSubTaskRepository.findByStatus(Status.running);
         for (NetworkScannerSubTask subTask : subTasks) {
