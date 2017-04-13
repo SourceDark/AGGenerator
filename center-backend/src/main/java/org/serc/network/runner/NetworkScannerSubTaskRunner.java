@@ -18,6 +18,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.Volume;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
@@ -28,8 +30,10 @@ public class NetworkScannerSubTaskRunner {
     @Autowired ApplicationContext applicationContext;
     @Autowired NetworkScannerSubTaskRepository  networkScannerSubTaskRepository;
     @Autowired SensorService sensorService;
-    private static final String image = "registry.cn-hangzhou.aliyuncs.com/serc/agbot:net-scanner-local";
+    private static final String image = "registry.cn-hangzhou.aliyuncs.com/serc/agbot:openvas";
     private static final String containerDataDir = "/data";
+    private static final String INPUT_NAME = "input";
+    private static final Volume CONTAINER_DATA_VOLUME = new Volume("/data");
     
     @Async
     public void run(NetworkScannerSubTask task) {
@@ -38,7 +42,8 @@ public class NetworkScannerSubTaskRunner {
             networkScannerSubTaskRepository.saveAndFlush(task);
             DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
                     .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
-            task.setContainerId(initContainer(dockerClient, task));
+            File dataDir = initData(task);
+            task.setContainerId(initContainer(dockerClient, task, dataDir));
             networkScannerSubTaskRepository.saveAndFlush(task);
             runContainer(dockerClient, task);
             handleResult(dockerClient, task);
@@ -59,11 +64,23 @@ public class NetworkScannerSubTaskRunner {
         }
     }
     
-    private String initContainer(DockerClient dockerClient, NetworkScannerSubTask task) {
+    private File initData(NetworkScannerSubTask task) throws IOException {
+        File dataDir = new File(org.serc.ApplicationContext.getDataDir(), "scaner-sub-tasks/" + task.getId());
+        dataDir.mkdir();
+        String input = "";
+        for(String ip : task.getIp().split(",")) {
+            input += ip + "\n";
+        }
+        FileUtils.writeStringToFile(new File(dataDir, INPUT_NAME), input, "UTF-8");
+        return dataDir;
+    }
+    
+    private String initContainer(DockerClient dockerClient, NetworkScannerSubTask task, File dataDir) {
         return dockerClient.createContainerCmd(image)
                 .withEnv("dataDir=" + containerDataDir, 
                         "dockerHost=" + task.getTask().getSensor().getDockerApi(),
                         "ips=" + task.getIp())
+                .withBinds(new Bind(org.serc.ApplicationContext.toHostDir(dataDir), CONTAINER_DATA_VOLUME))
                 .exec().getId();
     }
     
