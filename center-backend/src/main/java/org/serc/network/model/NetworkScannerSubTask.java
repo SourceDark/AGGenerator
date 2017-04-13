@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.serc.model.AbstractEntity;
@@ -14,9 +15,9 @@ public class NetworkScannerSubTask extends AbstractEntity implements Comparable<
     
     @ManyToOne NetworkScannerTask task;
     @Enumerated Status status;
+    @Lob private String errorStack;
     private String ip;
     private String containerId;
-    private String errorStack;
     private Date startTime;
     private Date endTime;
 

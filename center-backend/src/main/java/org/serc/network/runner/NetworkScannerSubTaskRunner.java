@@ -52,10 +52,12 @@ public class NetworkScannerSubTaskRunner {
             networkScannerSubTaskRepository.saveAndFlush(task);
             runContainer(dockerClient, task);
         } catch (Exception e) {
+            System.out.println(e);
             task.setStatus(Status.failure);
             task.setErrorStack(AlgorithmUtils.getErrorStackString(e));
             networkScannerSubTaskRepository.saveAndFlush(task);
         }catch (Error e) {
+            System.out.println(e);
             task.setStatus(Status.failure);
             task.setErrorStack(AlgorithmUtils.getErrorStackString(e));
             networkScannerSubTaskRepository.saveAndFlush(task);
@@ -72,6 +74,9 @@ public class NetworkScannerSubTaskRunner {
     }
     
     public boolean isRunning(DockerClient dockerClient,String id) {
+        if(id == null) {
+            return false;
+        }
         InspectContainerResponse.ContainerState state = state(dockerClient, id);
         return state != null && state.getRunning();
     }
@@ -90,11 +95,14 @@ public class NetworkScannerSubTaskRunner {
                         subTask.setStatus(Status.success);
                         networkScannerSubTaskRepository.saveAndFlush(subTask);
                         deleteTmpResources(dockerClient, subTask, getDataDir(subTask));
+                        System.out.println(subTask.getId() + "success");
                     } catch (Exception e) {
+                        System.out.println(e);
                         subTask.setStatus(Status.failure);
                         subTask.setErrorStack(AlgorithmUtils.getErrorStackString(e));
                         networkScannerSubTaskRepository.saveAndFlush(subTask);
                     }catch (Error e) {
+                        System.out.println(e);
                         subTask.setStatus(Status.failure);
                         subTask.setErrorStack(AlgorithmUtils.getErrorStackString(e));
                         networkScannerSubTaskRepository.saveAndFlush(subTask);
@@ -103,6 +111,8 @@ public class NetworkScannerSubTaskRunner {
                             .filter(st -> Status.created.equals(st.getStatus()))
                             .findFirst().ifPresent(st -> applicationContext.getBean(NetworkScannerSubTaskRunner.class).run(st));
                     }
+                } else {
+                    System.out.println(subTask.getContainerId() + "is running");
                 }
             }
             return null;
