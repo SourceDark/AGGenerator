@@ -14,6 +14,8 @@ import org.serc.network.support.NetworkScheduleTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -26,32 +28,41 @@ public class NetworkScheduleRunner {
     @Autowired ObjectMapper objectMapper;
     @Autowired AlgorithmService algorithmService;
     @Autowired NetworkScheduleTaskRepository networkScheduleTaskRepository;
+    @Autowired PlatformTransactionManager transactionManager;
     
     @Scheduled(cron = "0 2 0 * * ?")
     public void run() throws Exception {
-        for(Network network: networkRepository.findAll()) {
-            StringWriter inputWriter= new StringWriter();
-            objectMapper.writeValue(inputWriter, ImmutableMap.of("sensors", network.getSensors(), "hacls", network.getHacls()));
-            String input = inputWriter.toString();
-            
-            List<AlgorithmTask> tasks = algorithmService.runTaskGroup(Lists.newArrayList(
-                    new AlgorithmTaskInfo(algorithmService.findOne("6"), InputFrom.source, input),
-                    new AlgorithmTaskInfo(algorithmService.findOne("12"), InputFrom.source, input),
-                    new AlgorithmTaskInfo(algorithmService.findOne("1"), InputFrom.source, input),
-                    new AlgorithmTaskInfo(algorithmService.findOne("9"), InputFrom.algorithm, 0), 
-                    new AlgorithmTaskInfo(algorithmService.findOne("10"), InputFrom.algorithm, 0),
-                    new AlgorithmTaskInfo(algorithmService.findOne("13"), InputFrom.algorithm, 0),
-                    new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 0),
-                    new AlgorithmTaskInfo(algorithmService.findOne("10"), InputFrom.algorithm, 1),
-                    new AlgorithmTaskInfo(algorithmService.findOne("13"), InputFrom.algorithm, 1),
-                    new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 1),
-                    new AlgorithmTaskInfo(algorithmService.findOne("14"), InputFrom.algorithm, 2)
-                    ), input);
-            NetworkScheduleTask networkScheduleTask = new NetworkScheduleTask();
-            networkScheduleTask.setAlgorithmTasks(Lists.newArrayList(tasks.subList(1, tasks.size())));
-            networkScheduleTask.setNetwork(network);
-            networkScheduleTaskRepository.save(networkScheduleTask);
-        }
+        new TransactionTemplate(transactionManager).execute(transactionStatus -> {
+            for(Network network: networkRepository.findAll()) {
+                StringWriter inputWriter= new StringWriter();
+                try {
+                    objectMapper.writeValue(inputWriter, ImmutableMap.of("sensors", network.getSensors(), "hacls", network.getHacls()));
+                    String input = inputWriter.toString();
+                    
+                    List<AlgorithmTask> tasks = algorithmService.runTaskGroup(Lists.newArrayList(
+                            new AlgorithmTaskInfo(algorithmService.findOne("6"), InputFrom.source, input),
+                            new AlgorithmTaskInfo(algorithmService.findOne("12"), InputFrom.source, input),
+                            new AlgorithmTaskInfo(algorithmService.findOne("1"), InputFrom.source, input),
+                            new AlgorithmTaskInfo(algorithmService.findOne("9"), InputFrom.algorithm, 0), 
+                            new AlgorithmTaskInfo(algorithmService.findOne("10"), InputFrom.algorithm, 0),
+                            new AlgorithmTaskInfo(algorithmService.findOne("13"), InputFrom.algorithm, 0),
+                            new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 0),
+                            new AlgorithmTaskInfo(algorithmService.findOne("10"), InputFrom.algorithm, 1),
+                            new AlgorithmTaskInfo(algorithmService.findOne("13"), InputFrom.algorithm, 1),
+                            new AlgorithmTaskInfo(algorithmService.findOne("11"), InputFrom.algorithm, 1),
+                            new AlgorithmTaskInfo(algorithmService.findOne("14"), InputFrom.algorithm, 2)
+                            ), input);
+                    NetworkScheduleTask networkScheduleTask = new NetworkScheduleTask();
+                    networkScheduleTask.setAlgorithmTasks(Lists.newArrayList(tasks.subList(1, tasks.size())));
+                    networkScheduleTask.setNetwork(network);
+                    networkScheduleTaskRepository.save(networkScheduleTask);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        });
     }
 
 }

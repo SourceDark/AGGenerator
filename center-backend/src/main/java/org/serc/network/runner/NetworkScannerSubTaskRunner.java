@@ -18,6 +18,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectContainerResponse;
@@ -32,6 +34,7 @@ public class NetworkScannerSubTaskRunner {
     @Autowired ApplicationContext applicationContext;
     @Autowired NetworkScannerSubTaskRepository  networkScannerSubTaskRepository;
     @Autowired SensorService sensorService;
+    @Autowired PlatformTransactionManager transactionManager;
     private static final String image = "registry.cn-hangzhou.aliyuncs.com/serc/agbot:openvas";
     private static final String containerDataDir = "/data";
     private static final String INPUT_NAME = "input";
@@ -75,32 +78,35 @@ public class NetworkScannerSubTaskRunner {
     
     @Scheduled(cron = "* */1 * * * *")
     public void run() throws Exception {
-        List<NetworkScannerSubTask> subTasks = networkScannerSubTaskRepository.findByStatus(Status.running);
-        for (NetworkScannerSubTask subTask : subTasks) {
-            DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
-                    .withDockerHost(subTask.getTask().getSensor().getDockerApi())).build();
-            if(!isRunning(dockerClient, subTask.getContainerId())) {
-                try {
-                    subTask.setEndTime(new Date());
-                    handleResult(dockerClient, subTask);
-                    subTask.setStatus(Status.success);
-                    networkScannerSubTaskRepository.saveAndFlush(subTask);
-                    deleteTmpResources(dockerClient, subTask, getDataDir(subTask));
-                } catch (Exception e) {
-                    subTask.setStatus(Status.failure);
-                    subTask.setErrorStack(AlgorithmUtils.getErrorStackString(e));
-                    networkScannerSubTaskRepository.saveAndFlush(subTask);
-                }catch (Error e) {
-                    subTask.setStatus(Status.failure);
-                    subTask.setErrorStack(AlgorithmUtils.getErrorStackString(e));
-                    networkScannerSubTaskRepository.saveAndFlush(subTask);
-                } finally {
-                    subTask.getTask().getSubTasks().stream()
-                        .filter(st -> Status.created.equals(st.getStatus()))
-                        .findFirst().ifPresent(st -> applicationContext.getBean(NetworkScannerSubTaskRunner.class).run(st));
+        new TransactionTemplate(transactionManager).execute(transactionStatus -> {
+            List<NetworkScannerSubTask> subTasks = networkScannerSubTaskRepository.findByStatus(Status.running);
+            for (NetworkScannerSubTask subTask : subTasks) {
+                DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
+                        .withDockerHost(subTask.getTask().getSensor().getDockerApi())).build();
+                if(!isRunning(dockerClient, subTask.getContainerId())) {
+                    try {
+                        subTask.setEndTime(new Date());
+                        handleResult(dockerClient, subTask);
+                        subTask.setStatus(Status.success);
+                        networkScannerSubTaskRepository.saveAndFlush(subTask);
+                        deleteTmpResources(dockerClient, subTask, getDataDir(subTask));
+                    } catch (Exception e) {
+                        subTask.setStatus(Status.failure);
+                        subTask.setErrorStack(AlgorithmUtils.getErrorStackString(e));
+                        networkScannerSubTaskRepository.saveAndFlush(subTask);
+                    }catch (Error e) {
+                        subTask.setStatus(Status.failure);
+                        subTask.setErrorStack(AlgorithmUtils.getErrorStackString(e));
+                        networkScannerSubTaskRepository.saveAndFlush(subTask);
+                    } finally {
+                        subTask.getTask().getSubTasks().stream()
+                            .filter(st -> Status.created.equals(st.getStatus()))
+                            .findFirst().ifPresent(st -> applicationContext.getBean(NetworkScannerSubTaskRunner.class).run(st));
+                    }
                 }
             }
-        }
+            return null;
+        });
     }
     
     private File getDataDir(NetworkScannerSubTask task) {
