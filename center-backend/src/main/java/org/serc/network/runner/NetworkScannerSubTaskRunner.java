@@ -12,7 +12,6 @@ import org.serc.network.model.NetworkScheduleTask.Status;
 import org.serc.network.support.NetworkScannerSubTaskRepository;
 import org.serc.network.support.SensorService;
 import org.serc.utils.AlgorithmUtils;
-import org.serc.utils.DockerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
@@ -38,12 +37,14 @@ public class NetworkScannerSubTaskRunner {
     private static final String image = "registry.cn-hangzhou.aliyuncs.com/serc/agbot:openvas";
     private static final String containerDataDir = "/data";
     private static final String INPUT_NAME = "input";
+    private static final String OUTPUT_NAME = "output";
     private static final Volume CONTAINER_DATA_VOLUME = new Volume("/data");
     
     @Async
     public void run(NetworkScannerSubTask task) {
         try {
             task.setStatus(Status.running);
+            task.setStartTime(new Date());
             networkScannerSubTaskRepository.saveAndFlush(task);
             DockerClient dockerClient = DockerClientBuilder.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder()
                     .withDockerHost(task.getTask().getSensor().getDockerApi())).build();
@@ -150,9 +151,10 @@ public class NetworkScannerSubTaskRunner {
     }
     
     private void handleResult(DockerClient dockerClient, NetworkScannerSubTask task) throws IOException, ArchiveException {
-        File tmpDir = new File(org.serc.ApplicationContext.hostTmpDir, task.getContainerId());
-        DockerUtils.copyFiles(dockerClient, task.getContainerId(), containerDataDir, tmpDir);
-        String output = FileUtils.readFileToString(new File(tmpDir, "output"), "utf-8");
+//        File tmpDir = new File(getDataDir(task), OUTPUT_NAME);
+//        DockerUtils.copyFiles(dockerClient, task.getContainerId(), containerDataDir, tmpDir);
+//        String output = FileUtils.readFileToString(new File(tmpDir, "output"), "utf-8");
+        String output = FileUtils.readFileToString(new File(getDataDir(task), OUTPUT_NAME), "utf-8");
         sensorService.parseVulnerabilities(task.getTask().getSensor(), output);
     }
     
