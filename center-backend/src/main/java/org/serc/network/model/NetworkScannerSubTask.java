@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
-import org.serc.algorithm.model.AlgorithmTask.Status;
 import org.serc.model.AbstractEntity;
+import org.serc.network.model.NetworkScheduleTask.Status;
 
 @Entity
 public class NetworkScannerSubTask extends AbstractEntity implements Comparable<NetworkScannerSubTask> {
